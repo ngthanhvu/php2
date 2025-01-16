@@ -32,11 +32,25 @@ class PostController
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors = [];
             $title = $_POST['title'];
             $content = $_POST['content'];
 
-            $this->model->createPost($title, $content);
-            header('Location: /posts');
+            if (empty($title)) {
+                $errors['title'] = 'Title is required';
+            }
+
+            if (empty($content)) {
+                $errors['content'] = 'Content is required';
+            }
+
+            if (!empty($errors)) {
+                renderView('view/posts/create.php', compact('errors'), 'Create Post');
+                return;
+            } else {
+                $this->model->createPost($title, $content);
+                header('Location: /posts');
+            }
         } else {
             renderView('view/posts/create.php', [], 'Create Post');
         }

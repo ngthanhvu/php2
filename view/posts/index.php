@@ -25,3 +25,8 @@
         <?php if (empty($posts)) echo "<tr><td colspan='4'>No posts found.</td></tr>"; ?>
     </tbody>
 </table>
+<?php
+echo "<pre>";
+// var_dump($_SESSION);
+echo "</pre>";
+?>

@@ -8,6 +8,15 @@ function isUser()
     exit;
 }
 
+function isAdmin()
+{
+    if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
+        return true;
+    }
+    header("Location: /login");
+    exit;
+}
+
 function logRequest()
 {
     // Log the request for debugging or auditing

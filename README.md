@@ -26,8 +26,22 @@ CREATE TABLE `posts` (
 )
 CREATE TABLE `users` (
   `id` int NOT NULL PRIMARY KEY,
-  `username` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `oauth_provider` varchar(255) NOT NULL,
+  `oauth_id` varchar(255) NOT NULL
 )
+```
+
+Cài thư viện Google và Facebook để dùng login with social
+
+```bash
+composer require google/apiclient facebook/graph-sdk
+```
+
+Cài thư viện PHPMailer
+
+```bash
+composer require phpmailer/phpmailer
 ```
