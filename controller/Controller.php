@@ -19,4 +19,11 @@ class Controller
         $products = $this->productModel->getAllProducts();
         renderView('view/index.php', compact('posts', 'products'), 'Home');
     }
+
+    public function admin()
+    {
+        $posts = $this->postModel->getAllPosts();
+        $products = $this->productModel->getAllProducts();
+        renderView('view/admin/index.php', compact('posts', 'products'), 'Admin', 'admin');
+    }
 }

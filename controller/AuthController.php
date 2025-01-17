@@ -36,6 +36,12 @@ class AuthController
         ]);
     }
 
+    public function index()
+    {
+        $users = $this->UserModel->getAllUsers();
+        renderView('view/admin/users/index.php', compact('users'), 'Users', 'admin');
+    }
+
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -203,7 +209,7 @@ class AuthController
         ]);
 
         $_SESSION['user'] = $user;
-        header('Location: /posts');
+        header('Location: /');
     }
 
     public function loginWithFacebook()
@@ -245,7 +251,7 @@ class AuthController
             $user = $this->UserModel->findOrCreateUser($userData);
             $_SESSION['user'] = $user;
             ob_clean();
-            header('Location: /posts');
+            header('Location: /');
             exit;
         } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             die('Lỗi từ Facebook API: ' . $e->getMessage());

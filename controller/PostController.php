@@ -14,7 +14,7 @@ class PostController
     public function index()
     {
         $posts = $this->model->getAllPosts();
-        renderView('view/posts/index.php', compact('posts'), 'Posts');
+        renderView('view/admin/posts/index.php', compact('posts'), 'Posts', 'admin');
     }
 
     public function showHome()
@@ -26,7 +26,7 @@ class PostController
     public function show($id)
     {
         $post = $this->model->getPostById($id);
-        renderView('view/posts/show.php', compact('post'), 'Post Detail');
+        renderView('view/posts/show.php', compact('post'), 'Post Detail', 'admin');
     }
 
     public function create()
@@ -45,14 +45,14 @@ class PostController
             }
 
             if (!empty($errors)) {
-                renderView('view/posts/create.php', compact('errors'), 'Create Post');
+                renderView('view/admin/posts/create.php', compact('errors'), 'Create Post', 'admin');
                 return;
             } else {
                 $this->model->createPost($title, $content);
-                header('Location: /posts');
+                header('Location: /admin/posts');
             }
         } else {
-            renderView('view/posts/create.php', [], 'Create Post');
+            renderView('view/admin/posts/create.php', [], 'Create Post', 'admin');
         }
     }
 
@@ -63,16 +63,18 @@ class PostController
             $content = $_POST['content'];
 
             $this->model->updatePost($id, $title, $content);
-            header('Location: /posts');
+            $_SESSION['message'] = "Post updated successfully!";
+            header('Location: /admin/posts');
         } else {
             $post = $this->model->getPostById($id);
-            renderView('view/posts/edit.php', compact('post'), 'Update Post');
+            renderView('view/admin/posts/edit.php', compact('post'), 'Update Post', 'admin');
         }
     }
 
     public function delete($id)
     {
         $this->model->deletePost($id);
-        header('Location: /posts');
+        $_SESSION['message'] = "Post deleted successfully!";
+        header('Location: /admin/posts');
     }
 }

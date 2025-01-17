@@ -10,10 +10,33 @@ class  CategoryModel
         $this->conn = new Database();
     }
 
-    public function index()
+    // public function index()
+    // {
+    //     $query = "SELECT * FROM categories";
+    //     $stmt = $this->conn->getConnection()->prepare($query);
+    //     $stmt->execute();
+    //     return $stmt->fetchAll();
+    // }
+
+    public function index($search = '', $sortBy = 'id', $sortOrder = 'ASC', $page = 1, $itemsPerPage = 10)
     {
-        $query = "SELECT * FROM categories";
+        // Tính toán OFFSET
+        $offset = ($page - 1) * $itemsPerPage;
+
+        // Truy vấn SQL với các điều kiện phân trang, tìm kiếm và sắp xếp
+        $query = "SELECT * FROM categories 
+                  WHERE name LIKE :search
+                  ORDER BY $sortBy $sortOrder
+                  LIMIT :limit OFFSET :offset";
+
         $stmt = $this->conn->getConnection()->prepare($query);
+
+        // Gắn tham số
+        $searchTerm = '%' . $search . '%';
+        $stmt->bindParam(':search', $searchTerm);
+        $stmt->bindParam(':limit', $itemsPerPage, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
         $stmt->execute();
         return $stmt->fetchAll();
     }

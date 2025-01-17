@@ -15,7 +15,7 @@ class CategoryController
     public function index()
     {
         $categories = $this->categoryModel->index();
-        renderView("view/categories/index.php", compact('categories'), "Categories");
+        renderView("view/admin/categories/index.php", compact('categories'), "Categories", "admin");
     }
 
     public function create()
@@ -30,15 +30,15 @@ class CategoryController
             }
 
             if (!empty($errors)) {
-                renderView("view/categories/create.php", compact('errors'), "Create Category");
+                renderView("view/admin/categories/create.php", compact('errors'), "Create Category", "admin");
             } else {
                 $this->categoryModel->create($name);
                 $_SESSION['message'] = "Category created successfully!";
-                header("Location: /categories");
+                header("Location: /admin/categories");
                 exit;
             }
         } else {
-            renderView("view/categories/create.php", [], "Create Category");
+            renderView("view/admin/categories/create.php", [], "Create Category", "admin");
         }
     }
 
@@ -49,10 +49,10 @@ class CategoryController
 
             $this->categoryModel->update($id, $name);
             $_SESSION['message'] = "Category updated successfully!";
-            header("Location: /categories");
+            header("Location: /admin/categories");
         } else {
             $category = $this->categoryModel->getCategoryById($id);
-            renderView("view/categories/edit.php", compact('category'), "Edit Category");
+            renderView("view/admin/categories/edit.php", compact('category'), "Edit Category", "admin");
         }
     }
 
@@ -60,6 +60,6 @@ class CategoryController
     {
         $this->categoryModel->delete($id);
         $_SESSION['message'] = "Category deleted successfully!";
-        header("Location: /categories");
+        header("Location: /admin/categories");
     }
 }

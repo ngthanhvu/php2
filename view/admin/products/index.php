@@ -3,7 +3,7 @@
 <table class="table table-striped table-bordered table-hover text-center mt-3">
     <thead class="table-dark">
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Description</th>
@@ -12,9 +12,10 @@
         </tr>
     </thead>
     <tbody>
+        <?php $index = 1; ?>
         <?php foreach ($products as $product) : ?>
             <tr>
-                <th scope="row"><?= $product['id'] ?></th>
+                <th scope="row"><?= $index++ ?></th>
                 <td><?= $product['name'] ?></td>
                 <td><?= $product['price'] ?></td>
                 <td><?= $product['description'] ?></td>

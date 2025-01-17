@@ -33,21 +33,16 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ms-3">
                     <li><a href="/" class="nav-link px-2 text-white hover-success">Home</a></li>
-                    <li><a href="/posts" class="nav-link px-2 text-white hover-success">Posts</a></li>
-                    <li><a href="/products" class="nav-link px-2 text-white hover-success">Products</a></li>
-                    <li><a href="/categories" class="nav-link px-2 text-white hover-success">Categories</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white hover-success">Products</a></li>
+                    <li><a href="/admin" class="nav-link px-2 text-white hover-success">Admin</a></li>
                 </ul>
-
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                    <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-                </form>
-
                 <div class="text-end d-flex">
                     <button class="btn btn-outline-light me-2" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
                         <span class="badge bg-light text-dark ms-1 rounded-pill">0</span>
                     </button>
+                    <!-- <span class="me-2 mt-2 text-white">Số tiền: 0</span> -->
                     <?php
                     if (isset($_SESSION['user'])) {
                         echo '<a href="/logout" class="btn btn-danger">Logout</a>';

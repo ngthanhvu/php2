@@ -19,26 +19,27 @@ $CategoryController = new CategoryController();
 $router->addMiddleware('logRequest');
 
 $router->addRoute("/", [$Controller, "index"]);
+$router->addRoute("/admin", [$Controller, "admin"]);
 
 // Posts
-$router->addRoute("/posts", [$PostController, "index"], ['isUser']);
-$router->addRoute("/posts/show/{id}", [$PostController, "show"]);
-$router->addRoute("/posts/create", [$PostController, "create"], ['isUser']);
-$router->addRoute("/posts/update/{id}", [$PostController, "update"], ['isUser']);
-$router->addRoute("/posts/delete/{id}", [$PostController, "delete"], ['isUser']);
+$router->addRoute("/admin/posts", [$PostController, "index"], ['isUser']);
+$router->addRoute("/admin/posts/show/{id}", [$PostController, "show"]);
+$router->addRoute("/admin/posts/create", [$PostController, "create"], ['isUser']);
+$router->addRoute("/admin/posts/update/{id}", [$PostController, "update"], ['isUser']);
+$router->addRoute("/admin/posts/delete/{id}", [$PostController, "delete"], ['isUser']);
 
 // Products
-$router->addRoute("/products", [$ProductController, "index"], ['isUser']);
-$router->addRoute("/products/show/{id}", [$ProductController, "show"]);
-$router->addRoute("/products/create", [$ProductController, "create"], ['isUser']);
-$router->addRoute("/products/update/{id}", [$ProductController, "update"], ['isUser']);
-$router->addRoute("/products/delete/{id}", [$ProductController, "delete"], ['isUser']);
+$router->addRoute("/admin/products", [$ProductController, "index"], ['isUser']);
+$router->addRoute("/admin/products/show/{id}", [$ProductController, "show"]);
+$router->addRoute("/admin/products/create", [$ProductController, "create"], ['isUser']);
+$router->addRoute("/admin/products/update/{id}", [$ProductController, "update"], ['isUser']);
+$router->addRoute("/admin/products/delete/{id}", [$ProductController, "delete"], ['isUser']);
 
 // Categories
-$router->addRoute("/categories", [$CategoryController, "index"], ['isUser']);
-$router->addRoute("/categories/create", [$CategoryController, "create"], ['isUser']);
-$router->addRoute("/categories/update/{id}", [$CategoryController, "update"], ['isUser']);
-$router->addRoute("/categories/delete/{id}", [$CategoryController, "delete"], ['isUser']);
+$router->addRoute("/admin/categories", [$CategoryController, "index"], ['isUser']);
+$router->addRoute("/admin/categories/create", [$CategoryController, "create"], ['isUser']);
+$router->addRoute("/admin/categories/update/{id}", [$CategoryController, "update"], ['isUser']);
+$router->addRoute("/admin/categories/delete/{id}", [$CategoryController, "delete"], ['isUser']);
 
 // Auth
 $router->addRoute("/login", [$AuthController, "login"]);
@@ -46,6 +47,9 @@ $router->addRoute("/register", [$AuthController, "register"]);
 $router->addRoute("/logout", [$AuthController, "logout"]);
 $router->addRoute("/forgotpassword", [$AuthController, "forgotPassword"]);
 $router->addRoute("/resetpassword", [$AuthController, "resetPassword"]);
+
+// Users
+$router->addRoute("/admin/users", [$AuthController, "index"], ['isUser']);
 
 //Auth with social
 $router->addRoute("/auth/facebook", [$AuthController, "loginWithFacebook"]);

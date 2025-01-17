@@ -64,9 +64,10 @@ class UserModel
 
     public function findOrCreateUser($data)
     {
-        $query = "SELECT * FROM users WHERE email = :email";
+        $query = "SELECT * FROM users WHERE oauth_provider = :oauth_provider AND oauth_id = :oauth_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':oauth_provider', $data['oauth_provider']);
+        $stmt->bindParam(':oauth_id', $data['oauth_id']);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -79,9 +80,11 @@ class UserModel
             $stmt->bindParam(':oauth_id', $data['oauth_id']);
             $stmt->execute();
 
-            $query = "SELECT * FROM users WHERE email = :email";
+            $query = "SELECT * FROM users WHERE email = :email AND oauth_provider = :oauth_provider AND oauth_id = :oauth_id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':email', $data['email']);
+            $stmt->bindParam(':oauth_provider', $data['oauth_provider']);
+            $stmt->bindParam(':oauth_id', $data['oauth_id']);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
         }

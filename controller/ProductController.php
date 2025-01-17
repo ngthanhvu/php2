@@ -14,7 +14,7 @@ class ProductController
     public function index()
     {
         $products = $this->ProductModel->getAllProducts();
-        renderView('view/products/index.php', compact('products'), 'Products');
+        renderView('view/admin/products/index.php', compact('products'), 'Products', 'admin');
     }
 
     public function showHomeProduct()
@@ -26,7 +26,7 @@ class ProductController
     public function show($id)
     {
         $product = $this->ProductModel->getProductById($id);
-        renderView('view/products/show.php', compact('product'), 'Product Detail');
+        renderView('view/products/show.php', compact('product'), 'Product Detail', 'admin');
     }
 
     public function create()
@@ -55,13 +55,14 @@ class ProductController
             }
 
             if (!empty($errors)) {
-                renderView('view/products/create.php', compact('errors'), 'Create Product');
+                renderView('view/admin/products/create.php', compact('errors'), 'Create Product', 'admin');
             } else {
                 $this->ProductModel->addProduct($name, $price, $description, $image);
-                header('Location: /products');
+                $_SESSION['message'] = "Product created successfully!";
+                header('Location: /admin/products');
             }
         } else {
-            renderView('view/products/create.php', [], 'Create Product');
+            renderView('view/admin/products/create.php', [], 'Create Product', 'admin');
         }
     }
 
@@ -75,16 +76,18 @@ class ProductController
             $image = $_POST['image'];
 
             $this->ProductModel->updateProduct($id, $name, $price, $description, $image);
-            header('Location: /products');
+            $_SESSION['message'] = "Product updated successfully!";
+            header('Location: /admin/products');
         } else {
             $product = $this->ProductModel->getProductById($id);
-            renderView('view/products/edit.php', compact('product'), 'Update Product');
+            renderView('view/admin/products/edit.php', compact('product'), 'Update Product', 'admin');
         }
     }
 
     public function delete($id)
     {
         $this->ProductModel->deleteProduct($id);
-        header('Location: /products');
+        $_SESSION['message'] = "Product deleted successfully!";
+        header('Location: /admin/products');
     }
 }

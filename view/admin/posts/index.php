@@ -10,9 +10,10 @@
         </tr>
     </thead>
     <tbody>
+        <?php $index = 1; ?>
         <?php foreach ($posts as $post) : ?>
             <tr>
-                <th scope="row"><?= $post['id'] ?></th>
+                <th scope="row"><?= $index++ ?></th>
                 <td><?= $post['title'] ?></td>
                 <td><?= $post['content'] ?></td>
                 <td>
@@ -25,8 +26,3 @@
         <?php if (empty($posts)) echo "<tr><td colspan='4'>No posts found.</td></tr>"; ?>
     </tbody>
 </table>
-<?php
-echo "<pre>";
-// var_dump($_SESSION);
-echo "</pre>";
-?>
