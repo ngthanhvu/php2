@@ -197,7 +197,7 @@ class AuthController
         }
 
         $this->googleClient->setAccessToken($token['access_token']);
-        $googleService = new Google_Service_Oauth2($this->googleClient);
+        $googleService = new Google\Service\Oauth2($this->googleClient);
         $userInfo = $googleService->userinfo->get();
 
         $user = $this->UserModel->findOrCreateUser([
