@@ -1,17 +1,11 @@
 <!-- <h2>Đây là trang chủ nhé :)))</h2> -->
-<div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-    <div class="col-10 col-sm-8 col-lg-6">
-        <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/2024-spotify-brand-assets-media-kit.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
-    </div>
-    <div class="col-lg-6">
-        <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-success">Spotify Shop</h1>
-        <p class="lead text-muted" id="text-container"></p>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-            <button type="button" class="btn btn-success btn-lg px-4 me-md-2">Mua ngay! <i class="bi bi bi-cursor"></i></button>
-        </div>
+<div class=" p-5 mb-4 bg-success rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold text-white">Taphoaonline <span class="fs-3">Shop Bán Acc Spotify</span></h1>
+        <p class="col-md-8 fs-4 text-white" id="text-container"></p>
+        <button class="btn btn-light btn-lg text-success" type="button">Mua ngay!</button>
     </div>
 </div>
-
 <h2 class="text-success"><span class="text-success me-2 fs-1">|</span>Danh sách sản phẩm</h2>
 <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
     <?php foreach ($products as $key => $product) : ?>

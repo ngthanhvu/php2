@@ -55,4 +55,7 @@ $router->addRoute("/admin/users", [$AuthController, "index"], ['isUser']);
 $router->addRoute("/auth/facebook", [$AuthController, "loginWithFacebook"]);
 $router->addRoute("/auth/google", [$AuthController, "loginWithGoogle"]);
 
+//payment
+$router->addRoute("/payment", [$Controller, "payment"]);
+
 $router->dispatch();
