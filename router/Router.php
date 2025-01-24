@@ -46,6 +46,7 @@ class Router
             }
         }
 
-        echo "404 Not Found";
+        // echo "404 Not Found";
+        require_once "view/404.php";
     }
 }

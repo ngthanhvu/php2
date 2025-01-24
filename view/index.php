@@ -10,20 +10,16 @@
 <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
     <?php foreach ($products as $key => $product) : ?>
         <div class="col-md-4">
-            <a href="/products/show/<?php echo $product['id'] ?>" class="text-decoration-none">
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="<?php echo $product['image'] ?>" class="img-fluid rounded-start p-3" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h3 class="card-title text-success"><?php echo $product['name'] ?></h3>
-                                <!-- <p class=" card-text"><?php echo $product['description'] ?></p> -->
-                                <span class="badge text-bg-success">Còn: 888 cái</span>
-                                <p class="card-text text-dark"><small class="text-body-secondary">Giá: <?php echo $product['price'] ?> đ</small></p>
-                            </div>
-                        </div>
+            <a href="/products/show/<?php echo $product['id'] ?>" class="text-decoration-none text-success">
+                <div class="card border-0" style="width: 18rem;">
+                    <img src="<?php echo $product['image'] ?>" class="card-img-top" alt="No images" width="290"
+                        height="140" style="object-fit: contain;">
+                    <div class="mt-2">
+                        <h5 class="card-title"><?php echo $product['name'] ?></h5>
+                        <span class="badge text-bg-success">Số lượng: 199 cái</span><span
+                            class="badge text-bg-danger ms-2">Danger</span><br>
+                        <div class="prices mt-2"><span><?php echo $product['price'] ?>đ</span><span
+                                class="text-muted text-decoration-line-through ms-2"> 20.000đ</span></div>
                     </div>
                 </div>
             </a>

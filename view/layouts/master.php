@@ -7,6 +7,8 @@
     <title>
         <?php echo $title ?? "My App" ?> | Spotify shop
     </title>
+    <!-- icon -->
+    <link rel="shortcut icon" href="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png" type="image/x-icon">
     <!-- boostrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -48,9 +50,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <img class="img-fluid d-flex mx-auto justify-content-center"
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png"
-                            alt="no logo" width="200">
+                        <a href="/">
+                            <img class="img-fluid d-flex mx-auto justify-content-center mt-3"
+                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png"
+                                alt="no logo" width="200">
+                        </a>
                     </div>
                     <div class="col-md-4">
                         <form action="" method="post">
@@ -106,15 +110,13 @@
         <nav class="py-2 bg-body-tertiary">
             <div class="container d-flex flex-wrap border-top">
                 <ul class="nav me-auto mt-3">
-                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Home</a>
+                    <li class="nav-item"><a href="/" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Home</a>
                     </li>
-                    <li class="nav-item"><a href="#"
-                            class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Features</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Pricing</a>
-                    </li>
-                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">FAQs</a>
-                    </li>
+                    <li class="nav-item"><a href="/product"
+                            class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Products</a></li>
                     <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">About</a>
+                    </li>
+                    <li class="nav-item"><a href="/admin" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Admin</a>
                     </li>
                 </ul>
             </div>

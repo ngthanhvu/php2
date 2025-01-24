@@ -58,4 +58,8 @@ $router->addRoute("/auth/google", [$AuthController, "loginWithGoogle"]);
 //payment
 $router->addRoute("/payment", [$Controller, "payment"]);
 
+//index product
+$router->addRoute("/product", [$Controller, "product"]);
+$router->addRoute("/detail", [$Controller, "detail"]);
+
 $router->dispatch();

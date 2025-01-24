@@ -31,4 +31,15 @@ class Controller
     {
         renderView('view/payment.php', [], 'Payment');
     }
+
+    public function product()
+    {
+        $products = $this->productModel->getAllProducts();
+        renderView('view/product.php', compact('products'), 'Product');
+    }
+
+    public function detail()
+    {
+        renderView('view/detail.php', [], 'Detail');
+    }
 }
