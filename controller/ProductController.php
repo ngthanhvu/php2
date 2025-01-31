@@ -1,14 +1,17 @@
 <?php
 require_once "model/ProductModel.php";
+require_once "model/CategoryModel.php";
 require_once 'view/helpers.php';
 
 class ProductController
 {
     private $ProductModel;
+    private $CategoryModel;
 
     public function __construct()
     {
         $this->ProductModel = new ProductModel();
+        $this->CategoryModel = new CategoryModel();
     }
 
     public function index()
@@ -37,6 +40,8 @@ class ProductController
             $price = $_POST['price'];
             $description = $_POST['description'];
             $image = $_POST['image'];
+            $quantity = $_POST['quantity'];
+            $categories_id = $_POST['categories_id'];
 
             if (empty($name)) {
                 $errors['name'] = 'Name is required';
@@ -54,15 +59,24 @@ class ProductController
                 $errors['image'] = 'Image is required';
             }
 
+            if (empty($quantity)) {
+                $errors['quantity'] = 'Quantity is required';
+            }
+
+            if (empty($categories_id)) {
+                $errors['categories_id'] = 'Categories ID is required';
+            }
+
             if (!empty($errors)) {
                 renderView('view/admin/products/create.php', compact('errors'), 'Create Product', 'admin');
             } else {
-                $this->ProductModel->addProduct($name, $price, $description, $image);
+                $this->ProductModel->addProduct($name, $price, $description, $image, $quantity, $categories_id);
                 $_SESSION['message'] = "Product created successfully!";
                 header('Location: /admin/products');
             }
         } else {
-            renderView('view/admin/products/create.php', [], 'Create Product', 'admin');
+            $categories = $this->CategoryModel->getAllCategories();
+            renderView('view/admin/products/create.php', compact('categories'), 'Create Product', 'admin');
         }
     }
 
@@ -74,8 +88,10 @@ class ProductController
             $price = $_POST['price'];
             $description = $_POST['description'];
             $image = $_POST['image'];
+            $quantity = $_POST['quantity'];
+            $categories_id = $_POST['categories_id'];
 
-            $this->ProductModel->updateProduct($id, $name, $price, $description, $image);
+            $this->ProductModel->updateProduct($id, $name, $price, $description, $image, $quantity, $categories_id);
             $_SESSION['message'] = "Product updated successfully!";
             header('Location: /admin/products');
         } else {

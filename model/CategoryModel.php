@@ -41,6 +41,14 @@ class  CategoryModel
         return $stmt->fetchAll();
     }
 
+    public function getAllCategories()
+    {
+        $query = "SELECT * FROM categories";
+        $stmt = $this->conn->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     public function getCategoryById($id)
     {
         $query = "SELECT * FROM categories WHERE id = :id";

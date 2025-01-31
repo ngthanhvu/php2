@@ -59,10 +59,10 @@ if (isset($_SESSION['message'])) {
     <hr>
     <div class="text-center mt-4">
         <a href="/auth/facebook" type="button" class="btn btn-primary w-70">
-            <i class="bi bi-facebook me-2"></i> Login with Facebook
+            <i class="fa-brands fa-facebook"></i> Facebook
         </a>
         <a href="/auth/google" type="button" class="btn btn-danger w-70">
-            <i class="bi bi-google me-2"></i> Login with Google
+            <i class="fa-brands fa-google"></i> Google
         </a>
     </div>
 </form>

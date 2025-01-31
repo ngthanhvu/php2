@@ -1,14 +1,14 @@
-<h2>Products List</h2>
-<a href="/products/create" class="btn btn-primary">Create Product</a>
+<h2>Danh sách sản phẩm</h2>
+<a href="/admin/products/create" class="btn btn-primary">Tạo sản phẩm</a>
 <table class="table table-striped table-bordered table-hover text-center mt-3">
     <thead class="table-dark">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Description</th>
-            <th scope="col">Image</th>
-            <th scope="col">Action</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Mô tả</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Hành dộng</th>
         </tr>
     </thead>
     <tbody>
@@ -28,7 +28,7 @@
         <?php endforeach; ?>
         <?php if (empty($products)) : ?>
             <tr>
-                <td colspan="6">No products</td>
+                <td colspan="6">Không tìm thấy danh sách sản phẩm.</td>
             </tr>
         <?php endif; ?>
     </tbody>

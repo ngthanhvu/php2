@@ -2,19 +2,31 @@
     <div class="row">
         <!-- Image -->
         <div class="col-md-6">
-            <img src="https://dummyimage.com/700x400/000/fff" class="img-fluid" alt="Elden Ring">
+            <img src="<?php echo $product['image']; ?>" class="img-fluid image-format" alt="Elden Ring">
             <a href="#" class="d-block mt-2 text-center text-primary">Xem thêm ảnh</a>
         </div>
         <!-- Product Details -->
         <div class="col-md-6">
-            <h3>Elden Ring (CD Key Steam)</h3>
+            <h3><?php echo $product['name']; ?></h3>
             <p class="text-danger">Tình trạng: Hết hàng</p>
             <p><strong>Mã sản phẩm:</strong> cdkey 1245620</p>
-            <p><strong>Thể loại:</strong> Action, RPG</p>
-            <h4 class="text-primary">790.000đ</h4>
+            <p><strong>Danh mục:</strong> <?php echo $product['category_name']; ?></p>
+            <h4 class="text-primary"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</h4>
             <p class="text-muted">
-                <del>800.000đ</del> <span class="badge bg-danger">-1%</span>
+                <del><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</del> <span class="badge bg-danger">-1%</span>
             </p>
+            <!-- sku -->
+            <hr>
+            <p>Loại: </p>
+            <div class="mb-3 d-flex gap-2 flex-wrap">
+                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
+                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
+                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
+                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
+                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
+                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
+            </div>
+            <hr>
             <div class="d-flex gap-2">
                 <button class="btn btn-primary">Thông báo khi có hàng</button>
                 <button class="btn btn-outline-secondary">Thêm vào giỏ</button>
@@ -39,9 +51,39 @@
     <!-- Product Description -->
     <h4>Chi tiết sản phẩm</h4>
     <p>
-        Elden Ring là bom tấn nhập vai hành động sắp ra mắt được phát triển bởi FromSoftware và do Bandai Namco
-        Entertainment phát hành.
-        Trò chơi là sự hợp tác giữa đạo diễn Hidetaka Miyazaki của Dark Souls và tiểu thuyết gia George RR Martin để
-        "của Trò chơi vương quyền".
+        <?php echo $product['description']; ?>
     </p>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img id="fullImage" src="" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const image = document.querySelector(".image-format");
+        const fullImage = document.getElementById("fullImage");
+
+        image.addEventListener("click", function() {
+            fullImage.src = this.src; // Lấy src từ ảnh nhỏ
+            new bootstrap.Modal(document.getElementById("imageModal")).show(); // Mở modal
+        });
+    });
+</script>
+
+
+<style>
+    .image-format {
+        width: 700px;
+        height: 400px;
+        object-fit: contain;
+        cursor: pointer;
+    }
+</style>

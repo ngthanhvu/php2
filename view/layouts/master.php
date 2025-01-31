@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?php echo $title ?? "My App" ?> | Spotify shop
+        <?php echo $title ?? "Errors" ?> | TapHoaOnline
     </title>
     <!-- icon -->
     <link rel="shortcut icon" href="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png" type="image/x-icon">
@@ -23,6 +23,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/751e818311.js" crossorigin="anonymous"></script>
 </head>
 <style>
     * {
@@ -86,8 +88,9 @@
                                 <div class="d-flex align-items-center">
                                     <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
                                     <div class="text-end">
-                                        <div>THANHVDUAYNE</div>
-                                        <a href="#" class="text-primary text-decoration-none">0đ</a>
+                                        <div class="text-center">' . (isset($_SESSION['user']) ? strtoupper($_SESSION['user']['username']) : 'NGƯỜI DÙNG') . '</div>
+                                        <span href="#" class="text-success text-decoration-none me-2">0đ</span>
+                                        <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
                                     </div>
                                 </div>
                                 ';
@@ -110,20 +113,27 @@
         <nav class="py-2 bg-body-tertiary">
             <div class="container d-flex flex-wrap border-top">
                 <ul class="nav me-auto mt-3">
-                    <li class="nav-item"><a href="/" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Home</a>
+                    <li class="nav-item"><a href="/" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Trang chủ</a>
                     </li>
                     <li class="nav-item"><a href="/product"
-                            class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Products</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">About</a>
+                            class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Sản phẩm</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Về chúng tôi</a>
                     </li>
-                    <li class="nav-item"><a href="/admin" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Admin</a>
+                    <li class="nav-item"><a href="/payment" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Nạp thẻ</a>
                     </li>
+                    <?php
+                    if (isset($_SESSION['user']['role'])) {
+                        if ($_SESSION['user']['role'] == 'admin') {
+                            echo '<li class="nav-item"><a href="/admin" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Admin</a></li>';
+                        }
+                    }
+                    ?>
                 </ul>
             </div>
         </nav>
     </div>
 
-    <main class="main container mt-3" style="min-height: calc(100vh - 100px);">
+    <main class="main container mt-3" style="min-height: calc(70vh - 70px);">
         <?= $content ?>
     </main>
 
@@ -137,3 +147,7 @@
 </body>
 
 </html>
+
+<?php
+// var_dump($_SESSION['user']);
+?>

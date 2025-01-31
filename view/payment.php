@@ -6,7 +6,7 @@
                 <h5 class="mb-0">Nạp tiền qua MoMo, VNPay, Ngân hàng</h5>
             </div>
             <div class="card-body">
-                <form>
+                <form method="post" action="/payment/create">
                     <div class="mb-3">
                         <label for="phuongThuc" class="form-label">Phương thức thanh toán</label>
                         <select class="form-select" id="phuongThuc">
@@ -18,12 +18,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="soTien" class="form-label">Số tiền cần nạp (VNĐ)</label>
-                        <input type="number" class="form-control" id="soTien" placeholder="Nhập số tiền cần nạp">
+                        <input type="number" name="amount" class="form-control" id="soTien" placeholder="Nhập số tiền cần nạp">
                     </div>
                     <div class="mb-3">
                         <p class="text-success">Số tiền thực nhận: <span id="soTienThucNhan">0</span> VNĐ</p>
                     </div>
-                    <button type="button" class="btn btn-success w-100">Nạp Ngay</button>
+                    <button type="submit" class="btn btn-success w-100">Nạp Ngay</button>
                 </form>
             </div>
         </div>

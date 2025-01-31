@@ -1,17 +1,17 @@
-<h1>Create Category</h1>
+<h1>Tạo danh mục</h1>
 <form method="POST">
     <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
+        <label for="name" class="form-label">Tên danh mục</label>
         <input
             type="text"
             class="form-control <?php echo isset($errors['name']) ? 'is-invalid' : ''; ?>"
             id="name"
-            name="name" placeholder="Enter name">
+            name="name" placeholder="Nhập tên danh mục">
         <?php if (isset($errors['name'])): ?>
             <div class="invalid-feedback">
                 <?= $errors['name'] ?>
             </div>
         <?php endif; ?>
     </div>
-    <button type="submit" class="btn btn-success">Create</button>
+    <button type="submit" class="btn btn-success">Tạo</button>
 </form>

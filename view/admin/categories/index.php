@@ -4,14 +4,14 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
 }
 ?>
-<h1>Category List</h1>
-<a href="/admin/categories/create" class="btn btn-primary mb-3">Create Category</a>
+<h1>Quản lý danh mục</h1>
+<a href="/admin/categories/create" class="btn btn-primary">Tạo danh mục</a>
 <table class="table table-bordered table-striped text-center mt-3 table-hover">
     <thead class="table-dark">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Tên danh mục</th>
+            <th scope="col">Hành động</th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +26,11 @@ if (isset($_SESSION['message'])) {
                 </td>
             </tr>
         <?php endforeach; ?>
+        <?php
+        if (empty($categories)) {
+            echo "<tr><td colspan='3'>Không tìm thấy danh mục.</td></tr>";
+        }
+        ?>
     </tbody>
 </table>
 <script>
