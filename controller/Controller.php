@@ -3,18 +3,21 @@ require_once "view/helpers.php";
 require_once "model/PostModel.php";
 require_once "model/ProductModel.php";
 require_once "model/CategoryModel.php";
+require_once "model/WalletModel.php";
 
 class Controller
 {
     private $postModel;
     private $productModel;
     private $categoryModel;
+    private $walletModel;
 
     public function __construct()
     {
         $this->postModel = new PostModel();
         $this->productModel = new ProductModel();
         $this->categoryModel = new CategoryModel();
+        $this->walletModel = new WalletModel();
     }
     public function index()
     {
@@ -34,13 +37,15 @@ class Controller
 
     public function payment()
     {
-        renderView('view/payment.php', [], 'Nạp thẻ');
+        $payments = $this->walletModel->getWallet($_SESSION['user']['id']);
+        renderView('view/payment.php', compact('payments'), 'Nạp thẻ');
     }
 
     public function product()
     {
+        $categories = $this->categoryModel->getAllCategories();
         $products = $this->productModel->getAllProducts();
-        renderView('view/product.php', compact('products'), 'Sản phẩm');
+        renderView('view/product.php', compact('products', 'categories'), 'Sản phẩm');
     }
 
     public function detail($id)
@@ -52,5 +57,15 @@ class Controller
     public function success()
     {
         renderView('view/success.php', [], 'Thành công');
+    }
+
+    public function errors()
+    {
+        renderView('view/errors.php', [], 'Thất bại');
+    }
+
+    public function cart()
+    {
+        renderView('view/cart.php', [], 'Giỏ hàng');
     }
 }

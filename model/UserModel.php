@@ -64,7 +64,11 @@ class UserModel
 
     public function findOrCreateUser($data)
     {
-        $query = "SELECT * FROM users WHERE oauth_provider = :oauth_provider AND oauth_id = :oauth_id";
+        $query = "SELECT users.*, SUM(wallet.amount) AS total_amount
+                    FROM users
+                    JOIN wallet ON users.id = wallet.user_id
+                    WHERE users.oauth_provider = :oauth_provider AND users.oauth_id = :oauth_id
+                    GROUP BY users.id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':oauth_provider', $data['oauth_provider']);
         $stmt->bindParam(':oauth_id', $data['oauth_id']);

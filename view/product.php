@@ -7,9 +7,10 @@
         <div class="col-md-3">
             <h4>Filters</h4>
             <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action">Category 1</button>
-                <button type="button" class="list-group-item list-group-item-action">Category 2</button>
-                <button type="button" class="list-group-item list-group-item-action">Category 3</button>
+                <?php foreach ($categories as $category): ?>
+                <button type="button" class="list-group-item list-group-item-action"><?= $category['name'] ?></button>
+                <?php endforeach ?>
+                
             </div>
             <div class="mt-4">
                 <h5>Price Range</h5>
@@ -33,49 +34,23 @@
             </div>
             <div class="row">
                 <!-- Product 1 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card border-0" style="width: 18rem;">
-                        <img src="https://dummyimage.com/290x140/000/fff" class="card-img-top" alt="No images" width="290"
-                            height="140" style="object-fit: cover;">
-                        <div class="mt-2">
-                            <h5 class="card-title">Random Code Steam</h5>
-                            <span class="badge text-bg-success">Số lượng: 199 cái</span><span
-                                class="badge text-bg-danger ms-2">Danger</span><br>
-                            <div class="prices mt-2"><span>10.000đ</span><span
-                                    class="text-muted text-decoration-line-through ms-2"> 20.000đ</span></div>
+                <?php foreach ($products as $product): ?>
+                <a href="/detail/<?php echo $product['id'] ?>" class="text-decoration-none text-success">
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 hover-card" style="width: 18rem;">
+                            <img src="<?php echo $product['image'] ?>" class="card-img-top" alt="No images" width="290"
+                                height="140" style="object-fit: contain;">
+                            <div class="mt-2">
+                                <h5 class="card-title"><?php echo $product['name'] ?></h5>
+                                <span class="badge text-bg-success">Số lượng: <?php echo $product['quantity'] ?> cái</span><span
+                                    class="badge text-bg-danger ms-2"><?php echo $product['category_name'] ?></span><br>
+                                <div class="prices mt-2"><span><?php echo number_format($product['price'], 0, ',', '.') ?>đ</span><span
+                                        class="text-muted text-decoration-line-through ms-2"> 20.000đ</span></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Product 2 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card border-0" style="width: 18rem;">
-                        <img src="https://dummyimage.com/290x140/000/fff" class="card-img-top" alt="No images" width="290"
-                            height="140" style="object-fit: cover;">
-                        <div class="mt-2">
-                            <h5 class="card-title">Random Code Steam</h5>
-                            <span class="badge text-bg-success">Số lượng: 199 cái</span><span
-                                class="badge text-bg-danger ms-2">Danger</span><br>
-                            <div class="prices mt-2"><span>10.000đ</span><span
-                                    class="text-muted text-decoration-line-through ms-2"> 20.000đ</span></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Product 3 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card border-0" style="width: 18rem;">
-                        <img src="https://dummyimage.com/290x140/000/fff" class="card-img-top" alt="No images" width="290"
-                            height="140" style="object-fit: cover;">
-                        <div class="mt-2">
-                            <h5 class="card-title">Random Code Steam</h5>
-                            <span class="badge text-bg-success">Số lượng: 199 cái</span><span
-                                class="badge text-bg-danger ms-2">Danger</span><br>
-                            <div class="prices mt-2"><span>10.000đ</span><span
-                                    class="text-muted text-decoration-line-through ms-2"> 20.000đ</span></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Additional Products -->
-                <!-- Repeat structure for more products -->
+                </a>
+                <?php endforeach; ?>
             </div>
             <!-- Pagination -->
             <nav aria-label="Page navigation">
@@ -94,3 +69,21 @@
         </div>
     </div>
 </div>
+<style>
+    .hover-card {
+        overflow: hidden;
+        /* Đảm bảo nội dung không tràn ra ngoài */
+        position: relative;
+        /* Để giữ phần ảnh trong card */
+    }
+
+    .hover-card img {
+        transition: transform 0.3s ease;
+        /* Tạo hiệu ứng chuyển đổi mượt mà */
+    }
+
+    .hover-card:hover img {
+        transform: scale(1.1);
+        /* Phóng to ảnh khi hover */
+    }
+</style>

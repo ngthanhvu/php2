@@ -76,4 +76,18 @@ class ProductModel
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+    public function createProductVariant($product_id, $variant_name, $price, $quantity, $description, $sku, $image)
+    {
+        $query = "INSERT INTO products_variants (product_id, variant_name, price, quantity, description, sku, image) VALUES (:product_id, :variant_name, :price, :quantity, :description, :sku, :image)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':product_id', $product_id);
+        $stmt->bindParam(':variant_name', $variant_name);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':quantity', $quantity);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':sku', $sku);
+        return $stmt->execute();
+    }
 }

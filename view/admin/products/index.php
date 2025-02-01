@@ -21,8 +21,9 @@
                 <td><?= $product['description'] ?></td>
                 <td><img src="<?= $product['image'] ?>" alt="No image" width="100"></td>
                 <td>
-                    <a href="/products/update/<?= $product['id'] ?>" class="btn btn-success">Edit</a>
-                    <a href="/products/delete/<?= $product['id'] ?>" class="btn btn-danger">Delete</a>
+                    <a href="/admin/products/addProductVarrant/<?= $product['id'] ?>" class="btn btn-primary btn-sm">Add varriant</a>
+                    <a href="/products/update/<?= $product['id'] ?>" class="btn btn-success btn-sm">Edit</a>
+                    <a href="/products/delete/<?= $product['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>

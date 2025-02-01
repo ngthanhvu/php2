@@ -6,7 +6,7 @@
                 <h5 class="mb-0">Nạp tiền qua MoMo, VNPay, Ngân hàng</h5>
             </div>
             <div class="card-body">
-                <form method="post" action="/payment/create">
+                <form method="post" action="/payment/create" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label for="phuongThuc" class="form-label">Phương thức thanh toán</label>
                         <select class="form-select" id="phuongThuc">
@@ -18,7 +18,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="soTien" class="form-label">Số tiền cần nạp (VNĐ)</label>
-                        <input type="number" name="amount" class="form-control" id="soTien" placeholder="Nhập số tiền cần nạp">
+                        <input type="number" name="amount" class="form-control" min="0" id="soTien" placeholder="Nhập số tiền cần nạp">
+                        <?php if (isset($errors['amount'])): echo '<p class="text-danger">' . $errors['amount'] . '</p>'; endif; ?>
                     </div>
                     <div class="mb-3">
                         <p class="text-success">Số tiền thực nhận: <span id="soTienThucNhan">0</span> VNĐ</p>
@@ -59,32 +60,25 @@
                     <th>STT</th>
                     <th>Phương thức</th>
                     <th>Số tiền</th>
-                    <th>Phí giao dịch</th>
-                    <th>Tính tiền</th>
+                    <th>Thời gian giao dịch</th>
+                    <th>Tổng nhận</th>
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($payments as $key => $payment) : ?>
                 <tr>
-                    <td>1</td>
-                    <td>MoMo</td>
-                    <td>10000</td>
-                    <td>0</td>
-                    <td>10000</td>
+                    <td><?php echo $key + 1 ?></td>
+                    <td><?php echo $payment['payment_method'] ?></td>
+                    <td><?php echo number_format($payment['amount']) ?>đ</td>
+                    <td><?php echo $payment['created_at'] ?></td>
+                    <td><?php echo number_format($payment['total'] = $payment['amount']) ?>đ</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>MoMo</td>
-                    <td>10000</td>
-                    <td>0</td>
-                    <td>10000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>MoMo</td>
-                    <td>10000</td>
-                    <td>0</td>
-                    <td>10000</td>
-                </tr>
+                <?php endforeach; ?>
+                <?php
+                if(empty($payments)){
+                    echo "<tr><td colspan='5'>Không có lịch sử nạp thẻ.</td></tr>";
+                }
+                ?>
             </tbody>
         </table>
     </div>
@@ -161,4 +155,18 @@
             document.getElementById('soTienThucNhan').textContent = 'Vui lòng nhập số hợp lệ.';
         }
     });
+
+    function validateForm() {
+    // Lấy giá trị của input số tiền
+    var soTien = document.getElementById('soTien').value;
+
+    // Kiểm tra nếu số tiền trống hoặc bằng 0
+    if (soTien.trim() === '' || soTien <= 0) {
+        alert('Vui lòng nhập số tiền cần nạp.');
+        return false; // Ngăn chặn form được gửi đi
+    }
+
+    // Nếu mọi thứ hợp lệ, cho phép form được gửi đi
+    return true;
+}
 </script>

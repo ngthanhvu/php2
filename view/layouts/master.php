@@ -30,112 +30,134 @@
     * {
         font-family: 'Saira Semi Condensed', sans-serif;
     }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .main {
+        flex: 1;
+    }
+
+    footer {
+        flex-shrink: 0;
+    }
 </style>
 
 <body>
-    <nav class="bg-body-tertiary bg-success">
-        <div class="container d-flex flex-wrap">
-            <ul class="nav me-auto d-flex align-items-center">
-                <li class="nav-item">
-                    <p class="text-white m-0">TAPHOAONLINE SHOP BÁN ACC SPOTIFY</p>
-                </li>
-            </ul>
-            <ul class="nav">
-                <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-white">Chính sách</a></li>
-                <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-white">FAQ</a></li>
-                <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-white">Liên hệ</a></li>
-            </ul>
-        </div>
-    </nav>
-    <div style="background-color: #F5F6F7;">
-        <div class="py-3">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <a href="/">
-                            <img class="img-fluid d-flex mx-auto justify-content-center mt-3"
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png"
-                                alt="no logo" width="200">
-                        </a>
-                    </div>
-                    <div class="col-md-4">
-                        <form action="" method="post">
-                            <div class="input-group mb-3 mt-3 d-flex justify-content-center">
-                                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="d-flex justify-content-end mt-3 mb-3 gap-2">
-                            <!-- Icon giỏ hàng -->
-                            <div class="text-center me-3">
-                                <a href="#" class="text-decoration-none text-dark">
-                                    <i class="bi bi-heart fs-4"></i>
-                                </a>
-                            </div>
-                            <!-- Icon yêu thích -->
-                            <div class="text-center me-3 position-relative">
-                                <a href="#" class="text-decoration-none text-dark">
-                                    <i class="bi bi-cart2 fs-4"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">0</span>
-                                </a>
-                            </div>
-                            <!-- Avatar và tên -->
+    <div class="wrapper">
+        <nav class="bg-body-tertiary bg-success">
+            <div class="container d-flex flex-wrap">
+                <ul class="nav me-auto d-flex align-items-center">
+                    <li class="nav-item">
+                        <p class="text-white m-0">TAPHOAONLINE SHOP BÁN ACC SPOTIFY</p>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-white">Chính sách</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-white">FAQ</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-white">Liên hệ</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div style="background-color: #F5F6F7;">
+            <div class="py-3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="/">
+                                <img class="img-fluid d-flex mx-auto justify-content-center mt-3"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png"
+                                    alt="no logo" width="200">
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <form action="" method="post">
+                                <div class="input-group mb-3 mt-3 d-flex justify-content-center">
+                                    <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-end mt-3 mb-3 gap-2">
+                                <!-- Icon yêu thích -->
+                                <div class="text-center me-3">
+                                    <a href="#" class="text-decoration-none text-dark">
+                                        <i class="bi bi-heart fs-4"></i>
+                                    </a>
+                                </div>
+                                <!-- Icon giỏ hàng -->
+                                <div class="text-center me-3 position-relative">
+                                    <a href="/cart" type="button" class="text-decoration-none text-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Giỏ hàng">
+                                        <i class="bi bi-cart2 fs-4"></i>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">0</span>
+                                    </a>
+                                </div>
+                                <!-- Avatar và tên -->
 
-                            <?php
-                            if (isset($_SESSION['user'])) {
-                                echo '
-                                <div class="d-flex align-items-center">
-                                    <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
-                                    <div class="text-end">
-                                        <div class="text-center">' . (isset($_SESSION['user']) ? strtoupper($_SESSION['user']['username']) : 'NGƯỜI DÙNG') . '</div>
-                                        <span href="#" class="text-success text-decoration-none me-2">0đ</span>
-                                        <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
+                                <?php
+                                if (isset($_SESSION['user'])) {
+                                    echo '
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
+                                        <div class="text-end">
+                                            <div class="text-center">' . (isset($_SESSION['user']) ? strtoupper($_SESSION['user']['username']) : 'NGƯỜI DÙNG') . '</div>
+                                            <span href="#" class="text-success text-decoration-none me-2">' . number_format($_SESSION['user']['total_amount'], 0, ',', '.') . 'đ</span>
+                                            <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
+                                        </div>
                                     </div>
-                                </div>
-                                ';
-                            } else {
-                                echo '
-                                <div class="d-flex align-items-center">
-                                    <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
-                                    <div class="text-end">
-                                        <div><a href="/login" class="text-primary text-decoration-none">login</a href="/login"></div>
+                                    ';
+                                } else {
+                                    echo '
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
+                                        <div class="text-end">
+                                            <div><a href="/login" class="text-primary text-decoration-none">login</a href="/login"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                ';
-                            }
-                            ?>
+                                    ';
+                                }
+                                ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <nav class="py-2 bg-body-tertiary">
-            <div class="container d-flex flex-wrap border-top">
-                <ul class="nav me-auto mt-3">
-                    <li class="nav-item"><a href="/" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Trang chủ</a>
-                    </li>
-                    <li class="nav-item"><a href="/product"
-                            class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Sản phẩm</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Về chúng tôi</a>
-                    </li>
-                    <li class="nav-item"><a href="/payment" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Nạp thẻ</a>
-                    </li>
-                    <?php
-                    if (isset($_SESSION['user']['role'])) {
-                        if ($_SESSION['user']['role'] == 'admin') {
-                            echo '<li class="nav-item"><a href="/admin" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Admin</a></li>';
+            <nav class="py-2 bg-body-tertiary">
+                <div class="container d-flex flex-wrap border-top">
+                    <ul class="nav me-auto mt-3">
+                        <li class="nav-item"><a href="/" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Trang chủ</a>
+                        </li>
+                        <li class="nav-item"><a href="/product"
+                                class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Sản phẩm</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Về chúng tôi</a>
+                        </li>
+                        <li class="nav-item"><a href="/payment" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Nạp thẻ</a>
+                        </li>
+                        <?php
+                        if (isset($_SESSION['user']['role'])) {
+                            if ($_SESSION['user']['role'] == 'admin') {
+                                echo '<li class="nav-item"><a href="/admin" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Admin</a></li>';
+                            }
                         }
-                    }
-                    ?>
-                </ul>
-            </div>
-        </nav>
-    </div>
+                        ?>
+                    </ul>
+                </div>
+            </nav>
+        </div>
 
-    <main class="main container mt-3" style="min-height: calc(70vh - 70px);">
-        <?= $content ?>
-    </main>
+        <main class="main container mt-3" style="min-height: calc(70vh - 70px);">
+            <?= $content ?>
+        </main>
+    </div>
 
     <footer class="bg-success text-white py-2 mt-4">
         <div class="container">
@@ -144,10 +166,14 @@
             </p>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 </body>
 
 </html>
-
-<?php
-// var_dump($_SESSION['user']);
-?>

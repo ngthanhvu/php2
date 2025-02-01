@@ -36,6 +36,7 @@ $router->addRoute("/admin/products/show/{id}", [$ProductController, "show"]);
 $router->addRoute("/admin/products/create", [$ProductController, "create"], ['isAdmin']);
 $router->addRoute("/admin/products/update/{id}", [$ProductController, "update"], ['isAdmin']);
 $router->addRoute("/admin/products/delete/{id}", [$ProductController, "delete"], ['isAdmin']);
+$router->addRoute("/admin/products/addProductVarrant/{id}", [$ProductController, "addProductVarrant"], ['isAdmin']);
 
 // Categories
 $router->addRoute("/admin/categories", [$CategoryController, "index"], ['isAdmin']);
@@ -58,7 +59,7 @@ $router->addRoute("/auth/facebook", [$AuthController, "loginWithFacebook"]);
 $router->addRoute("/auth/google", [$AuthController, "loginWithGoogle"]);
 
 //payment
-$router->addRoute("/payment", [$Controller, "payment"]);
+$router->addRoute("/payment", [$Controller, "payment"], ['isUser']);
 $router->addRoute("/payment/create", [$VnpayController, "createPayment"]);
 $router->addRoute("/payment/callback", [$VnpayController, "vnpayReturn"]);
 
@@ -69,5 +70,8 @@ $router->addRoute("/detail/{id}", [$Controller, "detail"]);
 
 //alert
 $router->addRoute("/payment/success", [$Controller, "success"]);
+$router->addRoute("/payment/errors", [$Controller, "errors"]);
 
+//cart
+$router->addRoute("/cart", [$Controller, "cart"]);
 $router->dispatch();

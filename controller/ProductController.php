@@ -106,4 +106,24 @@ class ProductController
         $_SESSION['message'] = "Product deleted successfully!";
         header('Location: /admin/products');
     }
+
+    public function addProductVarrant($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $product_id = $_POST['product_id'];
+            $variant_name = $_POST['variant_name'];
+            $price = $_POST['price'];
+            $quantity = $_POST['quantity'];
+            $description = $_POST['description'];
+            $sku = $_POST['sku'];
+            $image = $_POST['image'];
+
+            $this->ProductModel->createProductVariant($product_id, $variant_name, $price, $quantity, $description, $sku, $image);
+            $_SESSION['message'] = "Product variant created successfully!";
+            header('Location: /admin/products');
+        } else {
+            $product = $this->ProductModel->getProductById($id);
+            renderView('view/admin/products/addProductVarrant.php', compact('product'), 'Add Product Varrant', 'admin');
+        }
+    }
 }
