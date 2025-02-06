@@ -34,6 +34,6 @@ if (isset($_SESSION['message'])) {
             ?>
         </div>
 
-        <button type="submit" class="btn btn-success w-100">Set Password</button>
+        <button type="submit" class="btn text-white w-100" style="background-color: #FE5722;">Set Password</button>
     </form>
 </div>

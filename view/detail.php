@@ -2,14 +2,14 @@
     <div class="row">
         <!-- Image -->
         <div class="col-md-6">
-            <img src="<?php echo $product['image']; ?>" class="img-fluid image-format" alt="Elden Ring">
-            <a href="#" class="d-block mt-2 text-center text-primary">Xem thêm ảnh</a>
+            <img src="http://localhost:8000/<?php echo $product['image']; ?>" class="img-fluid image-format" alt="Elden Ring">
+            <a href="#" class="d-block mt-2 text-center">Xem thêm ảnh</a>
         </div>
         <!-- Product Details -->
         <div class="col-md-6">
             <h3><?php echo $product['name']; ?></h3>
-            <p class="text-danger">Tình trạng: Hết hàng</p>
-            <p><strong>Mã sản phẩm:</strong> cdkey 1245620</p>
+            <!-- <p class="text-danger">Tình trạng: Hết hàng</p> -->
+            <p><strong>Mã sản phẩm:</strong> <span class="sku-text">Không có SKU</span></p>
             <p><strong>Danh mục:</strong> <?php echo $product['category_name']; ?></p>
             <h4 class="text-primary"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</h4>
             <p class="text-muted">
@@ -17,15 +17,22 @@
             </p>
             <!-- sku -->
             <hr>
-            <p>Loại: </p>
+            <!-- Màu sắc -->
+            <p>Màu sắc: </p>
             <div class="mb-3 d-flex gap-2 flex-wrap">
-                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
-                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
-                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
-                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
-                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
-                <button class="btn btn-outline-primary">Mua bằng Steam Wallet</button>
+                <?php foreach ($products_varriants as $variant) : ?>
+                    <button class="btn btn-outline-primary color-button"><?php echo $variant['color_name']; ?></button>
+                <?php endforeach; ?>
             </div>
+
+            <!-- Kích cỡ -->
+            <p>Kích cỡ: </p>
+            <div class="mb-3 d-flex gap-2 flex-wrap">
+                <?php foreach ($products_varriants as $variant) : ?>
+                    <button class="btn btn-outline-primary size-button"><?php echo $variant['size_name']; ?></button>
+                <?php endforeach; ?>
+            </div>
+
             <hr>
             <div class="d-flex gap-2">
                 <button class="btn btn-primary">Thông báo khi có hàng</button>
@@ -33,25 +40,15 @@
             </div>
         </div>
     </div>
-
-    <!-- Notice -->
-    <div class="alert alert-success mt-4">
-        Để mua game này bạn click vào nút <strong>"Mua bằng Steam Wallet"</strong> để hệ thống lựa chọn các sản phẩm
-        phù hợp.<br>
-        Tham khảo hướng dẫn tại <a href="#" class="text-primary">ĐÂY</a> nhé ^^
-    </div>
-    <p class="text-danger"><strong>Lưu ý:</strong> Giá game trên Divine có thể chưa cập nhật do Steam thay đổi...
-    </p>
-
-    <!-- Region Notice -->
-    <div class="alert alert-warning">
-        CD KEY kích hoạt trên hệ thống STEAM và chỉ dành cho tài khoản region Việt Nam.
-    </div>
-
     <!-- Product Description -->
-    <h4>Chi tiết sản phẩm</h4>
+    <h4 class="mt-3">Chi tiết sản phẩm</h4>
     <p>
         <?php echo $product['description']; ?>
+        <?php
+        echo "<pre>";
+        // var_dump($products_varriants);
+        echo "</pre>";
+        ?>
     </p>
 </div>
 
@@ -68,15 +65,60 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const image = document.querySelector(".image-format");
-        const fullImage = document.getElementById("fullImage");
+        const variants = <?php echo json_encode($products_varriants); ?>;
+        const imageElement = document.querySelector(".image-format");
+        const priceElement = document.querySelector(".text-primary");
+        const skuElement = document.querySelector(".sku-text");
+        const colorButtons = document.querySelectorAll(".color-button");
+        const sizeButtons = document.querySelectorAll(".size-button");
 
-        image.addEventListener("click", function() {
-            fullImage.src = this.src; // Lấy src từ ảnh nhỏ
-            new bootstrap.Modal(document.getElementById("imageModal")).show(); // Mở modal
+        let selectedColor = null;
+        let selectedSize = null;
+
+        function updateVariantDisplay() {
+            const selectedVariant = variants.find(variant =>
+                (selectedColor === null || variant.color_name === selectedColor) &&
+                (selectedSize === null || variant.size_name === selectedSize)
+            );
+
+            if (selectedVariant) {
+                imageElement.src = "http://localhost:8000/" + selectedVariant.image;
+                priceElement.textContent = new Intl.NumberFormat('vi-VN').format(selectedVariant.price) + "đ";
+                skuElement.textContent = selectedVariant.sku ? selectedVariant.sku : "Không có SKU";
+            } else {
+                skuElement.textContent = "Không có SKU";
+            }
+        }
+
+        // Xử lý sự kiện click trên nút màu sắc
+        colorButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                colorButtons.forEach(btn => btn.classList.remove("active"));
+                this.classList.add("active");
+                selectedColor = this.textContent.trim();
+                updateVariantDisplay();
+            });
+        });
+
+        // Xử lý sự kiện click trên nút kích cỡ
+        sizeButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                sizeButtons.forEach(btn => btn.classList.remove("active"));
+                this.classList.add("active");
+                selectedSize = this.textContent.trim();
+                updateVariantDisplay();
+            });
+        });
+
+        // Xử lý hiển thị ảnh lớn khi click vào ảnh sản phẩm
+        const fullImage = document.getElementById("fullImage");
+        imageElement.addEventListener("click", function() {
+            fullImage.src = this.src;
+            new bootstrap.Modal(document.getElementById("imageModal")).show();
         });
     });
 </script>
+
 
 
 <style>

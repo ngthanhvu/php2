@@ -1,43 +1,33 @@
 <?php
 require_once "view/helpers.php";
-require_once "model/PostModel.php";
 require_once "model/ProductModel.php";
 require_once "model/CategoryModel.php";
-require_once "model/WalletModel.php";
-
 class Controller
 {
-    private $postModel;
     private $productModel;
     private $categoryModel;
-    private $walletModel;
 
     public function __construct()
     {
-        $this->postModel = new PostModel();
         $this->productModel = new ProductModel();
         $this->categoryModel = new CategoryModel();
-        $this->walletModel = new WalletModel();
     }
     public function index()
     {
-        $posts = $this->postModel->getAllPosts();
         $products = $this->productModel->getAllProducts();
         $categories = $this->categoryModel->getAllCategories();
-        renderView('view/index.php', compact('posts', 'products', 'categories'), 'Trang chủ');
+        renderView('view/index.php', compact('products', 'categories'), 'Trang chủ');
     }
 
     public function admin()
     {
-        $posts = $this->postModel->getAllPosts();
         $products = $this->productModel->getAllProducts();
         $categories = $this->categoryModel->getAllCategories();
-        renderView('view/admin/index.php', compact('posts', 'products', 'categories'), 'Dashboard', 'admin');
+        renderView('view/admin/index.php', compact('products', 'categories'), 'Dashboard', 'admin');
     }
 
     public function payment()
     {
-        $payments = $this->walletModel->getWallet($_SESSION['user']['id']);
         renderView('view/payment.php', compact('payments'), 'Nạp thẻ');
     }
 
@@ -51,7 +41,8 @@ class Controller
     public function detail($id)
     {
         $product = $this->productModel->getProductById($id);
-        renderView('view/detail.php', compact('product'), 'Chi tiết sản phẩm');
+        $products_varriants = $this->productModel->getAllProductVariantsById($id);
+        renderView('view/detail.php', compact('product', 'products_varriants'), 'Chi tiết sản phẩm');
     }
 
     public function success()

@@ -45,13 +45,13 @@ if (isset($_SESSION['message'])) {
         ?>
     </div>
     <div class="mb-3 text-end">
-        <p><a href="/forgotpassword" class="text-decoration-none text-success">Forgot password?</a></p>
+        <p><a href="/forgotpassword" class="text-decoration-none" style="color: #FE5722;">Forgot password?</a></p>
     </div>
     <div class="mb-3">
-        <button type="submit" class="btn btn-success w-100">Login</button>
+        <button type="submit" class="btn w-100 text-white" style="background-color: #FE5722;">Login</button>
     </div>
     <div class="mb-3 text-center">
-        <p>Don't have an account? <a href="/register" class="text-decoration-none text-success">Register</a></p>
+        <p>Don't have an account? <a href="/register" class="text-decoration-none" style="color: #FE5722;">Register</a></p>
     </div>
     <!-- <div class="mb-3 text-center">
         <p>Don't have an account? <a href="/register" class="text-decoration-none text-success">Register</a></p>

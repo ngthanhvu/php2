@@ -53,9 +53,9 @@
         </div>
     </div>
     <div class="mb-3">
-        <button type="submit" class="btn btn-success w-100">Register</button>
+        <button type="submit" class="btn w-100 text-white" style="background-color: #FE5722;">Register</button>
     </div>
     <div class="mb-3 text-center">
-        <p>Already have an account? <a href="/login" class="text-decoration-none text-success">Login</a></p>
+        <p>Already have an account? <a href="/login" class="text-decoration-none" style="color: #FE5722;">Login</a></p>
     </div>
 </form>

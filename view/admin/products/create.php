@@ -1,5 +1,5 @@
 <h2>Tạo sản phẩm</h2>
-<form method="POST" class="needs-validation" novalidate>
+<form method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
     <div class="mb-3">
         <label for="name" class="form-label">Tên sản phẩm</label>
         <input type="text" class="form-control <?php echo isset($errors['name']) ? 'is-invalid' : ''; ?>" id="name" name="name" placeholder="Nhập tên sản phẩm">
@@ -26,7 +26,7 @@
 
     <div class="mb-3">
         <label for="image" class="form-label">Hình ảnh</label>
-        <input type="text" class="form-control <?php echo isset($errors['image']) ? 'is-invalid' : ''; ?>" id="image" name="image" value="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png" required>
+        <input type="file" class="form-control <?php echo isset($errors['image']) ? 'is-invalid' : ''; ?>" id="image" name="image" placeholder="Nhập URL hình ảnh">
         <div class="invalid-feedback">
             <?php echo isset($errors['image']) ? $errors['image'] : 'Please enter an image URL.'; ?>
         </div>

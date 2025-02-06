@@ -5,6 +5,6 @@
             <label for="email" class="form-label">Email address</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
         </div>
-        <button type="submit" class="btn btn-success w-100">Send Reset Link</button>
+        <button type="submit" class="btn w-100 text-white" style="background-color: #FE5722;">Send Reset Link</button>
     </form>
 </div>

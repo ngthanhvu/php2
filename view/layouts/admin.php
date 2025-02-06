@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <?php echo $title ? $title . " Admin" : "My App" ?> | Spotify shop</title>
+    <title> <?php echo $title ? $title . " Admin" : "My App" ?> | Shop bán hàng</title>
     <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/2875/2875381.png" type="image/x-icon">
     <!-- boostrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <!-- swal alert  -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- chartjs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <style>
@@ -60,8 +62,9 @@
         <h4 class="text-white text-center">Admin</h4>
         <a href="/admin" id="dashboardLink">Bảng điều khiển</a>
         <a href="/admin/products" id="produuctLink">Quản lý sản phẩm</a>
+        <a href="/admin/colors" id="produuctLink">Quản lý màu sắc</a>
+        <a href="/admin/sizes" id="produuctLink">Quản lý kích cỡ</a>
         <a href="/admin/categories" id="categoryLink">Quản lý danh mục</a>
-        <a href="/admin/posts" id="postLinkj">Quản lý bài viết</a>
         <a href="/admin/users" id="userLink">Quản lý người dùng</a>
         <a href="/" id="statsLink"><i class="bi bi-box-arrow-in-left"></i> Trở về trang chủ</a>
     </div>

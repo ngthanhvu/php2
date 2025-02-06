@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?php echo $title ?? "Errors" ?> | TapHoaOnline
+        <?php echo $title ?? "Errors" ?> | Shopp
     </title>
     <!-- icon -->
-    <link rel="shortcut icon" href="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png" type="image/x-icon">
+    <link rel="shortcut icon" href="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/icon_favicon_1_32.0Wecxv.png" type="image/x-icon">
     <!-- boostrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -23,12 +23,15 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/751e818311.js" crossorigin="anonymous"></script>
 </head>
 <style>
     * {
-        font-family: 'Saira Semi Condensed', sans-serif;
+        font-family: 'Quicksand', sans-serif;
     }
 
     html,
@@ -54,11 +57,11 @@
 
 <body>
     <div class="wrapper">
-        <nav class="bg-body-tertiary bg-success">
+        <nav class="bg-body-tertiary" style="background-color: #FE5722;">
             <div class="container d-flex flex-wrap">
                 <ul class="nav me-auto d-flex align-items-center">
                     <li class="nav-item">
-                        <p class="text-white m-0">TAPHOAONLINE SHOP BÁN ACC SPOTIFY</p>
+                        <p class="text-white m-0">Shop bán hàng</p>
                     </li>
                 </ul>
                 <ul class="nav">
@@ -75,7 +78,7 @@
                         <div class="col-md-4">
                             <a href="/">
                                 <img class="img-fluid d-flex mx-auto justify-content-center mt-3"
-                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee.svg/2560px-Shopee.svg.png"
                                     alt="no logo" width="200">
                             </a>
                         </div>
@@ -88,17 +91,11 @@
                         </div>
                         <div class="col-md-4">
                             <div class="d-flex justify-content-end mt-3 mb-3 gap-2">
-                                <!-- Icon yêu thích -->
-                                <div class="text-center me-3">
-                                    <a href="#" class="text-decoration-none text-dark">
-                                        <i class="bi bi-heart fs-4"></i>
-                                    </a>
-                                </div>
                                 <!-- Icon giỏ hàng -->
                                 <div class="text-center me-3 position-relative">
                                     <a href="/cart" type="button" class="text-decoration-none text-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Giỏ hàng">
                                         <i class="bi bi-cart2 fs-4"></i>
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">0</span>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #FE5722;">0</span>
                                     </a>
                                 </div>
                                 <!-- Avatar và tên -->
@@ -110,7 +107,6 @@
                                         <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
                                         <div class="text-end">
                                             <div class="text-center">' . (isset($_SESSION['user']) ? strtoupper($_SESSION['user']['username']) : 'NGƯỜI DÙNG') . '</div>
-                                            <span href="#" class="text-success text-decoration-none me-2">' . number_format($_SESSION['user']['total_amount'], 0, ',', '.') . 'đ</span>
                                             <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
                                         </div>
                                     </div>
@@ -140,8 +136,6 @@
                                 class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Sản phẩm</a></li>
                         <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Về chúng tôi</a>
                         </li>
-                        <li class="nav-item"><a href="/payment" class="nav-link link-body-emphasis px-2 text-secondary fw-bold">Nạp thẻ</a>
-                        </li>
                         <?php
                         if (isset($_SESSION['user']['role'])) {
                             if ($_SESSION['user']['role'] == 'admin') {
@@ -159,7 +153,7 @@
         </main>
     </div>
 
-    <footer class="bg-success text-white py-2 mt-4">
+    <footer class="text-white py-2 mt-4" style="background-color: #FE5722;">
         <div class="container">
             <p class="mb-0">&copy;
                 <?= date("Y") ?> My App

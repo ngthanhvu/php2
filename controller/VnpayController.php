@@ -1,6 +1,5 @@
 <?php
 require_once "./env.php";
-require_once "model/WalletModel.php";
 class VnPayController
 {
     private $vnp_TmnCode;
@@ -16,8 +15,6 @@ class VnPayController
         $this->vnp_HashSecret = $_ENV['VNPAY_HASH_SECRET'];
         $this->vnp_Url = $_ENV['VNPAY_URL'];
         $this->vnp_Returnurl = $_ENV['VNPAY_RETURN_URL'];
-
-        $this->walletModel = new WalletModel();
     }
 
     public function createPayment()
@@ -26,7 +23,7 @@ class VnPayController
             $errors = [];
             $order_id = time();
             $order_amount = $_POST['amount'];
-            if(empty($order_amount)){
+            if (empty($order_amount)) {
                 $errors['amount'] = 'Amount is required';
             }
 
@@ -49,7 +46,7 @@ class VnPayController
                     "vnp_ReturnUrl" => $this->vnp_Returnurl,
                     "vnp_TxnRef" => $order_id
                 );
-    
+
                 ksort($vnp_Params);
                 $query = "";
                 $i = 0;
@@ -63,10 +60,10 @@ class VnPayController
                     $query .= urlencode($key) . "=" . urlencode($value);
                     $i = 1;
                 }
-    
+
                 $vnp_SecureHash = hash_hmac('sha512', $hashdata, $this->vnp_HashSecret);
                 $query .= '&vnp_SecureHash=' . $vnp_SecureHash;
-    
+
                 $paymentUrl = $this->vnp_Url . "?" . $query;
                 header('Location: ' . $paymentUrl);
                 exit;
