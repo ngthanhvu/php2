@@ -76,13 +76,26 @@
     <button type="submit" class="btn btn-primary">Thêm</button>
 </form>
 <script>
-    function generateSku() {
-        const randSku = 'SKU-' + Math.floor(Math.random() * 1000000);
-        const skuInput = document.getElementById('sku');
-        skuInput.value = randSku;
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
+        // Nếu có lỗi trùng lặp, hiển thị cảnh báo trước khi submit
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            const duplicateError = document.querySelector('.text-danger.duplicate');
+            if (duplicateError) {
+                alert("Sản phẩm với SKU, màu sắc và kích thước này đã tồn tại!");
+                event.preventDefault(); // Chặn submit
+            }
+        });
+
+        // Tự động tạo SKU nếu không nhập
+        function generateSku() {
+            const randSku = 'SKU-' + Math.floor(Math.random() * 1000000);
+            const skuInput = document.getElementById('sku');
+            if (skuInput.value.trim() === '') {
+                skuInput.value = randSku;
+            }
+        }
+
         generateSku();
     });
 </script>

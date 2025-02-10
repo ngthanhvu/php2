@@ -2,15 +2,18 @@
 require_once "view/helpers.php";
 require_once "model/ProductModel.php";
 require_once "model/CategoryModel.php";
+require_once "model/ProductsVarriantModel.php";
 class Controller
 {
     private $productModel;
     private $categoryModel;
+    private $productsVarriantModel;
 
     public function __construct()
     {
         $this->productModel = new ProductModel();
         $this->categoryModel = new CategoryModel();
+        $this->productsVarriantModel = new ProductsVarriantModel();
     }
     public function index()
     {
@@ -41,7 +44,7 @@ class Controller
     public function detail($id)
     {
         $product = $this->productModel->getProductById($id);
-        $products_varriants = $this->productModel->getAllProductVariantsById($id);
+        $products_varriants = $this->productsVarriantModel->getAllProductVariantsById($id);
         renderView('view/detail.php', compact('product', 'products_varriants'), 'Chi tiết sản phẩm');
     }
 

@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- chartjs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/751e818311.js" crossorigin="anonymous"></script>
 </head>
 
 <style>

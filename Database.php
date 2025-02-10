@@ -4,7 +4,7 @@ require_once 'env.php';
 
 class Database
 {
-    private $conn;
+    protected $conn;
 
     public function __construct()
     {

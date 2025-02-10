@@ -30,8 +30,8 @@
                 <td><img src="http://localhost:8000/<?= $product['product_image'] ?>" alt="No image" width="100"></td>
                 <td><?= $product['variant_price'] ?></td>
                 <td>
-                    <!-- <a href="/admin/products/update/<?= $product['variant_id'] ?>" class="btn btn-success">Edit</a> -->
-                    <a href="/admin/products/deleteProductVariant/<?= $product['variant_id'] ?>" class="btn btn-danger">Delete</a>
+                    <a href="/admin/products/update/<?= $product['variant_id'] ?>" class="btn btn-success btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="/admin/products/deleteProductVariant/<?= $product['variant_id'] ?>" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>

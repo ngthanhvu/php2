@@ -5,7 +5,7 @@ if (isset($_SESSION['message'])) {
 }
 ?>
 <h2>Quản lý màu sắc</h2>
-<a href="/admin/colors/create" class="btn btn-primary">Tạo màu sắc</a>
+<a href="/admin/colors/create" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i></a>
 <table class="table table-striped table-bordered table-hover text-center mt-3">
     <thead class="table-dark">
         <tr>
@@ -21,8 +21,8 @@ if (isset($_SESSION['message'])) {
                 <th scope="row"><?= $index++ ?></th>
                 <td><?= $color['name'] ?></td>
                 <td>
-                    <a href="/admin/colors/update/<?= $color['id'] ?>" class="btn btn-success">Edit</a>
-                    <a href="/admin/colors/delete/<?= $color['id'] ?>" class="btn btn-danger">Delete</a>
+                    <a href="/admin/colors/update/<?= $color['id'] ?>" class="btn btn-outline-success btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="/admin/colors/delete/<?= $color['id'] ?>" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>

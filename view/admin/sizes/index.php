@@ -5,7 +5,7 @@ if (isset($_SESSION['message'])) {
 }
 ?>
 <h2>Quản lý kích cỡ</h2>
-<a href="/admin/sizes/create" class="btn btn-primary">Tạo kích cỡ</a>
+<a href="/admin/sizes/create" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i></a>
 <table class="table table-striped table-bordered table-hover text-center mt-3">
     <thead class="table-dark">
         <tr>
@@ -21,8 +21,8 @@ if (isset($_SESSION['message'])) {
                 <th scope="row"><?= $index++ ?></th>
                 <td><?= $size['name'] ?></td>
                 <td>
-                    <a href="/admin/sizes/update/<?= $size['id'] ?>" class="btn btn-success">Edit</a>
-                    <a href="/admin/sizes/delete/<?= $size['id'] ?>" class="btn btn-danger">Delete</a>
+                    <a href="/admin/sizes/update/<?= $size['id'] ?>" class="btn btn-sm btn-outline-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="/admin/sizes/delete/<?= $size['id'] ?>" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>

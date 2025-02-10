@@ -1,55 +1,66 @@
-<div class="mt-3">
-    <div class="row">
-        <!-- Image -->
-        <div class="col-md-6">
-            <img src="http://localhost:8000/<?php echo $product['image']; ?>" class="img-fluid image-format" alt="Elden Ring">
-            <a href="#" class="d-block mt-2 text-center">Xem thêm ảnh</a>
-        </div>
-        <!-- Product Details -->
-        <div class="col-md-6">
-            <h3><?php echo $product['name']; ?></h3>
-            <!-- <p class="text-danger">Tình trạng: Hết hàng</p> -->
-            <p><strong>Mã sản phẩm:</strong> <span class="sku-text">Không có SKU</span></p>
-            <p><strong>Danh mục:</strong> <?php echo $product['category_name']; ?></p>
-            <h4 class="text-primary"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</h4>
-            <p class="text-muted">
-                <del><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</del> <span class="badge bg-danger">-1%</span>
-            </p>
-            <!-- sku -->
-            <hr>
-            <!-- Màu sắc -->
-            <p>Màu sắc: </p>
-            <div class="mb-3 d-flex gap-2 flex-wrap">
-                <?php foreach ($products_varriants as $variant) : ?>
-                    <button class="btn btn-outline-primary color-button"><?php echo $variant['color_name']; ?></button>
+<div class="row mt-3">
+    <!-- Hình ảnh sản phẩm -->
+    <div class="col-md-6">
+        <div class="d-flex flex-column align-items-center">
+            <img id="mainImage" src="http://localhost:8000/<?php echo $product['image']; ?>" class="img-fluid rounded" alt="Product Image" data-bs-toggle="modal" data-bs-target="#imageModal">
+            <div class="d-flex mt-3">
+                <?php foreach ($products_varriants as $variant): ?>
+                    <img src="http://localhost:8000/<?php echo $variant['image']; ?>" class="img-thumbnail me-2 thumbnail" width="60" height="60" data-image="http://localhost:8000/<?php echo $variant['image']; ?>">
                 <?php endforeach; ?>
-            </div>
-
-            <!-- Kích cỡ -->
-            <p>Kích cỡ: </p>
-            <div class="mb-3 d-flex gap-2 flex-wrap">
-                <?php foreach ($products_varriants as $variant) : ?>
-                    <button class="btn btn-outline-primary size-button"><?php echo $variant['size_name']; ?></button>
-                <?php endforeach; ?>
-            </div>
-
-            <hr>
-            <div class="d-flex gap-2">
-                <button class="btn btn-primary">Thông báo khi có hàng</button>
-                <button class="btn btn-outline-secondary">Thêm vào giỏ</button>
             </div>
         </div>
     </div>
-    <!-- Product Description -->
-    <h4 class="mt-3">Chi tiết sản phẩm</h4>
-    <p>
-        <?php echo $product['description']; ?>
-        <?php
-        echo "<pre>";
-        // var_dump($products_varriants);
-        echo "</pre>";
-        ?>
-    </p>
+
+    <!-- Thông tin sản phẩm -->
+    <div class="col-md-6">
+        <h2 id="productName"><?php echo $product['name']; ?></h2>
+        <p class="text-muted">Danh mục: <?php echo $product['category_name']; ?></p>
+
+        <div class="mb-3">
+            <strong>Size:</strong>
+            <div class="d-flex flex-wrap gap-2">
+                <?php foreach ($products_varriants as $variant): ?>
+                    <button class="btn btn-outline-danger size-btn"
+                        data-size="<?php echo $variant['size_name']; ?>"
+                        data-color="<?php echo $variant['color_name']; ?>"
+                        data-price="<?php echo $variant['price']; ?>"
+                        data-quantity="<?php echo $variant['quantity']; ?>"
+                        data-image="http://localhost:8000/<?php echo $variant['image']; ?>">
+                        <?php echo $variant['size_name']; ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <strong>Màu sắc:</strong>
+            <div class="d-flex flex-wrap gap-2">
+                <?php foreach ($products_varriants as $variant): ?>
+                    <button class="btn btn-outline-danger color-btn"
+                        data-size="<?php echo $variant['size_name']; ?>"
+                        data-color="<?php echo $variant['color_name']; ?>"
+                        data-price="<?php echo $variant['price']; ?>"
+                        data-quantity="<?php echo $variant['quantity']; ?>"
+                        data-image="http://localhost:8000/<?php echo $variant['image']; ?>">
+                        <?php echo $variant['color_name']; ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <strong>Giá tiền:</strong> <span id="productPrice" class="fs-4 text-danger"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</span>
+        </div>
+
+        <div class="mb-3 d-flex align-items-center">
+            <strong class="me-2">Số lượng:</strong>
+            <button class="btn btn-outline-secondary" onclick="updateQuantity(-1)">-</button>
+            <input type="text" id="quantity" class="form-control text-center mx-2" value="1" style="width: 50px;" readonly>
+            <button class="btn btn-outline-secondary" onclick="updateQuantity(1)">+</button>
+        </div>
+
+        <button class="btn btn-danger w-50">Thêm Vào Giỏ Hàng</button>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -63,69 +74,18 @@
     </div>
 </div>
 
+
+<?php
+// var_dump($products_varriants);
+?>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const variants = <?php echo json_encode($products_varriants); ?>;
-        const imageElement = document.querySelector(".image-format");
-        const priceElement = document.querySelector(".text-primary");
-        const skuElement = document.querySelector(".sku-text");
-        const colorButtons = document.querySelectorAll(".color-button");
-        const sizeButtons = document.querySelectorAll(".size-button");
-
-        let selectedColor = null;
-        let selectedSize = null;
-
-        function updateVariantDisplay() {
-            const selectedVariant = variants.find(variant =>
-                (selectedColor === null || variant.color_name === selectedColor) &&
-                (selectedSize === null || variant.size_name === selectedSize)
-            );
-
-            if (selectedVariant) {
-                imageElement.src = "http://localhost:8000/" + selectedVariant.image;
-                priceElement.textContent = new Intl.NumberFormat('vi-VN').format(selectedVariant.price) + "đ";
-                skuElement.textContent = selectedVariant.sku ? selectedVariant.sku : "Không có SKU";
-            } else {
-                skuElement.textContent = "Không có SKU";
-            }
+    // Cập nhật số lượng
+    function updateQuantity(change) {
+        let quantityInput = document.getElementById("quantity");
+        let newQuantity = parseInt(quantityInput.value) + change;
+        if (newQuantity >= 1) {
+            quantityInput.value = newQuantity;
         }
-
-        // Xử lý sự kiện click trên nút màu sắc
-        colorButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                colorButtons.forEach(btn => btn.classList.remove("active"));
-                this.classList.add("active");
-                selectedColor = this.textContent.trim();
-                updateVariantDisplay();
-            });
-        });
-
-        // Xử lý sự kiện click trên nút kích cỡ
-        sizeButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                sizeButtons.forEach(btn => btn.classList.remove("active"));
-                this.classList.add("active");
-                selectedSize = this.textContent.trim();
-                updateVariantDisplay();
-            });
-        });
-
-        // Xử lý hiển thị ảnh lớn khi click vào ảnh sản phẩm
-        const fullImage = document.getElementById("fullImage");
-        imageElement.addEventListener("click", function() {
-            fullImage.src = this.src;
-            new bootstrap.Modal(document.getElementById("imageModal")).show();
-        });
-    });
-</script>
-
-
-
-<style>
-    .image-format {
-        width: 700px;
-        height: 400px;
-        object-fit: contain;
-        cursor: pointer;
     }
-</style>
+</script>

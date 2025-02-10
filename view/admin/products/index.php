@@ -5,7 +5,7 @@ if (isset($_SESSION['message'])) {
 }
 ?>
 <h2>Danh sách sản phẩm</h2>
-<a href="/admin/products/create" class="btn btn-primary">Tạo sản phẩm</a>
+<a href="/admin/products/create" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i></a>
 <table class="table table-striped table-bordered table-hover text-center mt-3">
     <thead class="table-dark">
         <tr>
@@ -27,11 +27,11 @@ if (isset($_SESSION['message'])) {
                 <td><?= $product['price'] ?></td>
                 <td><?= $product['description'] ?></td>
                 <td><img src="http://localhost:8000/<?= $product['image'] ?>" alt="No image" width="100"></td>
-                <td><a href="/admin/products/products-variants/<?= $product['id'] ?>" class="btn btn-outline-primary">Xem biến thể</a></td>
+                <td><a href="/admin/products/products-variants/<?= $product['id'] ?>" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-eye"></i> Xem biến thể</a></td>
                 <td>
-                    <a href="/admin/products/addProductVarrant/<?= $product['id'] ?>" class="btn btn-primary btn-sm">Add varriant</a>
-                    <a href="/admin/products/update/<?= $product['id'] ?>" class="btn btn-success btn-sm">Edit</a>
-                    <a href="/admin/products/delete/<?= $product['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="/admin/products/addProductVarrant/<?= $product['id'] ?>" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-circle-plus"></i></a>
+                    <a href="/admin/products/update/<?= $product['id'] ?>" class="btn btn-outline-success btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="/admin/products/delete/<?= $product['id'] ?>" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -4,8 +4,8 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
 }
 ?>
-<h1>Quản lý danh mục</h1>
-<a href="/admin/categories/create" class="btn btn-primary">Tạo danh mục</a>
+<h2>Quản lý danh mục</h2>
+<a href="/admin/categories/create" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i></a>
 <table class="table table-bordered table-striped text-center mt-3 table-hover">
     <thead class="table-dark">
         <tr>
@@ -21,8 +21,8 @@ if (isset($_SESSION['message'])) {
                 <td scope="row"><?= $index++ ?></td>
                 <td><?= $category['name'] ?></td>
                 <td>
-                    <a href="/admin/categories/update/<?= $category['id'] ?>" class="btn btn-warning">Edit</a>
-                    <button class="btn btn-danger" onclick="confirmDelete(<?= $category['id'] ?>)">Delete</button>
+                    <a href="/admin/categories/update/<?= $category['id'] ?>" class="btn btn-sm btn-outline-success"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete(<?= $category['id'] ?>)"><i class="fa-solid fa-trash-can"></i></button>
                 </td>
             </tr>
         <?php endforeach; ?>

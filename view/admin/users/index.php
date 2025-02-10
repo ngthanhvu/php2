@@ -1,4 +1,4 @@
-<h2>Products List</h2>
+<h2>Quản lý người dùng</h2>
 <table class="table table-striped table-bordered table-hover text-center mt-3">
     <thead class="table-dark">
         <tr>
@@ -20,8 +20,8 @@
                 <td><?= $user['role'] ?></td>
                 <td><?= $user['oauth_provider'] ? $user['oauth_provider'] : 'local' ?></td>
                 <td>
-                    <a href="/users/update/<?= $user['id'] ?>" class="btn btn-success">Edit</a>
-                    <a href="/users/delete/<?= $user['id'] ?>" class="btn btn-danger">Delete</a>
+                    <a href="/users/update/<?= $user['id'] ?>" class="btn btn-outline-success btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="/users/delete/<?= $user['id'] ?>" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>

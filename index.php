@@ -6,6 +6,7 @@ require_once "controller/ProductController.php";
 require_once "controller/CategoryController.php";
 require_once "controller/VnpayController.php";
 require_once "controller/VarriantController.php";
+require_once "controller/ProductsVarriantController.php";
 
 require_once "router/Router.php";
 require_once "middleware.php";
@@ -17,6 +18,7 @@ $ProductController = new ProductController();
 $CategoryController = new CategoryController();
 $VnpayController = new VnPayController();
 $VarriantController = new VarriantController();
+$ProductsVarriantController = new ProductsVarriantController();
 
 $router->addMiddleware('logRequest');
 
@@ -29,9 +31,9 @@ $router->addRoute("/admin/products/show/{id}", [$ProductController, "show"]);
 $router->addRoute("/admin/products/create", [$ProductController, "create"], ['isAdmin']);
 $router->addRoute("/admin/products/update/{id}", [$ProductController, "update"], ['isAdmin']);
 $router->addRoute("/admin/products/delete/{id}", [$ProductController, "delete"], ['isAdmin']);
-$router->addRoute("/admin/products/addProductVarrant/{id}", [$ProductController, "addProductVarrant"], ['isAdmin']);
-$router->addRoute("/admin/products/products-variants/{id}", [$ProductController, "getAllProductVariants"], ['isAdmin']);
-$router->addRoute("/admin/products/deleteProductVariant/{id}", [$ProductController, "deleteProductVariant"], ['isAdmin']);
+$router->addRoute("/admin/products/addProductVarrant/{id}", [$ProductsVarriantController, "addProductVarrant"], ['isAdmin']);
+$router->addRoute("/admin/products/products-variants/{id}", [$ProductsVarriantController, "getAllProductVariants"], ['isAdmin']);
+$router->addRoute("/admin/products/deleteProductVariant/{id}", [$ProductsVarriantController, "deleteProductVariant"], ['isAdmin']);
 
 // Categories
 $router->addRoute("/admin/categories", [$CategoryController, "index"], ['isAdmin']);

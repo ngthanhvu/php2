@@ -25,10 +25,18 @@
     </div>
 
     <div class="mb-3">
-        <label for="image" class="form-label">Hình ảnh</label>
+        <label for="image" class="form-label">Hình ảnh chính</label>
         <input type="file" class="form-control <?php echo isset($errors['image']) ? 'is-invalid' : ''; ?>" id="image" name="image" placeholder="Nhập URL hình ảnh">
         <div class="invalid-feedback">
             <?php echo isset($errors['image']) ? $errors['image'] : 'Please enter an image URL.'; ?>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="image" class="form-label">Hình ảnh phụ</label>
+        <input type="file" class="form-control <?php echo isset($errors['image']) ? 'is-invalid' : ''; ?>" id="sub_images" name="sub_images[]" placeholder="Nhập URL hình ảnh" multiple>
+        <div class="invalid-feedback">
+            <?php echo isset($errors['image_secondary']) ? $errors['image_secondary'] : 'Please enter an image URL.'; ?>
         </div>
     </div>
 

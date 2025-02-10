@@ -11,8 +11,8 @@
     <?php foreach ($products as $key => $product) : ?>
         <div class="col-md-2">
             <a href="/detail/<?php echo $product['id'] ?>" class="text-decoration-none text-black">
-                <div class="card mb-3" style="width: 13rem;">
-                    <img src="<?php echo $product['image'] ?>" class="card-img-top" alt="No Image"
+                <div class="card mb-3 border-0 hover-card" style="width: 13rem;">
+                    <img src="<?php echo $product['image'] ?>" class="card-img-top" alt="No images"
                         style="object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title"><?php echo $product['name'] ?></h5>
@@ -73,3 +73,9 @@
 
     typeEffect();
 </script>
+<?php
+// echo session_id();
+echo "<pre>";
+var_dump($products);
+echo "</pre>";
+?>
