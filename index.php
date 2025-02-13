@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED);
 require_once "controller/Controller.php";
+require_once "controller/CartController.php";
 require_once "controller/AuthController.php";
 require_once "controller/ProductController.php";
 require_once "controller/CategoryController.php";
@@ -13,6 +14,7 @@ require_once "middleware.php";
 
 $router = new Router();
 $Controller = new Controller();
+$CartController = new CartController();
 $AuthController = new AuthController();
 $ProductController = new ProductController();
 $CategoryController = new CategoryController();
@@ -69,7 +71,11 @@ $router->addRoute("/payment/success", [$Controller, "success"]);
 $router->addRoute("/payment/errors", [$Controller, "errors"]);
 
 //cart
-$router->addRoute("/cart", [$Controller, "cart"]);
+$router->addRoute("/cart", [$CartController, "getCart"]);
+$router->addRoute("/cart/create", [$CartController, "addCart"]);
+$router->addRoute("/cart/delete/{id}", [$CartController, "deleteCart"]);
+$router->addRoute("/cart/deleteAll", [$CartController, "deleteAllCart"]);
+$router->addRoute("/cart/updateQuantity/{id}/{quantity}", [$CartController, "updateQuantityCart"]);
 
 //color
 $router->addRoute("/admin/colors", [$VarriantController, "indexColor"], ['isAdmin']);

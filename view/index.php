@@ -75,7 +75,7 @@
 </script>
 <?php
 // echo session_id();
-echo "<pre>";
-var_dump($products);
-echo "</pre>";
+// echo "<pre>";
+// var_dump($products);
+// echo "</pre>";
 ?>

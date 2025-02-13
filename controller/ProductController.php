@@ -46,6 +46,7 @@ class ProductController
             $price = $_POST['price'];
             $description = $_POST['description'];
             $quantity = $_POST['quantity'];
+            $sku = $_POST['sku'];
             $categories_id = $_POST['categories_id'];
             $uploadedImages = [];
 
@@ -102,6 +103,10 @@ class ProductController
                 $errors['quantity'] = 'Quantity is required';
             }
 
+            if (empty($sku)) {
+                $errors['sku'] = 'SKU is required';
+            }
+
             if (empty($categories_id)) {
                 $errors['categories_id'] = 'Categories ID is required';
             }
@@ -110,7 +115,7 @@ class ProductController
                 $categories = $this->CategoryModel->getAllCategories();
                 renderView('view/admin/products/create.php', compact('errors', 'categories'), 'Create Product', 'admin');
             } else {
-                $product_id = $this->ProductModel->addProductWithImages($name, $price, $description, $imagePath, $quantity, $categories_id, $uploadedImages);
+                $product_id = $this->ProductModel->addProductWithImages($name, $price, $description, $imagePath, $quantity, $sku, $categories_id, $uploadedImages);
 
                 if ($product_id) {
                     $_SESSION['message'] = "Product created successfully!";

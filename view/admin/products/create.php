@@ -61,5 +61,27 @@
         </div>
     </div>
 
+    <div class="mb-3">
+        <label for="price" class="form-label">SKU</label>
+        <input type="text" class="form-control" id="sku" name="sku">
+        <?php
+        if (isset($errors['sku'])) {
+            echo '<p class="text-danger">' . $errors['sku'] . '</p>';
+        }
+        ?>
+    </div>
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+<script>
+    function generateSku() {
+        const randSku = 'SKU-' + Math.floor(Math.random() * 1000000);
+        const skuInput = document.getElementById('sku');
+        if (skuInput.value.trim() === '') {
+            skuInput.value = randSku;
+        }
+    }
+
+    generateSku();
+</script>

@@ -44,19 +44,20 @@ class ProductModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function addProductWithImages($name, $price, $description, $image, $quantity, $categories_id, $sub_images = [])
+  public function addProductWithImages($name, $price, $description, $image, $quantity, $sku, $categories_id, $sub_images = [])
   {
     try {
       $this->conn->beginTransaction();
 
-      $query = "INSERT INTO products (name, price, description, image, quantity, categories_id) 
-                  VALUES (:name, :price, :description, :image, :quantity, :categories_id)";
+      $query = "INSERT INTO products (name, price, description, image, quantity, sku, categories_id) 
+                  VALUES (:name, :price, :description, :image, :quantity, :sku, :categories_id)";
       $stmt = $this->conn->prepare($query);
       $stmt->bindParam(':name', $name);
       $stmt->bindParam(':price', $price);
       $stmt->bindParam(':description', $description);
       $stmt->bindParam(':image', $image);
       $stmt->bindParam(':quantity', $quantity);
+      $stmt->bindParam(':sku', $sku);
       $stmt->bindParam(':categories_id', $categories_id);
 
       if (!$stmt->execute()) {
@@ -86,8 +87,6 @@ class ProductModel
       return false;
     }
   }
-
-
 
   public function updateProduct($id, $name, $price, $description, $image, $quantity, $categories_id)
   {
