@@ -109,4 +109,13 @@ class ProductModel
     $stmt->bindParam(':id', $id);
     return $stmt->execute();
   }
+
+  public function getQuanityProductBySku($sku)
+  {
+    $query = "SELECT quantity FROM products WHERE sku = :sku";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':sku', $sku);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+  }
 }

@@ -95,7 +95,7 @@
                                 <div class="text-center me-3 position-relative">
                                     <a href="/cart" type="button" class="text-decoration-none text-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Giỏ hàng">
                                         <i class="bi bi-cart2 fs-4"></i>
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #FE5722;">0</span>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #FE5722;"><?php echo isset($carts) ? count($carts) : 0 ?></span>
                                     </a>
                                 </div>
                                 <!-- Avatar và tên -->

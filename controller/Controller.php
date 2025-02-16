@@ -3,17 +3,21 @@ require_once "view/helpers.php";
 require_once "model/ProductModel.php";
 require_once "model/CategoryModel.php";
 require_once "model/ProductsVarriantModel.php";
+require_once "model/OrderModel.php";
+require_once "model/CartsModel.php";
 class Controller
 {
     private $productModel;
     private $categoryModel;
     private $productsVarriantModel;
+    private $cartsModel;
 
     public function __construct()
     {
         $this->productModel = new ProductModel();
         $this->categoryModel = new CategoryModel();
         $this->productsVarriantModel = new ProductsVarriantModel();
+        $this->cartsModel = new CartsModel();
     }
     public function index()
     {
@@ -61,5 +65,14 @@ class Controller
     public function cart()
     {
         renderView('view/cart.php', [], 'Giỏ hàng');
+    }
+
+    public function checkout()
+    {
+        $user_id = $_SESSION['user']['id'] ?? null;
+        $cart_session = session_id();
+
+        $carts = $this->cartsModel->getAllCarts($user_id, $cart_session);
+        renderView('view/checkout.php', compact('carts'), 'Thanh toán');
     }
 }

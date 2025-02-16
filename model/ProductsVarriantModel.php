@@ -97,12 +97,20 @@ class ProductsVarriantModel
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false; // Nếu có kết quả, tức là trùng
     }
 
-
     public function deleteProductVariant($id)
     {
         $query = "DELETE FROM products_variants WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
+    }
+
+    public function getQuanityProductVarriantBySku($sku)
+    {
+        $query = "SELECT quantity FROM products_variants WHERE sku = :sku";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sku', $sku);
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }

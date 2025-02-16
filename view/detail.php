@@ -63,17 +63,82 @@ if (isset($_SESSION['cart_message'])) {
             <button class="btn btn-outline-secondary" onclick="updateQuantity(1)">+</button>
         </div>
 
-        <form action="/cart/create" method="POST">
-            <input type="hidden" name="sku" id="sku_add_cart" value="<?php echo $product['sku']; ?>">
+        <!-- <form action="/cart/create" method="POST">
+            <input type="hidden" name="sku" id="sku_add_cart" value="">
             <input type="hidden" name="quantity" id="quantity_add_cart" value="1">
-            <input type="hidden" name="price" id="price_add_cart" value="<?php echo $product['price']; ?>">
+            <input type="hidden" name="price" id="price_add_cart" value="">
             <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+            <input type="hidden" name="variant_id" id="variant_id_add_cart" value="">
+            <button class="btn btn-danger w-50">Thêm Vào Giỏ Hàng</button>
+        </form> -->
+
+        <form action="/cart/create" method="POST">
+            <input type="hidden" name="sku" id="sku_add_cart" value="<?php echo !empty($products_varriants) ? '' : $product['sku']; ?>">
+            <input type="hidden" name="quantity" id="quantity_add_cart" value="1">
+            <input type="hidden" name="price" id="price_add_cart" value="<?php echo !empty($products_varriants) ? '' : $product['price']; ?>">
+            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+            <input type="hidden" name="variant_id" id="variant_id_add_cart" value="">
             <button class="btn btn-danger w-50">Thêm Vào Giỏ Hàng</button>
         </form>
+
+
     </div>
 </div>
 
 <script>
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     const sizeButtons = document.querySelectorAll(".size-btn");
+    //     const colorButtons = document.querySelectorAll(".color-btn");
+    //     const productPrice = document.getElementById("productPrice");
+    //     const productQuantity = document.getElementById("productQuantity");
+    //     const productSku = document.getElementById("productSku");
+    //     const hiddenSku = document.getElementById("sku_add_cart");
+    //     const hiddenPrice = document.getElementById("price_add_cart");
+    //     const hiddenQuantity = document.getElementById("quantity_add_cart");
+    //     let selectedSize = null;
+    //     let selectedColor = null;
+
+    //     sizeButtons.forEach(button => {
+    //         button.addEventListener("click", function() {
+    //             sizeButtons.forEach(btn => btn.classList.remove("active"));
+    //             selectedSize = this.getAttribute("data-size");
+    //             this.classList.add("active");
+    //             updateVariant();
+    //         });
+    //     });
+
+    //     colorButtons.forEach(button => {
+    //         button.addEventListener("click", function() {
+    //             colorButtons.forEach(btn => btn.classList.remove("active"));
+    //             selectedColor = this.getAttribute("data-color");
+    //             this.classList.add("active");
+    //             updateVariant();
+    //         });
+    //     });
+
+    //     function updateVariant() {
+    //         const variants = <?php echo json_encode($products_varriants); ?>;
+    //         const matchedVariant = variants.find(variant =>
+    //             variant.size_name === selectedSize && variant.color_name === selectedColor
+    //         );
+
+    //         if (matchedVariant) {
+    //             productPrice.textContent = new Intl.NumberFormat("vi-VN").format(matchedVariant.price) + "đ";
+    //             productQuantity.textContent = matchedVariant.quantity + " cái";
+    //             productSku.textContent = "SKU: " + matchedVariant.sku;
+    //             document.getElementById("mainImage").src = "http://localhost:8000/" + matchedVariant.image;
+
+    //             // Cập nhật SKU, giá và số lượng vào form
+    //             document.getElementById("sku_add_cart").value = matchedVariant.sku;
+    //             document.getElementById("price_add_cart").value = matchedVariant.price;
+    //             document.getElementById("quantity_add_cart").value = document.getElementById("quantity").value;
+    //             document.getElementById("variant_id_add_cart").value = matchedVariant.id;
+    //         }
+    //     }
+
+
+    // });
+
     document.addEventListener("DOMContentLoaded", function() {
         const sizeButtons = document.querySelectorAll(".size-btn");
         const colorButtons = document.querySelectorAll(".color-btn");
@@ -83,8 +148,37 @@ if (isset($_SESSION['cart_message'])) {
         const hiddenSku = document.getElementById("sku_add_cart");
         const hiddenPrice = document.getElementById("price_add_cart");
         const hiddenQuantity = document.getElementById("quantity_add_cart");
+        const hiddenVariantId = document.getElementById("variant_id_add_cart");
+
         let selectedSize = null;
         let selectedColor = null;
+
+        const variants = <?php echo json_encode($products_varriants); ?>;
+
+        function updateVariant() {
+            const matchedVariant = variants.find(variant =>
+                variant.size_name === selectedSize && variant.color_name === selectedColor
+            );
+
+            if (matchedVariant) {
+                productPrice.textContent = new Intl.NumberFormat("vi-VN").format(matchedVariant.price) + "đ";
+                productQuantity.textContent = matchedVariant.quantity + " cái";
+                productSku.textContent = "SKU: " + matchedVariant.sku;
+                document.getElementById("mainImage").src = "http://localhost:8000/" + matchedVariant.image;
+
+                // Cập nhật dữ liệu vào form
+                hiddenSku.value = matchedVariant.sku;
+                hiddenPrice.value = matchedVariant.price;
+                hiddenQuantity.value = document.getElementById("quantity").value;
+                hiddenVariantId.value = matchedVariant.id;
+            } else {
+                // Nếu không có variant, dùng dữ liệu sản phẩm chính
+                hiddenSku.value = "<?php echo $product['sku']; ?>";
+                hiddenPrice.value = "<?php echo $product['price']; ?>";
+                hiddenQuantity.value = document.getElementById("quantity").value;
+                hiddenVariantId.value = "";
+            }
+        }
 
         sizeButtons.forEach(button => {
             button.addEventListener("click", function() {
@@ -104,44 +198,40 @@ if (isset($_SESSION['cart_message'])) {
             });
         });
 
-        function updateVariant() {
-            const variants = <?php echo json_encode($products_varriants); ?>;
-            const matchedVariant = variants.find(variant =>
-                variant.size_name === selectedSize && variant.color_name === selectedColor
-            );
-
-            if (matchedVariant) {
-                productPrice.textContent = new Intl.NumberFormat("vi-VN").format(matchedVariant.price) + "đ";
-                hiddenSku.value = matchedVariant.sku;
-                hiddenPrice.value = matchedVariant.price;
-                hiddenQuantity.value = document.getElementById("quantity").value;
-                productQuantity.textContent = matchedVariant.quantity + " cái";
-                productSku.textContent = "SKU: " + matchedVariant.sku;
-
-                document.getElementById("mainImage").src = "http://localhost:8000/" + matchedVariant.image;
-            }
+        // Nếu không có variant, đặt giá trị mặc định từ sản phẩm chính khi tải trang
+        if (variants.length === 0) {
+            updateVariant();
         }
-
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
-        function updateQuantity(change) {
-            let quantityInput = document.getElementById("quantity");
-            let hiddenQuantity = document.getElementById("quantity_add_cart");
-            let newQuantity = parseInt(quantityInput.value) + change;
 
+    document.addEventListener("DOMContentLoaded", function() {
+        const quantityInput = document.getElementById("quantity");
+        const hiddenQuantity = document.getElementById("quantity_add_cart");
+
+        function updateQuantity(change) {
+            let newQuantity = parseInt(quantityInput.value) + change;
             if (newQuantity >= 1) {
                 quantityInput.value = newQuantity;
                 hiddenQuantity.value = newQuantity;
             }
         }
 
-        // Gán sự kiện onclick lại để đảm bảo nó hoạt động
         document.querySelectorAll(".btn-outline-secondary").forEach(button => {
             button.addEventListener("click", function() {
                 let change = this.textContent === "+" ? 1 : -1;
                 updateQuantity(change);
             });
+        });
+
+        quantityInput.addEventListener("input", function() {
+            let newQuantity = parseInt(quantityInput.value);
+            if (isNaN(newQuantity) || newQuantity < 1) {
+                quantityInput.value = 1;
+                hiddenQuantity.value = 1;
+            } else {
+                hiddenQuantity.value = newQuantity;
+            }
         });
     });
 </script>

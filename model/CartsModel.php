@@ -46,7 +46,6 @@ class CartsModel extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     public function addCart($user_id, $cart_session, $sku, $quantity, $price)
     {
         $stmt = $this->conn->prepare("INSERT INTO carts (user_id, cart_session, sku, quantity, price) VALUES (:user_id, :cart_session, :sku, :quantity, :price)");

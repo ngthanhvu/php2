@@ -8,6 +8,7 @@ require_once "controller/CategoryController.php";
 require_once "controller/VnpayController.php";
 require_once "controller/VarriantController.php";
 require_once "controller/ProductsVarriantController.php";
+require_once "controller/OrderController.php";
 
 require_once "router/Router.php";
 require_once "middleware.php";
@@ -21,6 +22,7 @@ $CategoryController = new CategoryController();
 $VnpayController = new VnPayController();
 $VarriantController = new VarriantController();
 $ProductsVarriantController = new ProductsVarriantController();
+$OrderController = new OrderController();
 
 $router->addMiddleware('logRequest');
 
@@ -88,5 +90,12 @@ $router->addRoute("/admin/sizes", [$VarriantController, "indexSize"], ['isAdmin'
 $router->addRoute("/admin/sizes/create", [$VarriantController, "createSize"], ['isAdmin']);
 $router->addRoute("/admin/sizes/update/{id}", [$VarriantController, "updateSize"], ['isAdmin']);
 $router->addRoute("/admin/sizes/delete/{id}", [$VarriantController, "deleteSize"], ['isAdmin']);
+
+//checkout
+$router->addRoute("/checkout", [$Controller, "checkout"], ['isUser']);
+$router->addRoute("/checkout/create", [$OrderController, "createOrder"], ['isUser']);
+
+//success
+$router->addRoute("/success", [$Controller, "success"]);
 
 $router->dispatch();
