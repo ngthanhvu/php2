@@ -104,7 +104,7 @@
                                 if (isset($_SESSION['user'])) {
                                     echo '
                                     <div class="d-flex align-items-center">
-                                        <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
+                                        <a href="/profile"><img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40"></a>
                                         <div class="text-end">
                                             <div class="text-center">' . (isset($_SESSION['user']) ? strtoupper($_SESSION['user']['username']) : 'NGƯỜI DÙNG') . '</div>
                                             <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>

@@ -91,11 +91,19 @@ $router->addRoute("/admin/sizes/create", [$VarriantController, "createSize"], ['
 $router->addRoute("/admin/sizes/update/{id}", [$VarriantController, "updateSize"], ['isAdmin']);
 $router->addRoute("/admin/sizes/delete/{id}", [$VarriantController, "deleteSize"], ['isAdmin']);
 
+//orders admin
+$router->addRoute("/admin/orders", [$OrderController, "index"], ['isAdmin']);
+$router->addRoute("/admin/orders/update", [$OrderController, "updateStatus"], ['isAdmin']);
+$router->addRoute("/admin/orders/delete/{id}", [$OrderController, "deleteOrder"], ['isAdmin']);
+
 //checkout
 $router->addRoute("/checkout", [$Controller, "checkout"], ['isUser']);
 $router->addRoute("/checkout/create", [$OrderController, "createOrder"], ['isUser']);
 
 //success
 $router->addRoute("/success", [$Controller, "success"]);
+
+//profile
+$router->addRoute("/profile", [$Controller, "profile"], ['isUser']);
 
 $router->dispatch();

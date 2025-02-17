@@ -16,6 +16,14 @@ class OrderModel extends Database
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getOrderByUserId($user_id)
+    {
+        $sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function createOrder($user_id, $status, $payment_method, $total_amount, $compact_address)
     {
         $this->conn->beginTransaction();
@@ -56,7 +64,7 @@ class OrderModel extends Database
 
                     if ($product) {
                         $products_id = $product['id'];
-                        $variant_id = 0;
+                        $variant_id = null;
                     } else {
                         throw new Exception("Không tìm thấy sản phẩm với SKU: " . $item['sku']);
                     }
@@ -82,5 +90,21 @@ class OrderModel extends Database
             $this->conn->rollBack();
             die("Lỗi khi tạo đơn hàng: " . $e->getMessage());
         }
+    }
+
+    public function updateOrder($order_id, $status)
+    {
+        $sql = "UPDATE orders SET status = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$status, $order_id]);
+        return $stmt->rowCount();
+    }
+
+    public function detailOrder($order_id)
+    {
+        $sql = "SELECT * FROM orders WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$order_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

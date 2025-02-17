@@ -5,12 +5,14 @@ require_once "model/CategoryModel.php";
 require_once "model/ProductsVarriantModel.php";
 require_once "model/OrderModel.php";
 require_once "model/CartsModel.php";
+require_once "model/OrderModel.php";
 class Controller
 {
     private $productModel;
     private $categoryModel;
     private $productsVarriantModel;
     private $cartsModel;
+    private $orderModel;
 
     public function __construct()
     {
@@ -18,6 +20,7 @@ class Controller
         $this->categoryModel = new CategoryModel();
         $this->productsVarriantModel = new ProductsVarriantModel();
         $this->cartsModel = new CartsModel();
+        $this->orderModel = new OrderModel();
     }
     public function index()
     {
@@ -74,5 +77,12 @@ class Controller
 
         $carts = $this->cartsModel->getAllCarts($user_id, $cart_session);
         renderView('view/checkout.php', compact('carts'), 'Thanh toán');
+    }
+
+    public function profile()
+    {
+        $user_id = $_SESSION['user']['id'];
+        $orders = $this->orderModel->getOrderByUserId($user_id);
+        renderView('view/profile/profile.php', compact('orders'), 'Thông tin cá nhân');
     }
 }

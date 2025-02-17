@@ -28,7 +28,7 @@ class Mailer
             $this->mailer->Port = $_ENV['MAIL_PORT'];
 
             // Default sender
-            $this->mailer->setFrom('noreply@admin.com', 'Spotify Shop');
+            $this->mailer->setFrom('noreply@admin.com', 'Shopp Mailer');
         } catch (Exception $e) {
             throw new Exception("Mailer configuration error: {$e->getMessage()}");
         }
