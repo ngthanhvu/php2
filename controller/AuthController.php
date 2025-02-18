@@ -5,8 +5,11 @@ require_once "model/MailModel.php";
 require_once "view/helpers.php";
 require_once "./env.php";
 require_once "./vendor/autoload.php";
+require_once 'core/BladeServiceProvider.php';
+
 
 use Google\Service\Oauth2;
+use Illuminate\Support\Facades\Blade;
 
 class AuthController
 {
@@ -110,7 +113,8 @@ class AuthController
             }
 
             if (!empty($errors)) {
-                renderView('view/auth/login.php', ['errors' => $errors], 'Login');
+                // renderView('view/auth/login.php', ['errors' => $errors], 'Login');
+                BladeServiceProvider::render('auth.login', ['errors' => $errors], 'Login');
                 return;
             } else {
                 $user = $this->UserModel->login($email, $password);
@@ -119,11 +123,13 @@ class AuthController
                     header('Location: /');
                 } else {
                     $errors['login'] = 'Invalid email or password';
-                    renderView('view/auth/login.php', ['errors' => $errors], 'Login');
+                    // renderView('view/auth/login.php', ['errors' => $errors], 'Login');
+                    BladeServiceProvider::render('auth.login', ['errors' => $errors], 'Login');
                 }
             }
         } else {
-            renderView('view/auth/login.php', [], 'Login');
+            // renderView('view/auth/login.php', [], 'Login');
+            BladeServiceProvider::render('auth.login', [], 'Login');
         }
     }
 

@@ -45,3 +45,7 @@ Cài thư viện PHPMailer
 ```bash
 composer require phpmailer/phpmailer
 ```
+Cài thư viện illuminate/view
+```bash
+composer require illuminate/view illuminate/filesystem illuminate/events
+```

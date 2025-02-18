@@ -6,6 +6,8 @@ require_once "model/ProductsVarriantModel.php";
 require_once "model/OrderModel.php";
 require_once "model/CartsModel.php";
 require_once "model/OrderModel.php";
+require_once 'core/BladeServiceProvider.php';
+
 class Controller
 {
     private $productModel;
@@ -24,40 +26,46 @@ class Controller
     }
     public function index()
     {
+        $title = "Trang chủ";
         $products = $this->productModel->getAllProducts();
         $categories = $this->categoryModel->getAllCategories();
-        renderView('view/index.php', compact('products', 'categories'), 'Trang chủ');
+        BladeServiceProvider::render('index', compact('products', 'categories', 'title'));
     }
 
     public function admin()
     {
+        $title = "Bảng điều khiển";
         $products = $this->productModel->getAllProducts();
         $categories = $this->categoryModel->getAllCategories();
-        renderView('view/admin/index.php', compact('products', 'categories'), 'Dashboard', 'admin');
+        BladeServiceProvider::render('admin.index', compact('products', 'categories', 'title'));
     }
 
     public function payment()
     {
-        renderView('view/payment.php', compact('payments'), 'Nạp thẻ');
+        // renderView('view/payment.php', compact('payments'), 'Nạp thẻ');
     }
 
     public function product()
     {
+        $title = "Sản phẩm";
         $categories = $this->categoryModel->getAllCategories();
         $products = $this->productModel->getAllProducts();
-        renderView('view/product.php', compact('products', 'categories'), 'Sản phẩm');
+        BladeServiceProvider::render('product', compact('products', 'categories', 'title'));
     }
 
     public function detail($id)
     {
+        $title = "Chi tiết sản phẩm";
         $product = $this->productModel->getProductById($id);
         $products_varriants = $this->productsVarriantModel->getAllProductVariantsById($id);
-        renderView('view/detail.php', compact('product', 'products_varriants'), 'Chi tiết sản phẩm');
+        BladeServiceProvider::render('detail', compact('product', 'products_varriants', 'title'));
+        //        renderView('view/detail.blade.php', compact('product', 'products_varriants'), 'Chi tiết sản phẩm');
     }
 
     public function success()
     {
-        renderView('view/success.php', [], 'Thành công');
+        $title = "Thành công";
+        BladeServiceProvider::render('success', compact('title'));
     }
 
     public function errors()
