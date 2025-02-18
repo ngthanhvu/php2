@@ -1,11 +1,14 @@
 <?php
+
+namespace App\Models;
+
 require_once "./env.php";
 require_once "./vendor/autoload.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-class Mailer
+class MailModel
 {
     private $mailer;
 

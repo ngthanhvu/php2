@@ -1,7 +1,11 @@
 <?php
-require_once "model/OrderModel.php";
-require_once "model/MailModel.php";
-require_once "view/helpers.php";
+
+namespace App\Controllers;
+
+use App\Models\OrderModel;
+use App\Models\MailModel;
+use App\Core\BladeServiceProvider;
+
 class OrderController
 {
     private $orderModel;
@@ -10,13 +14,14 @@ class OrderController
     public function  __construct()
     {
         $this->orderModel = new OrderModel();
-        $this->mailModel = new Mailer();
+        $this->mailModel = new MailModel();
     }
 
     public function index()
-    {   
+    {
+        $title = 'Orders';
         $orders = $this->orderModel->getAllOrders();
-        renderView('view/admin/orders/index.php', compact('orders'), 'Orders', 'admin');
+        BladeServiceProvider::render('admin.orders.index', compact('orders', 'title'));
     }
 
     public function createOrder()
@@ -32,26 +37,26 @@ class OrderController
 
         $compact_address = "$name, $phone, $address, $email";
 
-        if($payment_method == "cod") {
+        if ($payment_method == "cod") {
             $order_id = $this->orderModel->createOrder($user_id, $status, $payment_method, $total_amount, $compact_address);
             $this->mailModel->send($email, "Order Confirmation", "Your order " . $order_id . " has been placed successfully");
             var_dump("Created Order ID:", $order_id);
             header('Location: /success');
         } elseif ($payment_method == "vnpay") {
             echo "VNPAY";
-//            header('Location: /payment');
-        } elseif($payment_method == "momo") {
+            //            header('Location: /payment');
+        } elseif ($payment_method == "momo") {
             echo "Momo";
         }
     }
 
     public function updateStatus()
     {
-        if($_SERVER["REQUEST_METHOD"] === "POST")
-        {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $status = $_POST['status'];
             $order_id = $_POST['order_id'];
             $this->orderModel->updateOrder($order_id, $status);
+            $this->mailModel->send("vuntpk03365@gmail.com", "Order Status Update", "Order " . $order_id . " has been updated to " . $status);
             $_SESSION['message_orders'] = "Order status updated successfully!";
             header('Location: /admin/orders');
         }

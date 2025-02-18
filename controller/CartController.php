@@ -1,8 +1,11 @@
 <?php
-require_once "model/CartsModel.php";
-require_once "model/ProductModel.php";
-require_once "model/ProductsVarriantModel.php";
-require_once "view/helpers.php";
+
+namespace App\Controllers;
+
+use App\Models\CartsModel;
+use App\Models\ProductModel;
+use App\Models\ProductsVarriantModel;
+use App\Core\BladeServiceProvider;
 
 class CartController
 {
@@ -19,10 +22,11 @@ class CartController
 
     public function getCart()
     {
+        $title = "Giỏ hàng";
         $user_id = $_SESSION['user']['id'] ?? null;
         $cart_session = session_id();
         $carts = $this->cartsModel->getAllCarts($user_id, $cart_session);
-        renderView('view/cart.php', compact('carts'), 'Giỏ hàng');
+        BladeServiceProvider::render('cart', compact('carts', 'title'));
     }
 
     public function addCart()

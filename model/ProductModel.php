@@ -1,5 +1,10 @@
 <?php
-require_once "Database.php";
+
+namespace App\Models;
+
+use App\Core\Database;
+use PDO;
+use Exception;
 
 class ProductModel
 {
@@ -7,7 +12,7 @@ class ProductModel
 
   public function __construct()
   {
-    $database = new Database();
+    $database = new Database(); // Đảm bảo gọi đúng App\Core\Database
     $this->conn = $database->getConnection();
   }
 

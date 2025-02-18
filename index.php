@@ -1,17 +1,19 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED);
-require_once "controller/Controller.php";
-require_once "controller/CartController.php";
-require_once "controller/AuthController.php";
-require_once "controller/ProductController.php";
-require_once "controller/CategoryController.php";
-require_once "controller/VnpayController.php";
-require_once "controller/VarriantController.php";
-require_once "controller/ProductsVarriantController.php";
-require_once "controller/OrderController.php";
 
-require_once "router/Router.php";
+require_once __DIR__ . "/vendor/autoload.php";
 require_once "middleware.php";
+
+use App\Controllers\Controller;
+use App\Controllers\CartController;
+use App\Controllers\AuthController;
+use App\Controllers\ProductController;
+use App\Controllers\CategoryController;
+use App\Controllers\VnPayController;
+use App\Controllers\VarriantController;
+use App\Controllers\ProductsVarriantController;
+use App\Controllers\OrderController;
+use App\Routers\Router;
 
 $router = new Router();
 $Controller = new Controller();
@@ -19,7 +21,7 @@ $CartController = new CartController();
 $AuthController = new AuthController();
 $ProductController = new ProductController();
 $CategoryController = new CategoryController();
-$VnpayController = new VnPayController();
+// $VnpayController = new VnPayController();
 $VarriantController = new VarriantController();
 $ProductsVarriantController = new ProductsVarriantController();
 $OrderController = new OrderController();
@@ -60,8 +62,8 @@ $router->addRoute("/auth/facebook", [$AuthController, "loginWithFacebook"]);
 $router->addRoute("/auth/google", [$AuthController, "loginWithGoogle"]);
 
 //payment
-$router->addRoute("/payment/create", [$VnpayController, "createPayment"]);
-$router->addRoute("/payment/callback", [$VnpayController, "vnpayReturn"]);
+// $router->addRoute("/payment/create", [$VnpayController, "createPayment"]);
+// $router->addRoute("/payment/callback", [$VnpayController, "vnpayReturn"]);
 
 
 //index product

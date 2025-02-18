@@ -1,12 +1,13 @@
 <?php
-require_once "view/helpers.php";
-require_once "model/ProductModel.php";
-require_once "model/CategoryModel.php";
-require_once "model/ProductsVarriantModel.php";
-require_once "model/OrderModel.php";
-require_once "model/CartsModel.php";
-require_once "model/OrderModel.php";
-require_once 'core/BladeServiceProvider.php';
+
+namespace App\Controllers;
+
+use App\Models\CategoryModel;
+use App\Models\CartsModel;
+use App\Models\OrderModel;
+use App\Models\ProductModel;
+use App\Models\ProductsVarriantModel;
+use App\Core\BladeServiceProvider;
 
 class Controller
 {
@@ -59,7 +60,6 @@ class Controller
         $product = $this->productModel->getProductById($id);
         $products_varriants = $this->productsVarriantModel->getAllProductVariantsById($id);
         BladeServiceProvider::render('detail', compact('product', 'products_varriants', 'title'));
-        //        renderView('view/detail.blade.php', compact('product', 'products_varriants'), 'Chi tiết sản phẩm');
     }
 
     public function success()
@@ -70,27 +70,25 @@ class Controller
 
     public function errors()
     {
-        renderView('view/errors.php', [], 'Thất bại');
-    }
-
-    public function cart()
-    {
-        renderView('view/cart.php', [], 'Giỏ hàng');
+        $title = "Thất bại";
+        BladeServiceProvider::render('errors', compact('title'));
     }
 
     public function checkout()
     {
+        $title = "Thanh toán";
         $user_id = $_SESSION['user']['id'] ?? null;
         $cart_session = session_id();
 
         $carts = $this->cartsModel->getAllCarts($user_id, $cart_session);
-        renderView('view/checkout.php', compact('carts'), 'Thanh toán');
+        BladeServiceProvider::render('checkout', compact('carts', 'title'));
     }
 
     public function profile()
     {
+        $title = "Thống tin cá nhân";
         $user_id = $_SESSION['user']['id'];
         $orders = $this->orderModel->getOrderByUserId($user_id);
-        renderView('view/profile/profile.php', compact('orders'), 'Thông tin cá nhân');
+        BladeServiceProvider::render('profile', compact('orders', 'title'));
     }
 }

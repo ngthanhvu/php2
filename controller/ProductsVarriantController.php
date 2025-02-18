@@ -1,9 +1,12 @@
 <?php
-require_once "model/ProductsVarriantModel.php";
-require_once "model/SizeModel.php";
-require_once "model/ColorModel.php";
-require_once "model/ProductModel.php";
-require_once 'view/helpers.php';
+
+namespace App\Controllers;
+
+use App\Models\ProductsVarriantModel;
+use App\Models\SizeModel;
+use App\Models\ColorModel;
+use App\Models\ProductModel;
+use App\Core\BladeServiceProvider;
 
 
 class ProductsVarriantController
@@ -23,6 +26,7 @@ class ProductsVarriantController
 
     public function addProductVarrant($id)
     {
+        $title = 'Add Product Variant';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $product_id = $_POST['product_id'];
@@ -32,18 +36,15 @@ class ProductsVarriantController
             $color_id = $_POST['color_id'];
             $size_id = $_POST['size_id'];
 
-            // Kiểm tra trùng lặp
             if ($this->productsVarriantModel->checkExitsColorAndSize($color_id, $size_id)) {
                 $errors['duplicate'] = "Sản phẩm với SKU, màu sắc và kích thước này đã tồn tại!";
-                // Gửi lại form kèm theo lỗi và dừng tiến trình
                 $product = $this->ProductModel->getProductById($id);
                 $colors = $this->ColorModel->getAllColors();
                 $sizes = $this->SizeModel->getAllSizes();
-                renderView('view/admin/products/addProductVarrant.php', compact('errors', 'product', 'colors', 'sizes'), 'Add Product Variant', 'admin');
+                BladeServiceProvider::render('admin.products.addProductVarrant', compact('errors', 'product', 'colors', 'sizes', 'title'));
                 exit();
             }
 
-            // Các kiểm tra khác
             if (empty($product_id)) $errors['product_id'] = 'Product ID is required';
             if (empty($price)) $errors['price'] = 'Price is required';
             if (empty($quantity)) $errors['quantity'] = 'Quantity is required';
@@ -51,7 +52,6 @@ class ProductsVarriantController
             if (empty($color_id)) $errors['color_id'] = 'Color ID is required';
             if (empty($size_id)) $errors['size_id'] = 'Size ID is required';
 
-            // Xử lý ảnh nếu có upload
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = 'uploads/';
                 $imageName = basename($_FILES['image']['name']);
@@ -69,16 +69,14 @@ class ProductsVarriantController
                 $errors['image'] = 'Image is required';
             }
 
-            // Nếu có lỗi thì dừng lại và hiển thị lại form
             if (!empty($errors)) {
                 $product = $this->ProductModel->getProductById($id);
                 $colors = $this->ColorModel->getAllColors();
                 $sizes = $this->SizeModel->getAllSizes();
-                renderView('view/admin/products/addProductVarrant.php', compact('errors', 'product', 'colors', 'sizes'), 'Add Product Variant', 'admin');
+                BladeServiceProvider::render('admin.products.addProductVarrant', compact('errors', 'product', 'colors', 'sizes', 'title'));
                 exit();
             }
 
-            // Thêm biến thể sản phẩm nếu không có lỗi
             $this->productsVarriantModel->createProductVariant($product_id, $price, $quantity, $sku, $imagePath, $color_id, $size_id);
             $_SESSION['message'] = "Product variant created successfully!";
             header('Location: /admin/products');
@@ -87,16 +85,17 @@ class ProductsVarriantController
             $product = $this->ProductModel->getProductById($id);
             $colors = $this->ColorModel->getAllColors();
             $sizes = $this->SizeModel->getAllSizes();
-            renderView('view/admin/products/addProductVarrant.php', compact('product', 'colors', 'sizes'), 'Add Product Variant', 'admin');
+            BladeServiceProvider::render('admin.products.addProductVarrant', compact('product', 'colors', 'sizes', 'title'));
         }
     }
 
     public function getAllProductVariants()
     {
+        $title = 'Product Variants';
         $products = $this->productsVarriantModel->getAllProductVariants();
         $colors = $this->ColorModel->getAllColors();
         $sizes = $this->SizeModel->getAllSizes();
-        renderView('view/admin/products/products_varriants/index.php', compact('products', 'colors', 'sizes'), 'Product Variants', 'admin');
+        BladeServiceProvider::render('admin.products.products_varriants.index', compact('products', 'colors', 'sizes', 'title'));
     }
 
     public function deleteProductVariant($id)

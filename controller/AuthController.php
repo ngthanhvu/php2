@@ -1,15 +1,17 @@
 <?php
-ob_start();
-require_once "model/UserModel.php";
-require_once "model/MailModel.php";
-require_once "view/helpers.php";
-require_once "./env.php";
-require_once "./vendor/autoload.php";
-require_once 'core/BladeServiceProvider.php';
 
+namespace App\Controllers;
+
+ob_start();
+
+use App\Models\UserModel;
+use App\Models\MailModel;
+use App\Core\BladeServiceProvider;
 
 use Google\Service\Oauth2;
 use Illuminate\Support\Facades\Blade;
+use Google_Client;
+use Exception;
 
 class AuthController
 {
@@ -21,7 +23,7 @@ class AuthController
     public function __construct()
     {
         $this->UserModel = new UserModel();
-        $this->mailer = new Mailer();
+        $this->mailer = new MailModel();
 
         // Cấu hình Google Client
         $this->googleClient = new Google_Client();
@@ -41,12 +43,15 @@ class AuthController
 
     public function index()
     {
+        $title = "Admin";
         $users = $this->UserModel->getAllUsers();
-        renderView('view/admin/users/index.php', compact('users'), 'Users', 'admin');
+        // renderView('view/admin/users/index.php', compact('users'), 'Users', 'admin');
+        BladeServiceProvider::render('admin.users.index', compact('users', 'title'));
     }
 
     public function register()
     {
+        $title = "Đăng ký";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $username = $_POST['username'];
@@ -77,13 +82,13 @@ class AuthController
             }
 
             if (!empty($errors)) {
-                renderView('view/auth/register.php', ['errors' => $errors], 'Register');
+                BladeServiceProvider::render('auth.register', compact('errors', 'title'));
                 return;
             } else {
                 $user = $this->UserModel->getUserByEmail($email);
                 if ($user) {
                     $errors['email'] = 'Email already exists';
-                    renderView('view/auth/register.php', ['errors' => $errors], 'Register');
+                    BladeServiceProvider::render('auth.register', compact('errors', 'title'));
                     return;
                 } else {
                     $this->UserModel->register($username, $email, $password);
@@ -93,12 +98,13 @@ class AuthController
                 }
             }
         } else {
-            renderView('view/auth/register.php', [], 'Register');
+            BladeServiceProvider::render('auth.register', compact('title'));
         }
     }
 
     public function login()
     {
+        $title = "Đăng nhập";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $email = $_POST['email'] ?? '';
@@ -113,8 +119,7 @@ class AuthController
             }
 
             if (!empty($errors)) {
-                // renderView('view/auth/login.php', ['errors' => $errors], 'Login');
-                BladeServiceProvider::render('auth.login', ['errors' => $errors], 'Login');
+                BladeServiceProvider::render('auth.login', compact('errors', 'title'));
                 return;
             } else {
                 $user = $this->UserModel->login($email, $password);
@@ -123,13 +128,11 @@ class AuthController
                     header('Location: /');
                 } else {
                     $errors['login'] = 'Invalid email or password';
-                    // renderView('view/auth/login.php', ['errors' => $errors], 'Login');
-                    BladeServiceProvider::render('auth.login', ['errors' => $errors], 'Login');
+                    BladeServiceProvider::render('auth.login', compact('errors', 'title'));
                 }
             }
         } else {
-            // renderView('view/auth/login.php', [], 'Login');
-            BladeServiceProvider::render('auth.login', [], 'Login');
+            BladeServiceProvider::render('auth.login', compact('title'));
         }
     }
 
@@ -141,6 +144,7 @@ class AuthController
 
     public function resetPassword()
     {
+        $title = "Quên mật khẩu";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $email = $_POST['email'];
@@ -153,7 +157,7 @@ class AuthController
             }
 
             if (!empty($errors)) {
-                renderView('view/auth/resetpassword.php', ['errors' => $errors], 'Reset Password');
+                BladeServiceProvider::render('auth.resetpassword', compact('errors', 'title'));
                 return;
             }
 
@@ -166,16 +170,17 @@ class AuthController
                 exit;
             } else {
                 $_SESSION['message'] = "OTP không hợp lệ hoặc đã hết hạn.";
-                renderView('view/auth/resetpassword.php', [], 'Reset Password');
+                BladeServiceProvider::render('auth.resetpassword', compact('title'));
             }
         } else {
-            renderView('view/auth/resetpassword.php', [], 'Reset Password');
+            BladeServiceProvider::render('auth.resetpassword', compact('title'));
         }
     }
 
 
     public function forgotPassword()
     {
+        $title = "Quên mật khẩu";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $otp = rand(100000, 999999);
 
@@ -185,7 +190,8 @@ class AuthController
             $this->mailer->send($email, 'OTP Verification', "Your OTP is: $otp");
             header('Location: /resetpassword');
         } else {
-            renderView('view/auth/forgotpassword.php', [], 'Forgot Password');
+            // renderView('view/auth/forgotpassword.php', [], 'Forgot Password');
+            BladeServiceProvider::render('auth.forgotpassword', compact('title'));
         }
     }
 
@@ -203,7 +209,7 @@ class AuthController
         }
 
         $this->googleClient->setAccessToken($token['access_token']);
-        $googleService = new Google\Service\Oauth2($this->googleClient);
+        $googleService = new Oauth2($this->googleClient);
         $userInfo = $googleService->userinfo->get();
 
         $user = $this->UserModel->findOrCreateUser([

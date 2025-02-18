@@ -1,11 +1,18 @@
 <?php
-require_once "Database.php";
 
-class CartsModel extends Database
+namespace App\Models;
+
+use App\Core\Database;
+use PDO;
+
+
+class CartsModel
 {
+    private $conn;
+
     public function  __construct()
     {
-        parent::getConnection();
+        $this->conn = new Database();
     }
 
     public function getAllCarts($user_id, $cart_session)

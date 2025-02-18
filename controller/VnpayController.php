@@ -1,5 +1,7 @@
 <?php
-require_once "./env.php";
+// require_once "./env.php";
+namespace App\Controllers;
+
 class VnPayController
 {
     private $vnp_TmnCode;

@@ -1,9 +1,12 @@
 <?php
-require_once "model/ProductModel.php";
-require_once "model/CategoryModel.php";
-require_once "model/SizeModel.php";
-require_once "model/ColorModel.php";
-require_once 'view/helpers.php';
+
+namespace App\Controllers;
+
+use App\Models\ProductModel;
+use App\Models\CategoryModel;
+use App\Models\SizeModel;
+use App\Models\ColorModel;
+use App\Core\BladeServiceProvider;
 
 class ProductController
 {
@@ -22,24 +25,31 @@ class ProductController
 
     public function index()
     {
+        $title = 'Products';
         $products = $this->ProductModel->getAllProducts();
-        renderView('view/admin/products/index.php', compact('products'), 'Products', 'admin');
+        // renderView('view/admin/products/index.php', compact('products'), 'Products', 'admin');
+        BladeServiceProvider::render('admin.products.index', compact('products', 'title'));
     }
 
     public function showHomeProduct()
     {
+        $title = 'Home';
         $products = $this->ProductModel->getAllProducts();
-        renderView('view/index.php', compact('products'), 'Home');
+        // renderView('view/index.php', compact('products'), 'Home');
+        BladeServiceProvider::render('index', compact('products', 'title'));
     }
 
     public function show($id)
     {
+        $title = 'Product Detail';
         $product = $this->ProductModel->getProductById($id);
-        renderView('view/products/show.php', compact('product'), 'Product Detail', 'admin');
+        // renderView('view/products/show.php', compact('product'), 'Product Detail', 'admin');
+        BladeServiceProvider::render('admin.products.show', compact('product', 'title'));
     }
 
     public function create()
     {
+        $title = 'Add Product';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'];
@@ -113,7 +123,8 @@ class ProductController
 
             if (!empty($errors)) {
                 $categories = $this->CategoryModel->getAllCategories();
-                renderView('view/admin/products/create.php', compact('errors', 'categories'), 'Create Product', 'admin');
+                // renderView('view/admin/products/create.php', compact('errors', 'categories'), 'Create Product', 'admin');
+                BladeServiceProvider::render('admin.products.create', compact('errors', 'categories', 'title'));
             } else {
                 $product_id = $this->ProductModel->addProductWithImages($name, $price, $description, $imagePath, $quantity, $sku, $categories_id, $uploadedImages);
 
@@ -127,12 +138,14 @@ class ProductController
             }
         } else {
             $categories = $this->CategoryModel->getAllCategories();
-            renderView('view/admin/products/create.php', compact('categories'), 'Create Product', 'admin');
+            // renderView('view/admin/products/create.php', compact('categories'), 'Create Product', 'admin');
+            BladeServiceProvider::render('admin.products.create', compact('categories', 'title'));
         }
     }
 
     public function update($id)
     {
+        $title = 'Update Product';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'];
             $price = $_POST['price'];
@@ -163,7 +176,8 @@ class ProductController
             header('Location: /admin/products');
         } else {
             $product = $this->ProductModel->getProductById($id);
-            renderView('view/admin/products/edit.php', compact('product'), 'Update Product', 'admin');
+            // renderView('view/admin/products/edit.php', compact('product'), 'Update Product', 'admin');
+            BladeServiceProvider::render('admin.products.edit', compact('product', 'title'));
         }
     }
 

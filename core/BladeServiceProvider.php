@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Core;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Illuminate\Filesystem\Filesystem;

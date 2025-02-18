@@ -1,11 +1,20 @@
 <?php
-require_once "Database.php";
 
-class OrderModel extends Database
+namespace App\Models;
+
+use App\Core\Database;
+use PDO;
+use Exception;
+
+class OrderModel
 {
-    public function __construct()
+    private $conn;
+
+    public function  __construct()
     {
-        parent::getConnection();
+        // $this->conn = new Database();
+        $database = new Database();
+        $this->conn = $database->getConnection();
     }
 
     public function getAllOrders()

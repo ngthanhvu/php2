@@ -1,6 +1,10 @@
 <?php
-require_once "model/CategoryModel.php";
-require_once "view/helpers.php";
+// require_once "model/CategoryModel.php";
+// require_once "view/helpers.php";
+// require_once 'core/BladeServiceProvider.php';
+namespace App\Controllers;
+
+use App\Models\CategoryModel;
 
 class CategoryController
 {

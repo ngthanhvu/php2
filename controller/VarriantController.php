@@ -1,7 +1,9 @@
 <?php
-require_once "model/ColorModel.php";
-require_once "model/SizeModel.php";
-require_once 'view/helpers.php';
+
+namespace App\Controllers;
+
+use App\Models\ColorModel;
+use App\Models\SizeModel;
 
 class VarriantController
 {
