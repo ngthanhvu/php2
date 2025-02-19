@@ -13,6 +13,7 @@ use App\Controllers\VnPayController;
 use App\Controllers\VarriantController;
 use App\Controllers\ProductsVarriantController;
 use App\Controllers\OrderController;
+use App\Controllers\MomoController;
 use App\Routers\Router;
 
 $router = new Router();
@@ -25,6 +26,7 @@ $VnpayController = new VnPayController();
 $VarriantController = new VarriantController();
 $ProductsVarriantController = new ProductsVarriantController();
 $OrderController = new OrderController();
+$MomoController = new MomoController();
 
 $router->addMiddleware('logRequest');
 
@@ -64,6 +66,8 @@ $router->addRoute("/auth/google", [$AuthController, "loginWithGoogle"]);
 //payment
 $router->addRoute("/payment/create", [$VnpayController, "createPayment"]);
 $router->addRoute("/payment/callback", [$VnpayController, "vnpayReturn"]);
+$router->addRoute("/payment/momo/create", [$MomoController, "createPayment"]);
+$router->addRoute("/payment/momo/callback", [$MomoController, "momoCallback"]);
 
 //index product
 $router->addRoute("/product", [$Controller, "product"]);

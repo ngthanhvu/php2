@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Core\BladeServiceProvider;
+use App\Models\OrderModel;
+use App\Models\MailModel;
 
 class VnPayController
 {

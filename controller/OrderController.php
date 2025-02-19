@@ -49,7 +49,11 @@ class OrderController
             echo '</form>';
             echo '<script>document.getElementById("vnpayForm").submit();</script>';
         } elseif ($payment_method == "momo") {
-            echo "Momo";
+            // echo "Momo";
+            echo '<form id="momoForm" action="/payment/momo/create" method="POST">';
+            echo '<input type="hidden" name="amount" value="' . $total_amount . '">';
+            echo '</form>';
+            echo '<script>document.getElementById("momoForm").submit();</script>';
         }
     }
 
