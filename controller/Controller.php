@@ -89,6 +89,6 @@ class Controller
         $title = "Thống tin cá nhân";
         $user_id = $_SESSION['user']['id'];
         $orders = $this->orderModel->getOrderByUserId($user_id);
-        BladeServiceProvider::render('profile', compact('orders', 'title'));
+        BladeServiceProvider::render('profile.profile', compact('orders', 'title'));
     }
 }

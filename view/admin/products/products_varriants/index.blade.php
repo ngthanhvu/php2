@@ -40,4 +40,5 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+<a href="/admin/products" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Trở về</a>
 @endsection

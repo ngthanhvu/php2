@@ -12,7 +12,6 @@ class OrderModel
 
     public function  __construct()
     {
-        // $this->conn = new Database();
         $database = new Database();
         $this->conn = $database->getConnection();
     }
@@ -106,7 +105,13 @@ class OrderModel
         $sql = "UPDATE orders SET status = ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$status, $order_id]);
-        return $stmt->rowCount();
+
+        $sql = "SELECT shipping_address FROM orders WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$order_id]);
+        $shipping_address = $stmt->fetchColumn();
+
+        return $shipping_address;
     }
 
     public function detailOrder($order_id)

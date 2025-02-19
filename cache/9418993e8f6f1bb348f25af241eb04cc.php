@@ -40,6 +40,7 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+<a href="/admin/products" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Trở về</a>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\FPOLY\PHP2\asm_gd1\view/admin/products/products_varriants/index.blade.php ENDPATH**/ ?>

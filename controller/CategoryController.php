@@ -1,10 +1,9 @@
 <?php
-// require_once "model/CategoryModel.php";
-// require_once "view/helpers.php";
-// require_once 'core/BladeServiceProvider.php';
+
 namespace App\Controllers;
 
 use App\Models\CategoryModel;
+use App\Core\BladeServiceProvider;
 
 class CategoryController
 {
@@ -18,12 +17,14 @@ class CategoryController
 
     public function index()
     {
+        $title = "Categories";
         $categories = $this->categoryModel->index();
-        renderView("view/admin/categories/index.php", compact('categories'), "Categories", "admin");
+        BladeServiceProvider::render('admin.categories.index', compact('categories', 'title'));
     }
 
     public function create()
     {
+        $title = "Create Category";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
 
@@ -34,7 +35,7 @@ class CategoryController
             }
 
             if (!empty($errors)) {
-                renderView("view/admin/categories/create.php", compact('errors'), "Create Category", "admin");
+                BladeServiceProvider::render('admin.categories.create', compact('errors', 'title'));
             } else {
                 $this->categoryModel->create($name);
                 $_SESSION['message'] = "Category created successfully!";
@@ -42,7 +43,7 @@ class CategoryController
                 exit;
             }
         } else {
-            renderView("view/admin/categories/create.php", [], "Create Category", "admin");
+            BladeServiceProvider::render('admin.categories.create', compact('title'));
         }
     }
 
@@ -56,7 +57,8 @@ class CategoryController
             header("Location: /admin/categories");
         } else {
             $category = $this->categoryModel->getCategoryById($id);
-            renderView("view/admin/categories/edit.php", compact('category'), "Edit Category", "admin");
+            $title = "Edit Category";
+            BladeServiceProvider::render('admin.categories.edit', compact('category', 'title'));
         }
     }
 

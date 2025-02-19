@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ColorModel;
 use App\Models\SizeModel;
+use App\Core\BladeServiceProvider;
 
 class VarriantController
 {
@@ -18,18 +19,21 @@ class VarriantController
 
     public function indexSize()
     {
+        $title = "Sizes";
         $sizes = $this->sizeModel->getAllSizes();
-        renderView('admin/sizes/index.php', compact('sizes'), "Sizes", 'admin');
+        BladeServiceProvider::render('admin.sizes.index', compact('sizes', 'title'));
     }
 
     public function indexColor()
     {
+        $title = "Colors";
         $colors = $this->colorModel->getAllColors();
-        renderView('admin/colors/index.php', compact('colors'), "Colors", 'admin');
+        BladeServiceProvider::render('admin.colors.index', compact('colors', 'title'));
     }
 
     public function createColor()
     {
+        $title = "Create Color";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'];
@@ -38,19 +42,20 @@ class VarriantController
             }
 
             if (!empty($errors)) {
-                renderView('admin/colors/create.php', ['errors' => $errors], 'Create Color', 'admin');
+                BladeServiceProvider::render('admin.colors.create', compact('errors', 'title'));
             } else {
                 $this->colorModel->create($name);
                 $_SESSION['message'] = 'Color created successfully';
                 header('Location: /admin/colors');
             }
         } else {
-            renderView('admin/colors/create.php', [], 'Create Color', 'admin');
+            BladeServiceProvider::render('admin.colors.create', compact('title'));
         }
     }
 
     public function createSize()
     {
+        $title = "Create Size";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'] ?? '';
@@ -59,19 +64,20 @@ class VarriantController
             }
 
             if (!empty($errors)) {
-                renderView('admin/sizes/create.php', compact('errors'), 'Create Size', 'admin');
+                BladeServiceProvider::render('admin.sizes.create', compact('errors', 'title'));
             } else {
                 $this->sizeModel->create($name);
                 $_SESSION['message'] = 'Size created successfully';
                 header('Location: /admin/sizes');
             }
         } else {
-            renderView('admin/sizes/create.php', [], 'Create Size', 'admin');
+            BladeServiceProvider::render('admin.sizes.create', compact('title'));
         }
     }
 
     public function updateColor($id)
     {
+        $title = "Update Color";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'] ?? '';
@@ -80,7 +86,7 @@ class VarriantController
             }
 
             if (!empty($errors)) {
-                renderView('admin/colors/update.php', ['errors' => $errors], 'Update Color', 'admin');
+                BladeServiceProvider::render('admin.colors.update', compact('errors', 'title'));
             } else {
                 $this->colorModel->update($id, $name);
                 $_SESSION['message'] = 'Color updated successfully';
@@ -88,12 +94,13 @@ class VarriantController
             }
         } else {
             $color = $this->colorModel->getColorById($id);
-            renderView('admin/colors/update.php', ['color' => $color], 'Update Color', 'admin');
+            BladeServiceProvider::render('admin.colors.update', compact('color', 'title'));
         }
     }
 
     public function updateSize($id)
     {
+        $title = "Update Size";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'] ?? '';
@@ -102,7 +109,7 @@ class VarriantController
             }
 
             if (!empty($errors)) {
-                renderView('admin/sizes/update.php', ['errors' => $errors], 'Update Size', 'admin');
+                BladeServiceProvider::render('admin.sizes.update', compact('errors', 'title'));
             } else {
                 $this->sizeModel->update($id, $name);
                 $_SESSION['message'] = 'Size updated successfully';
@@ -110,7 +117,7 @@ class VarriantController
             }
         } else {
             $size = $this->sizeModel->getSizeById($id);
-            renderView('admin/sizes/update.php', ['size' => $size], 'Update Size', 'admin');
+            BladeServiceProvider::render('admin.sizes.update', compact('size', 'title'));
         }
     }
 

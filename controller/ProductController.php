@@ -27,7 +27,6 @@ class ProductController
     {
         $title = 'Products';
         $products = $this->ProductModel->getAllProducts();
-        // renderView('view/admin/products/index.php', compact('products'), 'Products', 'admin');
         BladeServiceProvider::render('admin.products.index', compact('products', 'title'));
     }
 
@@ -35,7 +34,6 @@ class ProductController
     {
         $title = 'Home';
         $products = $this->ProductModel->getAllProducts();
-        // renderView('view/index.php', compact('products'), 'Home');
         BladeServiceProvider::render('index', compact('products', 'title'));
     }
 
@@ -43,7 +41,6 @@ class ProductController
     {
         $title = 'Product Detail';
         $product = $this->ProductModel->getProductById($id);
-        // renderView('view/products/show.php', compact('product'), 'Product Detail', 'admin');
         BladeServiceProvider::render('admin.products.show', compact('product', 'title'));
     }
 
@@ -123,7 +120,6 @@ class ProductController
 
             if (!empty($errors)) {
                 $categories = $this->CategoryModel->getAllCategories();
-                // renderView('view/admin/products/create.php', compact('errors', 'categories'), 'Create Product', 'admin');
                 BladeServiceProvider::render('admin.products.create', compact('errors', 'categories', 'title'));
             } else {
                 $product_id = $this->ProductModel->addProductWithImages($name, $price, $description, $imagePath, $quantity, $sku, $categories_id, $uploadedImages);
@@ -138,7 +134,6 @@ class ProductController
             }
         } else {
             $categories = $this->CategoryModel->getAllCategories();
-            // renderView('view/admin/products/create.php', compact('categories'), 'Create Product', 'admin');
             BladeServiceProvider::render('admin.products.create', compact('categories', 'title'));
         }
     }
@@ -176,7 +171,6 @@ class ProductController
             header('Location: /admin/products');
         } else {
             $product = $this->ProductModel->getProductById($id);
-            // renderView('view/admin/products/edit.php', compact('product'), 'Update Product', 'admin');
             BladeServiceProvider::render('admin.products.edit', compact('product', 'title'));
         }
     }

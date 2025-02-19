@@ -13,6 +13,7 @@ class CartsModel
     public function  __construct()
     {
         $this->conn = new Database();
+        $this->conn = $this->conn->getConnection();
     }
 
     public function getAllCarts($user_id, $cart_session)

@@ -39,12 +39,15 @@ class OrderController
 
         if ($payment_method == "cod") {
             $order_id = $this->orderModel->createOrder($user_id, $status, $payment_method, $total_amount, $compact_address);
-            $this->mailModel->send($email, "Order Confirmation", "Your order " . $order_id . " has been placed successfully");
+            $this->mailModel->send($email, "Xác nhận đơn hàng", "mail_order", ['order_id' => $order_id]);
             var_dump("Created Order ID:", $order_id);
             header('Location: /success');
         } elseif ($payment_method == "vnpay") {
-            echo "VNPAY";
-            //            header('Location: /payment');
+            // echo "VNPAY";
+            echo '<form id="vnpayForm" action="/payment/create" method="POST">';
+            echo '<input type="hidden" name="amount" value="' . $total_amount . '">';
+            echo '</form>';
+            echo '<script>document.getElementById("vnpayForm").submit();</script>';
         } elseif ($payment_method == "momo") {
             echo "Momo";
         }
@@ -55,12 +58,33 @@ class OrderController
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $status = $_POST['status'];
             $order_id = $_POST['order_id'];
-            $this->orderModel->updateOrder($order_id, $status);
-            $this->mailModel->send("vuntpk03365@gmail.com", "Order Status Update", "Order " . $order_id . " has been updated to " . $status);
+
+            $shipping_address = $this->orderModel->updateOrder($order_id, $status);
+
+            $parts = explode(", ", $shipping_address);
+
+            $email = end($parts);
+
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->mailModel->send(
+                    $email,
+                    "Cập nhật trạng thái đơn hàng",
+                    "mail_status",
+                    [
+                        'name' => 'Khách hàng',
+                        'order_id' => $order_id,
+                        'status' => $status
+                    ]
+                );
+            } else {
+                var_dump("Invalid email format!");
+            }
+
             $_SESSION['message_orders'] = "Order status updated successfully!";
             header('Location: /admin/orders');
         }
     }
+
 
     public function deleteOrder($order_id)
     {

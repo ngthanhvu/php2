@@ -21,7 +21,7 @@ $CartController = new CartController();
 $AuthController = new AuthController();
 $ProductController = new ProductController();
 $CategoryController = new CategoryController();
-// $VnpayController = new VnPayController();
+$VnpayController = new VnPayController();
 $VarriantController = new VarriantController();
 $ProductsVarriantController = new ProductsVarriantController();
 $OrderController = new OrderController();
@@ -62,9 +62,8 @@ $router->addRoute("/auth/facebook", [$AuthController, "loginWithFacebook"]);
 $router->addRoute("/auth/google", [$AuthController, "loginWithGoogle"]);
 
 //payment
-// $router->addRoute("/payment/create", [$VnpayController, "createPayment"]);
-// $router->addRoute("/payment/callback", [$VnpayController, "vnpayReturn"]);
-
+$router->addRoute("/payment/create", [$VnpayController, "createPayment"]);
+$router->addRoute("/payment/callback", [$VnpayController, "vnpayReturn"]);
 
 //index product
 $router->addRoute("/product", [$Controller, "product"]);

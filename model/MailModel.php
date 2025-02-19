@@ -7,6 +7,7 @@ require_once "./vendor/autoload.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use App\Core\BladeServiceProvider;
 
 class MailModel
 {
@@ -37,13 +38,15 @@ class MailModel
         }
     }
 
-    public function send($to, $subject, $body, $altBody = '')
+    public function send($to, $subject, $template, $data = [])
     {
         try {
+            // Render nội dung email bằng Blade
+            $body = BladeServiceProvider::renderMail("emails.$template", $data);
+
             $this->mailer->addAddress($to);
             $this->mailer->Subject = $subject;
             $this->mailer->Body = $body;
-            $this->mailer->AltBody = $altBody;
             $this->mailer->isHTML(true);
             $this->mailer->send();
         } catch (Exception $e) {
