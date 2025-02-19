@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Core\BladeServiceProvider;
+use App\Models\OrderModel;
+use App\Models\MailModel;
 
 class MomoController
 {
@@ -11,6 +13,8 @@ class MomoController
     private $secretKey;
     private $momoUrl;
     private $returnUrl;
+    private $orderModel;
+    private $mailModel;
 
     public function __construct()
     {
@@ -19,6 +23,8 @@ class MomoController
         $this->secretKey = $_ENV['MOMO_SECRET_KEY'];
         $this->momoUrl = $_ENV['MOMO_URL'];
         $this->returnUrl = $_ENV['MOMO_RETURN_URL'];
+        $this->orderModel = new OrderModel();
+        $this->mailModel = new MailModel();
     }
 
     public function createPayment()
@@ -126,7 +132,22 @@ class MomoController
 
         if ($calculatedSignature === $data['signature']) {
             if ($resultCode == '0') {
-                echo "Thanh toán thành công. Đơn hàng #$orderId";
+                // echo "Thanh toán thành công. Đơn hàng #$orderId";
+                // $amount = $amount / 100;
+                $this->orderModel->createOrder(
+                    $_SESSION['order_data']['user_id'],
+                    "completed",
+                    $_SESSION['order_data']['payment_method'],
+                    $amount,
+                    $_SESSION['order_data']['compact_address']
+                );
+                $this->mailModel->send(
+                    $_SESSION['order_data']['email'],
+                    "Xác nhận đơn hàng",
+                    "mail_order",
+                    ['order_id' => $orderId]
+                );
+                unset($_SESSION['order_data']);
                 header("Location: /payment/success");
             } else {
                 echo "Thanh toán thất bại.";

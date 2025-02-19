@@ -37,19 +37,27 @@ class OrderController
 
         $compact_address = "$name, $phone, $address, $email";
 
+        $_SESSION['order_data'] = [
+            'user_id' => $user_id,
+            'status' => $status,
+            'payment_method' => $payment_method,
+            'total_amount' => $total_amount,
+            'compact_address' => $compact_address,
+            'email' => $email,
+        ];
+
         if ($payment_method == "cod") {
+
             $order_id = $this->orderModel->createOrder($user_id, $status, $payment_method, $total_amount, $compact_address);
             $this->mailModel->send($email, "Xác nhận đơn hàng", "mail_order", ['order_id' => $order_id]);
             var_dump("Created Order ID:", $order_id);
             header('Location: /success');
         } elseif ($payment_method == "vnpay") {
-            // echo "VNPAY";
             echo '<form id="vnpayForm" action="/payment/create" method="POST">';
             echo '<input type="hidden" name="amount" value="' . $total_amount . '">';
             echo '</form>';
             echo '<script>document.getElementById("vnpayForm").submit();</script>';
         } elseif ($payment_method == "momo") {
-            // echo "Momo";
             echo '<form id="momoForm" action="/payment/momo/create" method="POST">';
             echo '<input type="hidden" name="amount" value="' . $total_amount . '">';
             echo '</form>';

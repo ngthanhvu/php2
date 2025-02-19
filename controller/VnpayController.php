@@ -12,6 +12,8 @@ class VnPayController
     private $vnp_HashSecret;
     private $vnp_Url;
     private $vnp_Returnurl;
+    private $orderModel;
+    private $mailModel;
 
 
     public function __construct()
@@ -20,6 +22,8 @@ class VnPayController
         $this->vnp_HashSecret = $_ENV['VNPAY_HASH_SECRET'];
         $this->vnp_Url = $_ENV['VNPAY_URL'];
         $this->vnp_Returnurl = $_ENV['VNPAY_RETURN_URL'];
+        $this->orderModel = new OrderModel();
+        $this->mailModel = new MailModel();
     }
 
     public function createPayment()
@@ -85,7 +89,20 @@ class VnPayController
             if ($inputData['vnp_ResponseCode'] == '00') {
                 echo "Giao dịch thanh cong";
                 $amount = $inputData['vnp_Amount'] / 100;
-                // $this->walletModel->createWallet($_SESSION['user']['id'], $amount, 'vnpay');
+                $order_id = $this->orderModel->createOrder(
+                    $_SESSION['order_data']['user_id'],
+                    "completed",
+                    $_SESSION['order_data']['payment_method'],
+                    $amount,
+                    $_SESSION['order_data']['compact_address']
+                );
+                $this->mailModel->send(
+                    $_SESSION['order_data']['email'],
+                    "Xác nhận đơn hàng",
+                    "mail_order",
+                    ['order_id' => $order_id]
+                );
+                unset($_SESSION['order_data']);
                 header("Location: /success");
             } else {
                 header("Location: /errors");
