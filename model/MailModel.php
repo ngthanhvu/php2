@@ -31,6 +31,8 @@ class MailModel
             $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mailer->Port = $_ENV['MAIL_PORT'];
 
+            $this->mailer->CharSet = 'UTF-8';
+
             // Default sender
             $this->mailer->setFrom('noreply@admin.com', 'Shopp Mailer');
         } catch (Exception $e) {

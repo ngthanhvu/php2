@@ -1,5 +1,5 @@
-@extends('layouts.admin')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="p-3 mb-4 rounded-3 bg-light">
         <h2>Cập nhật màu sắc</h2>
     </div>
@@ -12,4 +12,6 @@
             <button type="submit" class="btn btn-primary">Tạo màu sắc</button>
         </form>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\FPOLY\PHP2\asm_gd1\view/admin/colors/update.blade.php ENDPATH**/ ?>

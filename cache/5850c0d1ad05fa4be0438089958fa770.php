@@ -1,5 +1,5 @@
-@extends('layouts.admin')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="p-3 mb-4 rounded-3 bg-light">
         <h2>Cập nhật danh mục</h2>
     </div>
@@ -13,4 +13,6 @@
             <button type="submit" class="btn btn-warning">Cập nhật</button>
         </form>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\FPOLY\PHP2\asm_gd1\view/admin/categories/edit.blade.php ENDPATH**/ ?>

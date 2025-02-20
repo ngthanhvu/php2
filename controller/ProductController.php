@@ -25,28 +25,28 @@ class ProductController
 
     public function index()
     {
-        $title = 'Products';
+        $title = 'Sản phẩm';
         $products = $this->ProductModel->getAllProducts();
         BladeServiceProvider::render('admin.products.index', compact('products', 'title'));
     }
 
     public function showHomeProduct()
     {
-        $title = 'Home';
+        $title = 'Trang chủ';
         $products = $this->ProductModel->getAllProducts();
         BladeServiceProvider::render('index', compact('products', 'title'));
     }
 
     public function show($id)
     {
-        $title = 'Product Detail';
+        $title = 'Chi tiêt sản phẩm';
         $product = $this->ProductModel->getProductById($id);
         BladeServiceProvider::render('admin.products.show', compact('product', 'title'));
     }
 
     public function create()
     {
-        $title = 'Add Product';
+        $title = 'Thêm sản phẩm';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'];
