@@ -7,6 +7,7 @@ use App\Models\CartsModel;
 use App\Models\OrderModel;
 use App\Models\ProductModel;
 use App\Models\ProductsVarriantModel;
+use App\Models\UserModel;
 use App\Core\BladeServiceProvider;
 
 class Controller
@@ -16,6 +17,7 @@ class Controller
     private $productsVarriantModel;
     private $cartsModel;
     private $orderModel;
+    private $userModel;
 
     public function __construct()
     {
@@ -24,6 +26,7 @@ class Controller
         $this->productsVarriantModel = new ProductsVarriantModel();
         $this->cartsModel = new CartsModel();
         $this->orderModel = new OrderModel();
+        $this->userModel = new UserModel();
     }
     public function index()
     {
@@ -39,11 +42,6 @@ class Controller
         $products = $this->productModel->getAllProducts();
         $categories = $this->categoryModel->getAllCategories();
         BladeServiceProvider::render('admin.index', compact('products', 'categories', 'title'));
-    }
-
-    public function payment()
-    {
-        // renderView('view/payment.php', compact('payments'), 'Nạp thẻ');
     }
 
     public function product()
@@ -89,6 +87,13 @@ class Controller
         $title = "Thống tin cá nhân";
         $user_id = $_SESSION['user']['id'];
         $orders = $this->orderModel->getOrderByUserId($user_id);
-        BladeServiceProvider::render('profile.profile', compact('orders', 'title'));
+        $users = $this->userModel->getUserById($user_id);
+        BladeServiceProvider::render('profile.profile', compact('orders', 'users', 'title'));
+    }
+
+    public function tracking()
+    {
+        $title = "Theo dõi đơn hàng";
+        BladeServiceProvider::render('tracking', compact('title'));
     }
 }

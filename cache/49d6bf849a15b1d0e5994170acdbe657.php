@@ -30,7 +30,22 @@
                     <td><?php echo $order['id']; ?></td>
                     <td><?php echo $order['payment_method']; ?></td>
                     <td>
-                        <?php echo $order['status']; ?>
+                        <?php switch($type = $order['status']):
+                            case ('pending'): ?>
+                                <span class="badge bg-warning text-dark">Chờ xử lý</span>
+                            <?php break; ?>
+
+                            <?php case ('completed'): ?>
+                                <span class="badge bg-success">Hoàn thành</span>
+                            <?php break; ?>
+
+                            <?php case ('canceled'): ?>
+                                <span class="badge bg-danger">Hủy bỏ</span>
+                            <?php break; ?>
+
+                            <?php default: ?>
+                                <span class="badge bg-secondary">Không xác định</span>
+                        <?php endswitch; ?>
                         <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
                             data-bs-target="#updateStatusModal<?php echo $order['id']; ?>">
                             <i class="fa-regular fa-pen-to-square"></i>

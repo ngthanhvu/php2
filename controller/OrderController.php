@@ -19,7 +19,7 @@ class OrderController
 
     public function index()
     {
-        $title = 'Orders';
+        $title = 'Đơn hàng';
         $orders = $this->orderModel->getAllOrders();
         BladeServiceProvider::render('admin.orders.index', compact('orders', 'title'));
     }
@@ -103,5 +103,16 @@ class OrderController
         $this->orderModel->detailOrder($order_id);
         $_SESSION['message_orders'] = "Order deleted successfully!";
         header('Location: /admin/orders');
+    }
+
+    public function getOrdersById($id)
+    {
+        $orders = $this->orderModel->getOrderById($id);
+        // echo json_encode($orders);
+        if ($orders) {
+            echo json_encode($orders);
+        } else {
+            echo json_encode(['success' => false]);
+        }
     }
 }

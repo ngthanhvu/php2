@@ -110,5 +110,10 @@ $router->addRoute("/success", [$Controller, "success"]);
 
 //profile
 $router->addRoute("/profile", [$Controller, "profile"], ['isUser']);
+$router->addRoute("/profile/update", [$AuthController, "updateProfile"], ['isUser']);
+
+//tracking
+$router->addRoute("/tracking", [$Controller, "tracking"]);
+$router->addRoute("/tracking/get/{id}", [$OrderController, "getOrdersById"]);
 
 $router->dispatch();

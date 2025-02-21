@@ -1,7 +1,7 @@
 
 <?php $__env->startSection('content'); ?>
     <div class="p-3 mb-4 rounded-3" style="background-color: #fff;">
-        <h2>Dashboard</h2>
+        <h2>Bảng điều khiển</h2>
     </div>
     <div class="p-3 mb-4 rounded-3" style="background-color: #fff;">
 

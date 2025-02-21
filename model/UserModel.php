@@ -133,4 +133,16 @@ class UserModel
         $stmt->bindParam(':email', $email);
         $stmt->execute();
     }
+
+    public function updateProfile($user_id, $username, $phone, $email, $address)
+    {
+        $query = "UPDATE users SET username = :username, phone = :phone, email = :email, address = :address WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':phone', $phone);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':id', $user_id);
+        return $stmt->execute();
+    }
 }

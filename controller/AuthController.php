@@ -273,4 +273,20 @@ class AuthController
             die($e->getMessage());
         }
     }
+
+    public function updateProfile()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user_id = $_SESSION['user']['id'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+            $address = $_POST['address'];
+            var_dump($phone, $address);
+
+            $this->UserModel->updateProfile($user_id, $username, $phone, $email, $address);
+            header('Location: /profile');
+        } else {
+        }
+    }
 }

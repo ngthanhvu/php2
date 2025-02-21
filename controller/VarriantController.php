@@ -19,21 +19,21 @@ class VarriantController
 
     public function indexSize()
     {
-        $title = "Sizes";
+        $title = "Kích cỡ";
         $sizes = $this->sizeModel->getAllSizes();
         BladeServiceProvider::render('admin.sizes.index', compact('sizes', 'title'));
     }
 
     public function indexColor()
     {
-        $title = "Colors";
+        $title = "Màu sắc";
         $colors = $this->colorModel->getAllColors();
         BladeServiceProvider::render('admin.colors.index', compact('colors', 'title'));
     }
 
     public function createColor()
     {
-        $title = "Create Color";
+        $title = "Thêm màu sắc";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'];
@@ -55,7 +55,7 @@ class VarriantController
 
     public function createSize()
     {
-        $title = "Create Size";
+        $title = "Thêm kích cỡ";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'] ?? '';
@@ -77,7 +77,7 @@ class VarriantController
 
     public function updateColor($id)
     {
-        $title = "Update Color";
+        $title = "Cập nhật màu sắc";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'] ?? '';
@@ -100,7 +100,7 @@ class VarriantController
 
     public function updateSize($id)
     {
-        $title = "Update Size";
+        $title = "Cập nhật kích cỡ";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $name = $_POST['name'] ?? '';

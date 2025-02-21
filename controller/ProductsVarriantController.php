@@ -26,7 +26,7 @@ class ProductsVarriantController
 
     public function addProductVarrant($id)
     {
-        $title = 'Add Product Variant';
+        $title = 'Thêm biến thể';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $product_id = $_POST['product_id'];
@@ -91,7 +91,7 @@ class ProductsVarriantController
 
     public function getAllProductVariants()
     {
-        $title = 'Product Variants';
+        $title = 'Biến thể sản phẩm';
         $products = $this->productsVarriantModel->getAllProductVariants();
         $colors = $this->ColorModel->getAllColors();
         $sizes = $this->SizeModel->getAllSizes();

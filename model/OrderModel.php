@@ -32,6 +32,14 @@ class OrderModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getOrderById($id)
+    {
+        $sql = "SELECT * FROM orders WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function createOrder($user_id, $status, $payment_method, $total_amount, $compact_address)
     {
         $this->conn->beginTransaction();
