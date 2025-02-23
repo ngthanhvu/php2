@@ -134,24 +134,26 @@ class MomoController
             if ($resultCode == '0') {
                 // echo "Thanh toán thành công. Đơn hàng #$orderId";
                 // $amount = $amount / 100;
+                $code = $_SESSION['order_data']['code'];
                 $this->orderModel->createOrder(
                     $_SESSION['order_data']['user_id'],
                     "completed",
                     $_SESSION['order_data']['payment_method'],
                     $amount,
-                    $_SESSION['order_data']['compact_address']
+                    $_SESSION['order_data']['compact_address'],
+                    $code
                 );
                 $this->mailModel->send(
                     $_SESSION['order_data']['email'],
                     "Xác nhận đơn hàng",
                     "mail_order",
-                    ['order_id' => $orderId]
+                    ['order_id' => $orderId, 'code' => $code]
                 );
                 unset($_SESSION['order_data']);
-                header("Location: /payment/success");
+                header("Location: /success?code=$code");
             } else {
                 echo "Thanh toán thất bại.";
-                header("Location: /payment/errors");
+                header("Location: /errors");
             }
         } else {
             echo "Chữ ký không hợp lệ! <br>";

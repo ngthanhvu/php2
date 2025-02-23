@@ -89,21 +89,23 @@ class VnPayController
             if ($inputData['vnp_ResponseCode'] == '00') {
                 echo "Giao dịch thanh cong";
                 $amount = $inputData['vnp_Amount'] / 100;
+                $code = $_SESSION['order_data']['code'];
                 $order_id = $this->orderModel->createOrder(
                     $_SESSION['order_data']['user_id'],
                     "completed",
                     $_SESSION['order_data']['payment_method'],
                     $amount,
-                    $_SESSION['order_data']['compact_address']
+                    $_SESSION['order_data']['compact_address'],
+                    $code
                 );
                 $this->mailModel->send(
                     $_SESSION['order_data']['email'],
                     "Xác nhận đơn hàng",
                     "mail_order",
-                    ['order_id' => $order_id]
+                    ['order_id' => $order_id, 'code' => $code]
                 );
                 unset($_SESSION['order_data']);
-                header("Location: /success");
+                header("Location: /success?code=$code");
             } else {
                 header("Location: /errors");
                 echo "Giao dịch không thành công.";

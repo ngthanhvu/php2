@@ -27,7 +27,8 @@
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
                                     <?php if($users['oauth_provider'] == 'google'): ?>
-                                        <input type="email" class="form-control" value="<?php echo e($users['email']); ?>" readonly>
+                                        <input type="email" class="form-control bg-light" name="email"
+                                            value="<?php echo e($users['email']); ?>" readonly>
                                         <small class="text-muted">Địa chỉ email này được liên kết với tài khoản
                                             Google</small>
                                     <?php else: ?>

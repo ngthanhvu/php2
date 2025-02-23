@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $title ?? 'Errors' ?> | Shopp
+        <?= $title ?? 'Errors' ?> | Mua bán hàng số 1 thế giới
     </title>
     <!-- icon -->
     <link rel="shortcut icon"
@@ -30,6 +30,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/751e818311.js" crossorigin="anonymous"></script>
+    {{-- swal --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
     * {
@@ -90,7 +92,8 @@
                         <div class="col-md-4">
                             <form action="" method="post">
                                 <div class="input-group mb-3 mt-3 d-flex justify-content-center">
-                                    <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
+                                    <input type="text" id="search" class="form-control"
+                                        placeholder="Nhập từ khóa tìm kiếm">
                                 </div>
                             </form>
                         </div>
@@ -107,29 +110,26 @@
                                     </a>
                                 </div>
                                 <!-- Avatar và tên -->
-
                                 <?php
                                 if (isset($_SESSION['user'])) {
                                     echo '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="d-flex align-items-center">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="/profile"><img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Thông tin cá nhân"></a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="text-end">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="text-center">' .
+                                                                                                    <div class="d-flex align-items-center">
+                                                                                                        <a href="/profile"><img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Thông tin cá nhân"></a>
+                                                                                                        <div class="text-end">
+                                                                                                            <div class="text-center">' .
                                         (isset($_SESSION['user']) ? strtoupper($_SESSION['user']['username']) : 'NGƯỜI DÙNG') .
                                         '</div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ';
+                                                                                                            <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    ';
                                 } else {
-                                    echo '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="d-flex align-items-center">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="text-end">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div><a href="/login" class="text-primary text-decoration-none">login</a href="/login"></div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ';
+                                    echo '<div class="d-flex align-items-center">
+                                                            <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
+                                                            <div class="text-end">
+                                                            <div><a href="/login" class="text-primary text-decoration-none">Đăng nhập</a href="/login"></div>
+                                                            </div>
+                                                            </div>';
                                 }
                                 ?>
                             </div>

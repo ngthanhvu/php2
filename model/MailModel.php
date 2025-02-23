@@ -34,7 +34,7 @@ class MailModel
             $this->mailer->CharSet = 'UTF-8';
 
             // Default sender
-            $this->mailer->setFrom('noreply@admin.com', 'Shopp Mailer');
+            $this->mailer->setFrom('noreply@admin.com', 'shopbanhang.online');
         } catch (Exception $e) {
             throw new Exception("Mailer configuration error: {$e->getMessage()}");
         }

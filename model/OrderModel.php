@@ -40,15 +40,15 @@ class OrderModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function createOrder($user_id, $status, $payment_method, $total_amount, $compact_address)
+    public function createOrder($user_id, $status, $payment_method, $total_amount, $compact_address, $code)
     {
         $this->conn->beginTransaction();
 
         try {
-            $sql = "INSERT INTO orders (user_id, status, payment_method, total_amount, shipping_address) 
-                VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO orders (user_id, status, payment_method, total_amount, shipping_address, code) 
+                VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([$user_id, $status, $payment_method, $total_amount, $compact_address]);
+            $stmt->execute([$user_id, $status, $payment_method, $total_amount, $compact_address, $code]);
 
             $order_id = $this->conn->lastInsertId();
             var_dump("Order ID:", $order_id);
@@ -122,11 +122,19 @@ class OrderModel
         return $shipping_address;
     }
 
-    public function detailOrder($order_id)
+    // public function detailOrder($order_id)
+    // {
+    //     $sql = "SELECT * FROM orders WHERE id = ?";
+    //     $stmt = $this->conn->prepare($sql);
+    //     $stmt->execute([$order_id]);
+    //     return $stmt->fetch(PDO::FETCH_ASSOC);
+    // }
+
+    public function detailOrder($code)
     {
-        $sql = "SELECT * FROM orders WHERE id = ?";
+        $sql = "SELECT * FROM orders WHERE code = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$order_id]);
+        $stmt->execute([$code]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

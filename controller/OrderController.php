@@ -34,6 +34,7 @@ class OrderController
         $phone = $_POST['phone'];
         $address = $_POST['address'];
         $email = $_POST['email'];
+        $code = rand(100000, 999999);
 
         $compact_address = "$name, $phone, $address, $email";
 
@@ -44,14 +45,15 @@ class OrderController
             'total_amount' => $total_amount,
             'compact_address' => $compact_address,
             'email' => $email,
+            'code' => $code
         ];
 
         if ($payment_method == "cod") {
 
-            $order_id = $this->orderModel->createOrder($user_id, $status, $payment_method, $total_amount, $compact_address);
-            $this->mailModel->send($email, "Xác nhận đơn hàng", "mail_order", ['order_id' => $order_id]);
+            $order_id = $this->orderModel->createOrder($user_id, $status, $payment_method, $total_amount, $compact_address, $code);
+            $this->mailModel->send($email, "Xác nhận đơn hàng", "mail_order", ['order_id' => $order_id, 'code' => $code]);
             var_dump("Created Order ID:", $order_id);
-            header('Location: /success');
+            header('Location: /success?code=' . $code);
         } elseif ($payment_method == "vnpay") {
             echo '<form id="vnpayForm" action="/payment/create" method="POST">';
             echo '<input type="hidden" name="amount" value="' . $total_amount . '">';
@@ -107,8 +109,8 @@ class OrderController
 
     public function getOrdersById($id)
     {
-        $orders = $this->orderModel->getOrderById($id);
-        // echo json_encode($orders);
+        // $orders = $this->orderModel->getOrderById($id);
+        $orders = $this->orderModel->detailOrder($id);
         if ($orders) {
             echo json_encode($orders);
         } else {

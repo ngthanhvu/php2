@@ -85,7 +85,13 @@
             let trackingCode = document.getElementById("trackingCode").value.trim();
             document.getElementById("enteredTrackingCode").textContent = trackingCode;
             if (trackingCode === "") {
-                alert("Vui lòng nhập mã đơn hàng.");
+                // alert("Vui lòng nhập mã đơn hàng.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Vui lòng nhập mã đơn hàng',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 return;
             }
 
@@ -110,7 +116,7 @@
                 document.getElementById("orderId").textContent = orderData.id;
                 document.getElementById("orderDate").textContent = orderData.created_at;
                 document.getElementById("orderStatus").textContent = statusMap[orderData.status] ||
-                "❓ Không rõ";
+                    "❓ Không rõ";
                 document.getElementById("orderIcon").textContent = statusMap[orderData.status] ? statusMap[
                     orderData.status][0] : "❓";
                 document.getElementById("orderTotal").textContent = orderData.total_amount + " ₫";
