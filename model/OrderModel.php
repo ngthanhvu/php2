@@ -63,8 +63,11 @@ class OrderModel
                 throw new Exception("Giỏ hàng trống, không thể tạo đơn hàng.");
             }
 
+            $productModel = new ProductModel();
+            $variantModel = new ProductsVarriantModel();
+
             foreach ($cart_items as $item) {
-                $sql = "SELECT product_id, id as variant_id FROM products_variants WHERE sku = ?";
+                $sql = "SELECT product_id, id AS variant_id FROM products_variants WHERE sku = ?";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute([$item['sku']]);
                 $product_variant = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -72,6 +75,19 @@ class OrderModel
                 if ($product_variant) {
                     $products_id = $product_variant['product_id'];
                     $variant_id = $product_variant['variant_id'];
+
+                    // Kiểm tra số lượng trong products_variants
+                    $sql = "SELECT quantity FROM products_variants WHERE id = ?";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->execute([$variant_id]);
+                    $variant_quantity = $stmt->fetchColumn();
+
+                    if ($variant_quantity < $item['quantity']) {
+                        throw new Exception("Số lượng biến thể (SKU: {$item['sku']}) không đủ, chỉ còn: $variant_quantity.");
+                    }
+
+                    // Trừ số lượng trong products_variants
+                    $variantModel->UpdateQuantityAfterBuy($variant_id, $item['quantity']);
                 } else {
                     $sql = "SELECT id FROM products WHERE sku = ?";
                     $stmt = $this->conn->prepare($sql);
@@ -85,6 +101,19 @@ class OrderModel
                         throw new Exception("Không tìm thấy sản phẩm với SKU: " . $item['sku']);
                     }
                 }
+
+                // Kiểm tra số lượng trong products
+                $sql = "SELECT quantity FROM products WHERE id = ?";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute([$products_id]);
+                $product_quantity = $stmt->fetchColumn();
+
+                if ($product_quantity < $item['quantity']) {
+                    throw new Exception("Số lượng sản phẩm (ID: $products_id) không đủ, chỉ còn: $product_quantity.");
+                }
+
+                // Trừ số lượng trong products
+                $productModel->UpdateQuanityAfterBuy($products_id, $item['quantity']);
 
                 $sql = "INSERT INTO orders_detail (orders_id, products_id, variant_id, quantity, price, sku) 
                     VALUES (?, ?, ?, ?, ?, ?)";
@@ -122,19 +151,19 @@ class OrderModel
         return $shipping_address;
     }
 
-    // public function detailOrder($order_id)
-    // {
-    //     $sql = "SELECT * FROM orders WHERE id = ?";
-    //     $stmt = $this->conn->prepare($sql);
-    //     $stmt->execute([$order_id]);
-    //     return $stmt->fetch(PDO::FETCH_ASSOC);
-    // }
-
     public function detailOrder($code)
     {
         $sql = "SELECT * FROM orders WHERE code = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$code]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getOrderDetailsById($order_id)
+    {
+        $sql = "SELECT products_id AS id, quantity FROM orders_detail WHERE orders_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$order_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -118,4 +118,13 @@ class ProductsVarriantModel
         $stmt->execute();
         return $stmt->fetchColumn();
     }
+
+    public function UpdateQuantityAfterBuy($variant_id, $quantity)
+    {
+        $query = "UPDATE products_variants SET quantity = quantity - :quantity WHERE id = :variant_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':variant_id', $variant_id, PDO::PARAM_INT);
+        $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

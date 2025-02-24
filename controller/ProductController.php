@@ -26,9 +26,38 @@ class ProductController
     public function index()
     {
         $title = 'Sản phẩm';
-        $products = $this->ProductModel->getAllProducts();
-        BladeServiceProvider::render('admin.products.index', compact('products', 'title'));
+
+        $limit = 6;
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+
+        $products = $this->ProductModel->getPaginatedProducts($limit, $offset);
+        $totalProducts = $this->ProductModel->getTotalProducts();
+        $totalPages = ceil($totalProducts / $limit);
+
+        BladeServiceProvider::render('admin.products.index', compact('products', 'title', 'totalPages', 'page'));
     }
+
+    public function search()
+    {
+        if (isset($_GET['keyword'])) {
+            $keyword = $_GET['keyword'];
+            $products = $this->ProductModel->searchProducts($keyword);
+            echo json_encode($products);
+        }
+    }
+
+    public function filter()
+    {
+        $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : null;
+        $min_price = isset($_GET['min_price']) ? $_GET['min_price'] : null;
+        $max_price = isset($_GET['max_price']) ? $_GET['max_price'] : null;
+
+        $products = $this->ProductModel->filterProducts($category_id, $min_price, $max_price);
+
+        echo json_encode($products);
+    }
+
 
     public function showHomeProduct()
     {

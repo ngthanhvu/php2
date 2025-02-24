@@ -42,6 +42,8 @@ $router->addRoute("/admin/products/delete/{id}", [$ProductController, "delete"],
 $router->addRoute("/admin/products/addProductVarrant/{id}", [$ProductsVarriantController, "addProductVarrant"], ['isAdmin']);
 $router->addRoute("/admin/products/products-variants/{id}", [$ProductsVarriantController, "getAllProductVariants"], ['isAdmin']);
 $router->addRoute("/admin/products/deleteProductVariant/{id}", [$ProductsVarriantController, "deleteProductVariant"], ['isAdmin']);
+$router->addRoute("/product/search", [$ProductController, "search"]);
+$router->addRoute("/product/filter", [$ProductController, "filter"]);
 
 // Categories
 $router->addRoute("/admin/categories", [$CategoryController, "index"], ['isAdmin']);

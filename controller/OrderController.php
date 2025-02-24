@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\OrderModel;
+use App\Models\ProductModel;
 use App\Models\MailModel;
 use App\Core\BladeServiceProvider;
 
@@ -10,11 +11,13 @@ class OrderController
 {
     private $orderModel;
     private $mailModel;
+    private $productModel;
 
     public function  __construct()
     {
         $this->orderModel = new OrderModel();
         $this->mailModel = new MailModel();
+        $this->productModel = new ProductModel();
     }
 
     public function index()
@@ -49,10 +52,17 @@ class OrderController
         ];
 
         if ($payment_method == "cod") {
-
             $order_id = $this->orderModel->createOrder($user_id, $status, $payment_method, $total_amount, $compact_address, $code);
             $this->mailModel->send($email, "Xác nhận đơn hàng", "mail_order", ['order_id' => $order_id, 'code' => $code]);
             var_dump("Created Order ID:", $order_id);
+            $products = $this->orderModel->getOrderDetailsById($order_id);
+            if (is_array($products) && !empty($products)) {
+                foreach ($products as $product) {
+                    $this->productModel->UpdateQuanityAfterBuy($product['id'], $product['quantity']);
+                }
+            } else {
+                echo "Không có sản phẩm nào trong đơn hàng!";
+            }
             header('Location: /success?code=' . $code);
         } elseif ($payment_method == "vnpay") {
             echo '<form id="vnpayForm" action="/payment/create" method="POST">';

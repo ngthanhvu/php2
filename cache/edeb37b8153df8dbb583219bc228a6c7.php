@@ -20,9 +20,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- fontawesome -->
     <script src="https://kit.fontawesome.com/751e818311.js" crossorigin="anonymous"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
 
 <style>
+    * {
+        font-family: 'Quicksand', sans-serif;
+    }
+
     body {
         background-color: #EAEAEA;
         margin: 0;

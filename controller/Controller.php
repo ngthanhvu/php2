@@ -28,6 +28,7 @@ class Controller
         $this->orderModel = new OrderModel();
         $this->userModel = new UserModel();
     }
+
     public function index()
     {
         $title = "Trang chủ";
@@ -47,9 +48,17 @@ class Controller
     public function product()
     {
         $title = "Sản phẩm";
+
+        $limit = 6;
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+
+        $products = $this->productModel->getPaginatedProducts($limit, $offset);
+        $totalProducts = $this->productModel->getTotalProducts();
+        $totalPages = ceil($totalProducts / $limit);
         $categories = $this->categoryModel->getAllCategories();
-        $products = $this->productModel->getAllProducts();
-        BladeServiceProvider::render('product', compact('products', 'categories', 'title'));
+
+        BladeServiceProvider::render('product', compact('products', 'categories', 'title', 'totalPages', 'page'));
     }
 
     public function detail($id)

@@ -12,7 +12,7 @@
         <table class="table table-bordered table-hover table-striped text-center mt-2">
             <thead>
                 <tr>
-                    <th>STT</th>
+                    <th>#</th>
                     <th>Hình ảnh</th>
                     <th>Tên sản phẩm</th>
                     <th>Biến thể</th>
@@ -37,7 +37,7 @@
                         <td><img src="http://localhost:8000/{{ $cart['product_image'] }}" alt="No image" width="100"></td>
                         <td>{{ $cart['product_name'] }}</td>
                         <td>{{ $cart['product_size'] }}, {{ $cart['product_color'] }}</td>
-                        <td>{{ $cart['price'] }}</td>
+                        <td>{{ number_format($cart['price'], 0, ',', '.') }}đ</td>
                         <td>
                             <button class="btn btn-outline-secondary btn-decrease" data-id="{{ $cart['id'] }}">-</button>
                             <input type="number"
@@ -46,7 +46,7 @@
                                 style="width: 70px; text-align: center; font-size: 1rem; font-weight: 500;">
                             <button class="btn btn-outline-secondary btn-increase" data-id="{{ $cart['id'] }}">+</button>
                         </td>
-                        <td>{{ $itemTotal }}</td>
+                        <td>{{ number_format($itemTotal, 0, ',', '.') }}đ</td>
                         <td>
                             <a href="/cart/delete/{{ $cart['id'] }}" class="btn btn-danger"><i
                                     class="fa-solid fa-trash-can"></i></a>

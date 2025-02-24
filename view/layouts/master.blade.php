@@ -90,12 +90,12 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <form action="" method="post">
-                                <div class="input-group mb-3 mt-3 d-flex justify-content-center">
-                                    <input type="text" id="search" class="form-control"
-                                        placeholder="Nhập từ khóa tìm kiếm">
-                                </div>
-                            </form>
+                            <div class="input-group mb-3 mt-3 d-flex justify-content-center">
+                                <input type="text" id="search" class="form-control"
+                                    placeholder="Nhập từ khóa tìm kiếm">
+                            </div>
+                            <div id="search-results" class="list-group position-absolute mt-1" style="width: 400px;">
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div class="d-flex justify-content-end mt-3 mb-3 gap-2">
@@ -113,23 +113,23 @@
                                 <?php
                                 if (isset($_SESSION['user'])) {
                                     echo '
-                                                                                                    <div class="d-flex align-items-center">
-                                                                                                        <a href="/profile"><img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Thông tin cá nhân"></a>
-                                                                                                        <div class="text-end">
-                                                                                                            <div class="text-center">' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="d-flex align-items-center">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="/profile"><img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Thông tin cá nhân"></a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="text-end">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="text-center">' .
                                         (isset($_SESSION['user']) ? strtoupper($_SESSION['user']['username']) : 'NGƯỜI DÙNG') .
                                         '</div>
-                                                                                                            <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    ';
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="/logout" class="text-danger text-decoration-none">Đăng xuất</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ';
                                 } else {
                                     echo '<div class="d-flex align-items-center">
-                                                            <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
-                                                            <div class="text-end">
-                                                            <div><a href="/login" class="text-primary text-decoration-none">Đăng nhập</a href="/login"></div>
-                                                            </div>
-                                                            </div>';
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <img src="https://muaclone247.com/assets/storage/images/avatar4N0.png" alt="avatar" class="rounded-circle me-2" width="40" height="40">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="text-end">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div><a href="/login" class="text-primary text-decoration-none">Đăng nhập</a href="/login"></div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>';
                                 }
                                 ?>
                             </div>
@@ -180,6 +180,65 @@
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            let searchInput = document.getElementById("search");
+            let searchResults = document.getElementById("search-results");
+
+            searchInput.addEventListener("input", function() {
+                let keyword = searchInput.value.trim();
+                if (keyword.length < 1) {
+                    searchResults.innerHTML = "";
+                    return;
+                }
+
+                fetch(`/product/search?keyword=${keyword}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        searchResults.innerHTML = "";
+                        if (data.length > 0) {
+                            data.forEach(product => {
+                                let item = document.createElement("a");
+                                item.href = `/detail/${product.id}`;
+                                item.className =
+                                    "list-group-item list-group-item-action d-flex align-items-center";
+
+                                let imagePath = product.image.startsWith("uploads/") ?
+                                    `http://localhost:8000/${product.image}` : product.image;
+
+                                let img = document.createElement("img");
+                                img.src = imagePath;
+                                img.className = "me-3";
+                                img.style.width = "50px";
+                                img.style.height = "50px";
+                                img.style.objectFit = "cover";
+                                img.style.borderRadius = "5px";
+
+                                let content = document.createElement("div");
+                                content.innerHTML = `
+                            <strong>${product.name}</strong><br>
+                            <small class="text-muted">${new Intl.NumberFormat("vi-VN").format(product.price)}đ</small>
+                        `;
+
+                                item.appendChild(img);
+                                item.appendChild(content);
+                                searchResults.appendChild(item);
+                            });
+                        } else {
+                            let noResult = document.createElement("div");
+                            noResult.className = "list-group-item text-muted";
+                            noResult.textContent = "Không tìm thấy sản phẩm";
+                            searchResults.appendChild(noResult);
+                        }
+                    })
+                    .catch(error => console.error("Lỗi:", error));
+            });
+
+            document.addEventListener("click", function(event) {
+                if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+                    searchResults.innerHTML = "";
+                }
             });
         });
     </script>
