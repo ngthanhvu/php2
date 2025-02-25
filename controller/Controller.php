@@ -9,6 +9,7 @@ use App\Models\ProductModel;
 use App\Models\ProductsVarriantModel;
 use App\Models\UserModel;
 use App\Models\AddressModel;
+use App\Models\RatingModel;
 use App\Core\BladeServiceProvider;
 
 class Controller
@@ -20,6 +21,7 @@ class Controller
     private $orderModel;
     private $addressModel;
     private $userModel;
+    private $ratingModel;
 
     public function __construct()
     {
@@ -30,6 +32,7 @@ class Controller
         $this->orderModel = new OrderModel();
         $this->userModel = new UserModel();
         $this->addressModel = new AddressModel();
+        $this->ratingModel = new RatingModel();
     }
 
     public function index()
@@ -73,7 +76,35 @@ class Controller
 
         $products_varriants = $this->productsVarriantModel->getAllProductVariantsById($id);
         $related_products = $this->productModel->RelatedProducts($category_id);
-        BladeServiceProvider::render('detail', compact('product', 'products_varriants', 'related_products', 'title'));
+
+        $ratings = $this->ratingModel->getRatingsByProduct($id);
+        $averageRating = $this->ratingModel->getAverageRating($id);
+        BladeServiceProvider::render('detail', compact('product', 'products_varriants', 'ratings', 'averageRating', 'related_products', 'title'));
+    }
+
+    public function rate($productId)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['user']['id'])) {
+                $_SESSION['cart_message'] = "Vui lòng đăng nhập để đánh giá sản phẩm!";
+                header("Location: /detail/$productId");
+                exit;
+            }
+
+            $userId = $_SESSION['user']['id'];
+            $rating = $_POST['rating'];
+            $comment = $_POST['comment'] ?? null;
+
+            if ($rating >= 1 && $rating <= 5) {
+                $this->ratingModel->addRating($productId, $userId, $rating, $comment);
+                header("Location: /detail/$productId");
+                exit;
+            } else {
+                $_SESSION['cart_message'] = "Điểm đánh giá không hợp lệ!";
+                header("Location: /detail/$productId");
+                exit;
+            }
+        }
     }
 
     public function success()
@@ -92,10 +123,11 @@ class Controller
     {
         $title = "Thanh toán";
         $user_id = $_SESSION['user']['id'] ?? null;
+        $addresses = $this->addressModel->getAllAddress($user_id);
         $cart_session = session_id();
 
         $carts = $this->cartsModel->getAllCarts($user_id, $cart_session);
-        BladeServiceProvider::render('checkout', compact('carts', 'title'));
+        BladeServiceProvider::render('checkout', compact('carts', 'addresses', 'title'));
     }
 
     public function profile()

@@ -112,7 +112,7 @@
                                 <button type="submit" class="btn btn-success">Thêm địa chỉ</button>
                             </form>
                         </div>
-                        <div class="tab-pane fade" id="history">
+                        {{-- <div class="tab-pane fade" id="history">
                             <h5 class="card-title">Lịch sử</h5>
                             <ul class="list-group">
                                 @forelse ($orders as $order)
@@ -127,13 +127,75 @@
                                     <p class='text-center mx-auto'>Không tìm thấy giao dịch</p>
                                 @endforelse
                             </ul>
+                        </div> --}}
+                        <div class="tab-pane fade" id="history">
+                            <h5 class="card-title">Lịch sử đơn hàng</h5>
+                            <ul class="list-group" id="order-list">
+                                @foreach ($orders as $order)
+                                    <li class="list-group-item order-item">
+                                        <strong>Giao dịch #{{ $order['id'] }}</strong> -
+                                        <span
+                                            class="badge bg-{{ $order['status'] == 'completed' ? 'success' : ($order['status'] == 'canceled' ? 'danger' : 'warning') }}">
+                                            {{ ucfirst($order['status']) }}
+                                        </span>
+                                        <br>
+                                        <strong>Số tiền:</strong> {{ number_format($order['total_amount'], 0, ',', '.') }}
+                                        ₫ <br>
+                                        <strong>Ngày tạo:</strong> {{ $order['created_at'] }}
+
+                                        <button class="btn btn-sm btn-primary float-end" data-bs-toggle="modal"
+                                            data-bs-target="#orderDetail{{ $order['id'] }}">Chi tiết</button>
+                                    </li>
+
+                                    <!-- Modal chi tiết đơn hàng -->
+                                    <div class="modal fade" id="orderDetail{{ $order['id'] }}" tabindex="-1">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Chi tiết đơn hàng #{{ $order['id'] }}</h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Mã đơn hàng:</strong> {{ $order['code'] ?? 'Chưa có mã' }}
+                                                    </p>
+                                                    <p><strong>Trạng thái:</strong>
+                                                        <span
+                                                            class="badge bg-{{ $order['status'] == 'completed' ? 'success' : ($order['status'] == 'canceled' ? 'danger' : 'warning') }}">
+                                                            {{ ucfirst($order['status']) }}
+                                                        </span>
+                                                    </p>
+                                                    <p><strong>Phương thức thanh toán:</strong>
+                                                        {{ strtoupper($order['payment_method']) }}</p>
+                                                    <p><strong>Tổng tiền:</strong>
+                                                        {{ number_format($order['total_amount'], 0, ',', '.') }} ₫</p>
+                                                    <p><strong>Địa chỉ giao hàng:</strong> {{ $order['shipping_address'] }}
+                                                    </p>
+                                                    <p><strong>Ngày tạo:</strong> {{ $order['created_at'] }}</p>
+                                                    <p><strong>Ngày cập nhật:</strong> {{ $order['updated_at'] }}</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </ul>
+
+                            <!-- Nút phân trang -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mt-3" id="pagination"></ul>
+                            </nav>
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let hash = window.location.hash;
@@ -150,6 +212,70 @@
                     history.replaceState(null, null, tab.getAttribute('href'));
                 });
             });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const ordersPerPage = 5;
+            const orderItems = document.querySelectorAll(".order-item");
+            const pagination = document.getElementById("pagination");
+            let currentPage = 1;
+            let totalPages = Math.ceil(orderItems.length / ordersPerPage);
+
+            function showPage(page) {
+                let start = (page - 1) * ordersPerPage;
+                let end = start + ordersPerPage;
+
+                orderItems.forEach((item, index) => {
+                    item.style.display = (index >= start && index < end) ? "block" : "none";
+                });
+
+                renderPagination();
+            }
+
+            function renderPagination() {
+                pagination.innerHTML = "";
+
+                if (totalPages > 1) {
+                    // Nút Previous
+                    let prevLi = document.createElement("li");
+                    prevLi.classList.add("page-item");
+                    prevLi.innerHTML = `<a class="page-link" href="#" aria-label="Previous">&laquo;</a>`;
+                    prevLi.addEventListener("click", function() {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            showPage(currentPage);
+                        }
+                    });
+                    pagination.appendChild(prevLi);
+
+                    // Các số trang
+                    for (let i = 1; i <= totalPages; i++) {
+                        let li = document.createElement("li");
+                        li.classList.add("page-item");
+                        if (i === currentPage) li.classList.add("active");
+                        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                        li.addEventListener("click", function() {
+                            currentPage = i;
+                            showPage(currentPage);
+                        });
+                        pagination.appendChild(li);
+                    }
+
+                    // Nút Next
+                    let nextLi = document.createElement("li");
+                    nextLi.classList.add("page-item");
+                    nextLi.innerHTML = `<a class="page-link" href="#" aria-label="Next">&raquo;</a>`;
+                    nextLi.addEventListener("click", function() {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            showPage(currentPage);
+                        }
+                    });
+                    pagination.appendChild(nextLi);
+                }
+            }
+
+            showPage(currentPage);
         });
     </script>
 @endsection

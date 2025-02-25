@@ -122,4 +122,7 @@ $router->addRoute("/profile/address/update/{id}", [$AddressController, "updateAd
 $router->addRoute("/tracking", [$Controller, "tracking"]);
 $router->addRoute("/tracking/get/{id}", [$OrderController, "getOrdersById"]);
 
+//rating
+$router->addRoute("/products/rate/{id}", [$Controller, "rate"]);
+
 $router->dispatch();

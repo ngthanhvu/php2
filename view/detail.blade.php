@@ -20,7 +20,7 @@
         <div class="col-md-6">
             <div class="d-flex flex-column align-items-center">
                 <img id="mainImage" src="http://localhost:8000/{{ $product['image'] }}" class="img-fluid rounded"
-                    alt="Product Image">
+                    alt="Product Image" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <div class="d-flex mt-3">
                     @foreach ($products_varriants as $variant)
                         <img src="http://localhost:8000/{{ $variant['image'] }}" class="img-thumbnail me-2 thumbnail"
@@ -93,6 +93,46 @@
         <div class="col-md-12 mt-3">
             <p class="text-muted"><b>Mô tả:</b> {{ $product['description'] }}</p>
         </div>
+        <div class="col-md-12 mt-3">
+            <h3>Đánh giá sản phẩm</h3>
+            <form action="/products/rate/{{ $product['id'] }}" method="POST">
+                <div class="mb-3">
+                    <label><strong>Chọn số sao:</strong></label>
+                    <div class="star-rating">
+                        <input type="radio" name="rating" value="5" id="star5" required><label
+                            for="star5">★</label>
+                        <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
+                        <input type="radio" name="rating" value="3" id="star3"><label for="star3">★</label>
+                        <input type="radio" name="rating" value="2" id="star2"><label for="star2">★</label>
+                        <input type="radio" name="rating" value="1" id="star1"><label
+                            for="star1">★</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label><strong>Bình luận:</strong></label>
+                    <textarea name="comment" class="form-control" rows="3" placeholder="Nhập bình luận của bạn"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+            </form>
+        </div>
+
+        <!-- Danh sách đánh giá -->
+        <div class="col-md-12 mt-3">
+            <h3>Danh sách đánh giá</h3>
+            @if (empty($ratings))
+                <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+            @else
+                @foreach ($ratings as $rating)
+                    <div class="border p-3 mb-2">
+                        <p><strong>{{ $rating['username'] }}</strong> -
+                            {{ $rating['rating'] }} <span class="star">★</span>
+                            ({{ date('d/m/Y H:i', strtotime($rating['created_at'])) }})
+                        </p>
+                        <p>{{ $rating['comment'] ?? 'Không có bình luận' }}</p>
+                    </div>
+                @endforeach
+            @endif
+        </div>
         {{-- sản phẩm liên quan --}}
         <div class="col-md-12 mt-3">
             <h2>Sản phẩm liên quan</h2>
@@ -120,6 +160,40 @@
             </div>
         </div>
     </div>
+
+    {{-- modal --}}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <img src="" id="showImage" class="img-fluid rounded" alt="Product Image">
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked~label {
+            color: #f90;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: #fc0;
+        }
+
+        .star {
+            color: #f90;
+        }
+    </style>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -216,6 +290,13 @@
                     hiddenQuantity.value = newQuantity;
                 }
             });
+        });
+
+        const img = document.getElementById("mainImage");
+        img.addEventListener("click", function() {
+            const imageUrl = img.getAttribute("src");
+            const modalImage = document.getElementById("showImage");
+            modalImage.src = imageUrl;
         });
     </script>
 @endsection
