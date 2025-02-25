@@ -6,43 +6,59 @@
     <div class="p-3 mb-4 rounded-3" style="background-color: #fff;">
 
         <div class="row mb-4 mt-3">
-            <div class="col-12 col-md-3 mb-3">
-                <div class="card text-white bg-primary">
-                    <div class="card-body">
-                        <h5 class="card-title">Earnings (Monthly)</h5>
-                        <p class="card-text">$40,000</p>
-                        <a href="#" class="btn btn-light">View Report</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-3 mb-3">
-                <div class="card text-white bg-warning">
-                    <div class="card-body">
-                        <h5 class="card-title">Earnings (Annual)</h5>
-                        <p class="card-text">$215,000</p>
-                        <a href="#" class="btn btn-light">View Report</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-3 mb-3">
-                <div class="card text-white bg-success">
-                    <div class="card-body">
-                        <h5 class="card-title">Task Completion</h5>
-                        <p class="card-text">24</p>
-                        <a href="#" class="btn btn-light">View Tasks</a>
-                    </div>
-                </div>
-            </div>
+            <!-- Số người ghé thăm -->
             <div class="col-12 col-md-3 mb-3">
                 <div class="card text-white bg-danger">
-                    <div class="card-body">
-                        <h5 class="card-title">Pending Requests</h5>
-                        <p class="card-text">17</p>
-                        <a href="#" class="btn btn-light">View Requests</a>
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="fw-bold mb-0">914,001</h4>
+                            <p class="mb-0">VISITS</p>
+                        </div>
+                        <i class="fa-solid fa-people-group fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tỷ lệ thoát trang -->
+            <div class="col-12 col-md-3 mb-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="fw-bold mb-0">46.41%</h4>
+                            <p class="mb-0">BOUNCE RATE</p>
+                        </div>
+                        <i class="fa-solid fa-share fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Số lượt xem trang -->
+            <div class="col-12 col-md-3 mb-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="fw-bold mb-0">4,054,876</h4>
+                            <p class="mb-0">PAGEVIEWS</p>
+                        </div>
+                        <i class="fa-solid fa-file-alt fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tỷ lệ tăng trưởng -->
+            <div class="col-12 col-md-3 mb-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="fw-bold mb-0">46.43%</h4>
+                            <p class="mb-0">GROWTH RATE</p>
+                        </div>
+                        <i class="fa-solid fa-chart-bar fa-2x"></i>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <div class="row">
             <div class="col-12 col-md-6">

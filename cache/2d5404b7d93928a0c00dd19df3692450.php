@@ -24,7 +24,7 @@
             <div class="col-md-10">
                 <div class="d-flex justify-content-end align-items-center mb-3">
                     <select class="form-select w-auto" id="sort">
-                        <option selected>Sort by</option>
+                        <option selected>Sắp sếp theo</option>
                         <option value="low_to_high">Giá: Thấp đến Cao</option>
                         <option value="high_to_low">Giá: Cao đến Thấp</option>
                         <option value="newest">Mới nhất</option>

@@ -201,4 +201,17 @@ class ProductModel
     $stmt->bindParam(':quantity', $quantity);
     return $stmt->execute();
   }
+
+  public function RelatedProducts($id)
+  {
+    $query = "SELECT products.*, categories.name AS category_name 
+              FROM products 
+              JOIN categories ON products.categories_id = categories.id 
+              WHERE products.categories_id = :id 
+              LIMIT 4";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
 }

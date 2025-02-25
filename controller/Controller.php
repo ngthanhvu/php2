@@ -8,6 +8,7 @@ use App\Models\OrderModel;
 use App\Models\ProductModel;
 use App\Models\ProductsVarriantModel;
 use App\Models\UserModel;
+use App\Models\AddressModel;
 use App\Core\BladeServiceProvider;
 
 class Controller
@@ -17,6 +18,7 @@ class Controller
     private $productsVarriantModel;
     private $cartsModel;
     private $orderModel;
+    private $addressModel;
     private $userModel;
 
     public function __construct()
@@ -27,6 +29,7 @@ class Controller
         $this->cartsModel = new CartsModel();
         $this->orderModel = new OrderModel();
         $this->userModel = new UserModel();
+        $this->addressModel = new AddressModel();
     }
 
     public function index()
@@ -65,8 +68,12 @@ class Controller
     {
         $title = "Chi tiết sản phẩm";
         $product = $this->productModel->getProductById($id);
+
+        $category_id = $product['categories_id'];
+
         $products_varriants = $this->productsVarriantModel->getAllProductVariantsById($id);
-        BladeServiceProvider::render('detail', compact('product', 'products_varriants', 'title'));
+        $related_products = $this->productModel->RelatedProducts($category_id);
+        BladeServiceProvider::render('detail', compact('product', 'products_varriants', 'related_products', 'title'));
     }
 
     public function success()
@@ -97,7 +104,8 @@ class Controller
         $user_id = $_SESSION['user']['id'];
         $orders = $this->orderModel->getOrderByUserId($user_id);
         $users = $this->userModel->getUserById($user_id);
-        BladeServiceProvider::render('profile.profile', compact('orders', 'users', 'title'));
+        $addresses = $this->addressModel->getAllAddress($user_id);
+        BladeServiceProvider::render('profile.profile', compact('orders', 'users', 'addresses', 'title'));
     }
 
     public function tracking()

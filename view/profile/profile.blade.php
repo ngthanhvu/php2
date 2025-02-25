@@ -6,6 +6,7 @@
             <div class="list-group">
                 <a href="#info" class="list-group-item list-group-item-action active" data-bs-toggle="tab">Thông tin tài
                     khoản</a>
+                <a href="#address" class="list-group-item list-group-item-action" data-bs-toggle="tab">Địa chỉ</a>
                 <a href="#history" class="list-group-item list-group-item-action" data-bs-toggle="tab">Lịch sử</a>
             </div>
         </div>
@@ -41,13 +42,74 @@
                                     <input type="text" class="form-control" name="phone" value="{{ $users['phone'] }}"
                                         placeholder="Chưa cập nhật">
                                 </div>
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="address">
+                            <h5 class="card-title">Địa chỉ</h5>
+                            <ul class="list-group">
+                                @foreach ($addresses as $address)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            Họ tên: <strong>{{ $address['full_name'] }}</strong><br>
+                                            Số điện: <strong>{{ $address['phone'] }}</strong><br>
+                                            Địa chỉ: <strong>{{ $address['address'] }}</strong>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#editAddress{{ $address['id'] }}">Chỉnh sửa</button>
+                                    </li>
+                                    <div class="modal fade" id="editAddress{{ $address['id'] }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Chỉnh sửa địa chỉ</h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="/profile/address/update/{{ $address['id'] }}"
+                                                        method="POST">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Họ và tên</label>
+                                                            <input type="text" class="form-control" name="full_name"
+                                                                value="{{ $address['full_name'] }}">
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Số điện thoại</label>
+                                                            <input type="text" class="form-control" name="phone"
+                                                                value="{{ $address['phone'] }}">
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Địa chỉ</label>
+                                                            <input type="text" class="form-control" name="address"
+                                                                value="{{ $address['address'] }}">
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </ul>
+                            <h5 class="card-title mt-4">Thêm địa chỉ mới</h5>
+                            <form action="/profile/address/add" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label">Họ tên</label>
+                                    <input type="text" class="form-control" name="full_name"
+                                        placeholder="Nhập họ và tên">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input type="text" class="form-control" name="phone"
+                                        placeholder="Nhập số điện thoại">
+                                </div>
                                 <div class="mb-3">
                                     <label class="form-label">Địa chỉ</label>
                                     <input type="text" class="form-control" name="address"
-                                        value="{{ $users['address'] }}"
-                                        placeholder="Chưa cập nhật (ví du: 123 đường ABC, phường XYZ, quận TUV)">
+                                        placeholder="Nhập địa chỉ">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                <button type="submit" class="btn btn-success">Thêm địa chỉ</button>
                             </form>
                         </div>
                         <div class="tab-pane fade" id="history">
@@ -61,26 +123,6 @@
                                         <button class="btn btn-sm btn-primary float-end" data-bs-toggle="modal"
                                             data-bs-target="#orderDetail{{ $order['id'] }}">Chi tiết</button>
                                     </li>
-                                    <div class="modal fade" id="orderDetail{{ $order['id'] }}" tabindex="-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Chi tiết đơn hàng #{{ $order['id'] }}</h5>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p><strong>Phương thức thanh toán:</strong>
-                                                        {{ ucfirst($order['payment_method']) }}</p>
-                                                    <p><strong>Địa chỉ giao hàng:</strong> {{ $order['shipping_address'] }}
-                                                    </p>
-                                                    <p><strong>Trạng thái:</strong> {{ ucfirst($order['status']) }}</p>
-                                                    <p><strong>Tổng tiền:</strong>
-                                                        {{ number_format($order['total_amount'], 0, ',', '.') }} ₫</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @empty
                                     <p class='text-center mx-auto'>Không tìm thấy giao dịch</p>
                                 @endforelse

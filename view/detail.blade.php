@@ -2,6 +2,7 @@
 
 @section('content')
 
+
     @if (!empty($_SESSION['cart_message']))
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
@@ -88,6 +89,35 @@
                 <input type="hidden" name="variant_id" id="variant_id_add_cart" value="">
                 <button class="btn btn-danger w-50">Thêm Vào Giỏ Hàng</button>
             </form>
+        </div>
+        <div class="col-md-12 mt-3">
+            <p class="text-muted"><b>Mô tả:</b> {{ $product['description'] }}</p>
+        </div>
+        {{-- sản phẩm liên quan --}}
+        <div class="col-md-12 mt-3">
+            <h2>Sản phẩm liên quan</h2>
+            <div class="row">
+                @foreach ($related_products as $related_product)
+                    <div class="col-md-3 mb-3">
+                        <div class="card border hover-card p-2">
+                            <a href="/detail/{{ $related_product['id'] }}" class="text-decoration-none text-success">
+                                <img src="http://localhost:8000/{{ $related_product['image'] }}" class="card-img-top"
+                                    alt="No images" style="object-fit: contain;">
+                                <div class="mt-2">
+                                    <h5 class="card-title">{{ $related_product['name'] }}</h5>
+                                    <span class="badge text-bg-success">Số lượng: {{ $related_product['quantity'] }}
+                                        cái</span>
+                                    <span
+                                        class="badge text-bg-danger ms-2">{{ $related_product['category_name'] }}</span><br>
+                                    <div class="prices mt-2">
+                                        <span>{{ number_format($related_product['price'], 0, ',', '.') }}đ</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 

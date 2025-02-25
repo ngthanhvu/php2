@@ -2,6 +2,7 @@
 
 <?php $__env->startSection('content'); ?>
 
+
     <?php if(!empty($_SESSION['cart_message'])): ?>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
@@ -90,6 +91,36 @@
                 <input type="hidden" name="variant_id" id="variant_id_add_cart" value="">
                 <button class="btn btn-danger w-50">Thêm Vào Giỏ Hàng</button>
             </form>
+        </div>
+        <div class="col-md-12 mt-3">
+            <p class="text-muted"><b>Mô tả:</b> <?php echo e($product['description']); ?></p>
+        </div>
+        
+        <div class="col-md-12 mt-3">
+            <h2>Sản phẩm liên quan</h2>
+            <div class="row">
+                <?php $__currentLoopData = $related_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $related_product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border hover-card p-2">
+                            <a href="/detail/<?php echo e($related_product['id']); ?>" class="text-decoration-none text-success">
+                                <img src="http://localhost:8000/<?php echo e($related_product['image']); ?>" class="card-img-top"
+                                    alt="No images" style="object-fit: contain;">
+                                <div class="mt-2">
+                                    <h5 class="card-title"><?php echo e($related_product['name']); ?></h5>
+                                    <span class="badge text-bg-success">Số lượng: <?php echo e($related_product['quantity']); ?>
+
+                                        cái</span>
+                                    <span
+                                        class="badge text-bg-danger ms-2"><?php echo e($related_product['category_name']); ?></span><br>
+                                    <div class="prices mt-2">
+                                        <span><?php echo e(number_format($related_product['price'], 0, ',', '.')); ?>đ</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
         </div>
     </div>
 

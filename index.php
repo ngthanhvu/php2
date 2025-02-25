@@ -14,6 +14,7 @@ use App\Controllers\VarriantController;
 use App\Controllers\ProductsVarriantController;
 use App\Controllers\OrderController;
 use App\Controllers\MomoController;
+use App\Controllers\AddressController;
 use App\Routers\Router;
 
 $router = new Router();
@@ -27,6 +28,7 @@ $VarriantController = new VarriantController();
 $ProductsVarriantController = new ProductsVarriantController();
 $OrderController = new OrderController();
 $MomoController = new MomoController();
+$AddressController = new AddressController();
 
 $router->addMiddleware('logRequest');
 
@@ -113,6 +115,8 @@ $router->addRoute("/success", [$Controller, "success"]);
 //profile
 $router->addRoute("/profile", [$Controller, "profile"], ['isUser']);
 $router->addRoute("/profile/update", [$AuthController, "updateProfile"], ['isUser']);
+$router->addRoute("/profile/address/add", [$AddressController, "createAddress"], ['isUser']);
+$router->addRoute("/profile/address/update/{id}", [$AddressController, "updateAddress"], ['isUser']);
 
 //tracking
 $router->addRoute("/tracking", [$Controller, "tracking"]);
