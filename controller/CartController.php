@@ -31,10 +31,6 @@ class CartController
 
     public function addCart()
     {
-        echo "<pre>";
-        var_dump($_POST);
-        echo "</pre>";
-
         $user_id = $_SESSION['user']['id'] ?? null;
         $cart_session = session_id();
         $sku = $_POST['sku'];
@@ -62,7 +58,21 @@ class CartController
 
     public function updateQuantityCart($id, $quantity)
     {
-        if ($this->cartsModel->updateQuantityCart($id, $quantity)) {
+        // $sku = trim($sku);
+        // $checkQuantity = $this->productsModel->getQuanityProductBySku($sku);
+
+        // if ($checkQuantity === null) {
+        //     $checkQuantity = $this->productsVariantsModel->getQuanityProductVarriantBySku($sku);
+        // }
+        // $stockQuantity = (int)$checkQuantity;
+
+        // if ($stockQuantity < (int)$quantity) {
+        //     echo json_encode(['success' => false, 'message' => 'Số lượng sản phẩm không đủ.']);
+        //     return;
+        // }
+
+        $updateCart = $this->cartsModel->updateQuantityCart($id, $quantity);
+        if ($updateCart) {
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false]);

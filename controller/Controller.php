@@ -10,6 +10,7 @@ use App\Models\ProductsVarriantModel;
 use App\Models\UserModel;
 use App\Models\AddressModel;
 use App\Models\RatingModel;
+use App\Models\CouponModel;
 use App\Core\BladeServiceProvider;
 
 class Controller
@@ -22,6 +23,7 @@ class Controller
     private $addressModel;
     private $userModel;
     private $ratingModel;
+    private $couponModel;
 
     public function __construct()
     {
@@ -33,6 +35,7 @@ class Controller
         $this->userModel = new UserModel();
         $this->addressModel = new AddressModel();
         $this->ratingModel = new RatingModel();
+        $this->couponModel = new CouponModel();
     }
 
     public function index()
@@ -46,9 +49,13 @@ class Controller
     public function admin()
     {
         $title = "Bảng điều khiển";
-        $products = $this->productModel->getAllProducts();
-        $categories = $this->categoryModel->getAllCategories();
-        BladeServiceProvider::render('admin.index', compact('products', 'categories', 'title'));
+        $users = $this->userModel->getCountUsers();
+        $orders = $this->orderModel->getCountOrders();
+        $total_revenue = $this->orderModel->sumOrders();
+        $monthly_revenue = $this->orderModel->getMonthlyRevenue();
+        $monthly_orders = $this->orderModel->getMonthlyOrders();
+
+        BladeServiceProvider::render('admin.index', compact('title', 'users', 'orders', 'total_revenue', 'monthly_revenue', 'monthly_orders'));
     }
 
     public function product()

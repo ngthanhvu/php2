@@ -132,15 +132,14 @@ class MomoController
 
         if ($calculatedSignature === $data['signature']) {
             if ($resultCode == '0') {
-                // echo "Thanh toán thành công. Đơn hàng #$orderId";
-                // $amount = $amount / 100;
                 $code = $_SESSION['order_data']['code'];
                 $this->orderModel->createOrder(
                     $_SESSION['order_data']['user_id'],
                     "completed",
                     $_SESSION['order_data']['payment_method'],
                     $amount,
-                    $_SESSION['order_data']['compact_address'],
+                    $_SESSION['order_data']['address_id'],
+                    $_SESSION['order_data']['new_address_data'],
                     $code
                 );
                 $this->mailModel->send(

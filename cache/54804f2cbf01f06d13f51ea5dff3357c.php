@@ -206,7 +206,7 @@
         });
 
         document.addEventListener("DOMContentLoaded", function() {
-            const ordersPerPage = 5; // Số lượng đơn hàng hiển thị trên mỗi trang
+            const ordersPerPage = 5;
             const orderItems = document.querySelectorAll(".order-item");
             const pagination = document.getElementById("pagination");
             let currentPage = 1;

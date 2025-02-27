@@ -284,4 +284,42 @@ class OrderModel
         $stmt->execute([$order_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getCountOrders()
+    {
+        $sql = "SELECT COUNT(*) as total FROM orders";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    public function sumOrders()
+    {
+        $sql = "SELECT SUM(total_amount) as total FROM orders";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    public function getMonthlyRevenue()
+    {
+        $sql = "SELECT MONTH(created_at) as month, SUM(total_amount) as revenue 
+            FROM orders WHERE status = 'completed' 
+            GROUP BY MONTH(created_at) 
+            ORDER BY MONTH(created_at) DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getMonthlyOrders()
+    {
+        $sql = "SELECT MONTH(created_at) as month, COUNT(*) as total_orders 
+            FROM orders 
+            GROUP BY MONTH(created_at) 
+            ORDER BY MONTH(created_at) DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

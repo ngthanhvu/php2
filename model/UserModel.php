@@ -32,6 +32,14 @@ class UserModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getCountUsers()
+    {
+        $query = "SELECT COUNT(*) as total FROM users";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
     public function register($username, $email, $password)
     {
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);

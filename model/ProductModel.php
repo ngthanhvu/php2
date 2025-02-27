@@ -118,7 +118,6 @@ class ProductModel
     return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
   }
 
-
   public function addProductWithImages($name, $price, $description, $image, $quantity, $sku, $categories_id, $sub_images = [])
   {
     try {

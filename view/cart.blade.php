@@ -31,6 +31,7 @@
                     @php
                         $itemTotal = $cart['price'] * $cart['quantity'];
                         $totalPrice += $itemTotal;
+                        // var_dump($cart);
                     @endphp
                     <tr>
                         <th scope="row">{{ $index++ }}</th>
@@ -39,12 +40,15 @@
                         <td>{{ $cart['product_size'] }}, {{ $cart['product_color'] }}</td>
                         <td>{{ number_format($cart['price'], 0, ',', '.') }}đ</td>
                         <td>
-                            <button class="btn btn-outline-secondary btn-decrease" data-id="{{ $cart['id'] }}">-</button>
+                            <button class="btn btn-outline-secondary btn-decrease" data-id="{{ $cart['id'] }}"
+                                data-sku="{{ $cart['sku'] }}">-</button>
                             <input type="number"
                                 class="quantity-input form-control text-center mx-2 d-inline border-0 bg-transparent"
                                 value="{{ $cart['quantity'] }}" min="1" data-id="{{ $cart['id'] }}"
+                                data-sku="{{ $cart['sku'] }}"
                                 style="width: 70px; text-align: center; font-size: 1rem; font-weight: 500;">
-                            <button class="btn btn-outline-secondary btn-increase" data-id="{{ $cart['id'] }}">+</button>
+                            <button class="btn btn-outline-secondary btn-increase" data-id="{{ $cart['id'] }}"
+                                data-sku="{{ $cart['sku'] }}">+</button>
                         </td>
                         <td>{{ number_format($itemTotal, 0, ',', '.') }}đ</td>
                         <td>
@@ -79,52 +83,57 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".btn-decrease").forEach(button => {
-                button.addEventListener("click", function() {
-                    let input = this.nextElementSibling;
-                    let id = this.getAttribute("data-id");
+                button.addEventListener("click", async function() {
+                    const input = this.nextElementSibling;
+                    const id = this.getAttribute("data-id");
+                    // const sku = this.getAttribute("data-sku");
                     let quantity = parseInt(input.value) - 1;
                     if (quantity >= 1) {
                         input.value = quantity;
-                        updateCart(id, quantity);
+                        await updateCart(id, quantity);
                     }
                 });
             });
 
             document.querySelectorAll(".btn-increase").forEach(button => {
-                button.addEventListener("click", function() {
-                    let input = this.previousElementSibling;
-                    let id = this.getAttribute("data-id");
+                button.addEventListener("click", async function() {
+                    const input = this.previousElementSibling;
+                    const id = this.getAttribute("data-id");
+                    // const sku = this.getAttribute("data-sku");
                     let quantity = parseInt(input.value) + 1;
                     input.value = quantity;
-                    updateCart(id, quantity);
+                    await updateCart(id, quantity);
                 });
             });
 
             document.querySelectorAll(".quantity-input").forEach(input => {
-                input.addEventListener("change", function() {
-                    let id = this.getAttribute("data-id");
+                input.addEventListener("change", async function() {
+                    const id = this.getAttribute("data-id");
+                    // const sku = this.getAttribute("data-sku");
                     let quantity = parseInt(this.value);
                     if (quantity < 1 || isNaN(quantity)) {
                         this.value = 1;
                         quantity = 1;
                     }
-                    updateCart(id, quantity);
+                    await updateCart(id, quantity);
                 });
             });
 
-            function updateCart(id, quantity) {
-                fetch(`/cart/updateQuantity/${id}/${quantity}`, {
+            async function updateCart(id, quantity) {
+                try {
+                    const response = await fetch(`/cart/updateQuantity/${id}/${quantity}`, {
                         method: "GET",
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            window.location.reload();
-                        } else {
-                            alert("Có lỗi xảy ra!");
-                        }
-                    })
-                    .catch(error => console.error("Lỗi:", error));
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        alert("Có lỗi xảy ra!");
+                    }
+                } catch (error) {
+                    console.error("Lỗi:", error);
+                }
             }
         });
     </script>

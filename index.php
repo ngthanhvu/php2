@@ -15,6 +15,7 @@ use App\Controllers\ProductsVarriantController;
 use App\Controllers\OrderController;
 use App\Controllers\MomoController;
 use App\Controllers\AddressController;
+use App\Controllers\CouponController;
 use App\Routers\Router;
 
 $router = new Router();
@@ -29,6 +30,7 @@ $ProductsVarriantController = new ProductsVarriantController();
 $OrderController = new OrderController();
 $MomoController = new MomoController();
 $AddressController = new AddressController();
+$CouponController = new CouponController();
 
 $router->addMiddleware('logRequest');
 
@@ -124,5 +126,12 @@ $router->addRoute("/tracking/get/{id}", [$OrderController, "getOrdersById"]);
 
 //rating
 $router->addRoute("/products/rate/{id}", [$Controller, "rate"]);
+
+//coupon
+$router->addRoute("/admin/coupons", [$CouponController, "index"], ['isAdmin']);
+$router->addRoute("/admin/coupons/create", [$CouponController, "create"], ['isAdmin']);
+$router->addRoute("/admin/coupons/update/{id}", [$CouponController, "update"], ['isAdmin']);
+$router->addRoute("/admin/coupons/delete/{id}", [$CouponController, "delete"], ['isAdmin']);
+$router->addRoute("/get-coupon", [$CouponController, "getCoupon"]);
 
 $router->dispatch();

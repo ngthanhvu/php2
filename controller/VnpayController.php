@@ -95,7 +95,8 @@ class VnPayController
                     "completed",
                     $_SESSION['order_data']['payment_method'],
                     $amount,
-                    $_SESSION['order_data']['compact_address'],
+                    $_SESSION['order_data']['address_id'],
+                    $_SESSION['order_data']['new_address_data'],
                     $code
                 );
                 $this->mailModel->send(
