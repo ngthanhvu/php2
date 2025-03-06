@@ -16,6 +16,7 @@ use App\Controllers\OrderController;
 use App\Controllers\MomoController;
 use App\Controllers\AddressController;
 use App\Controllers\CouponController;
+use App\Controllers\SettingController;
 use App\Routers\Router;
 
 $router = new Router();
@@ -30,6 +31,7 @@ $ProductsVarriantController = new ProductsVarriantController();
 $OrderController = new OrderController();
 $MomoController = new MomoController();
 $AddressController = new AddressController();
+$SettingController = new SettingController();
 $CouponController = new CouponController();
 
 $router->addMiddleware('logRequest');
@@ -107,6 +109,7 @@ $router->addRoute("/admin/orders", [$OrderController, "index"], ['isAdmin']);
 $router->addRoute("/admin/orders/update", [$OrderController, "updateStatus"], ['isAdmin']);
 $router->addRoute("/admin/orders/delete/{id}", [$OrderController, "deleteOrder"], ['isAdmin']);
 
+$router->addRoute("/profile/orders/{id}", [$OrderController, "updateStatusUser"], ['isUser']);
 //checkout
 $router->addRoute("/checkout", [$Controller, "checkout"], ['isUser']);
 $router->addRoute("/checkout/create", [$OrderController, "createOrder"], ['isUser']);
@@ -126,6 +129,8 @@ $router->addRoute("/tracking/get/{id}", [$OrderController, "getOrdersById"]);
 
 //rating
 $router->addRoute("/products/rate/{id}", [$Controller, "rate"]);
+$router->addRoute("/products/deleteRate/{id}/{userId}/{productId}", [$Controller, "deleteRate"]);
+$router->addRoute("/favorite/{ratingId}/{favorite}", [$Controller, "favorite"]);
 
 //coupon
 $router->addRoute("/admin/coupons", [$CouponController, "index"], ['isAdmin']);
@@ -133,5 +138,9 @@ $router->addRoute("/admin/coupons/create", [$CouponController, "create"], ['isAd
 $router->addRoute("/admin/coupons/update/{id}", [$CouponController, "update"], ['isAdmin']);
 $router->addRoute("/admin/coupons/delete/{id}", [$CouponController, "delete"], ['isAdmin']);
 $router->addRoute("/get-coupon", [$CouponController, "getCoupon"]);
+
+//setting
+$router->addRoute("/admin/setting", [$SettingController, "index"], ['isAdmin']);
+$router->addRoute("/admin/setting/create", [$SettingController, "create"], ['isAdmin']);
 
 $router->dispatch();

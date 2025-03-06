@@ -81,10 +81,6 @@
                         </label>
                     </div>
 
-                    
-
-                    
-
                     <h4 class="mt-4">Tóm tắt đơn hàng</h4>
                     <ul class="list-group mb-3">
                         <?php
@@ -149,147 +145,16 @@
             document.getElementById('new-address-form').style.display = 'block';
             document.querySelectorAll('input[name="address_id"]').forEach(input => input.checked = false);
         });
-        // document.getElementById('apply_coupon').addEventListener('click', async function() {
-        //     let couponCode = document.getElementById('coupon_code').value.trim();
-        //     let totalAmount = parseFloat(document.getElementById('total_amount').value);
-
-        //     if (couponCode === '') {
-        //         document.getElementById('coupon_message').textContent = "Vui lòng nhập mã giảm giá.";
-        //         return;
-        //     }
-
-        //     try {
-        //         let response = await fetch(`/get-coupon?code=${couponCode}`);
-        //         let data = await response.json();
-
-        //         if (!data || !data.code) {
-        //             document.getElementById('coupon_message').textContent =
-        //                 "Mã giảm giá không hợp lệ hoặc đã hết hạn.";
-        //             document.getElementById('coupon_message').classList.remove('text-success');
-        //             document.getElementById('coupon_message').classList.add('text-danger');
-        //             return;
-        //         }
-
-        //         let discount = data.discount;
-        //         let discountType = data.type;
-        //         let newTotal = totalAmount;
-
-        //         if (discountType === 'percentage') {
-        //             newTotal -= (totalAmount * (discount / 100));
-        //         } else if (discountType === 'fixed') {
-        //             newTotal -= discount;
-        //         }
-
-        //         newTotal = Math.max(0, newTotal); // Không cho tổng tiền nhỏ hơn 0
-
-        //         document.getElementById('total_amount_display').textContent = new Intl.NumberFormat('vi-VN')
-        //             .format(newTotal) + '₫';
-        //         document.getElementById('total_amount').value = newTotal;
-        //         document.getElementById('coupon_message').textContent = "Mã giảm giá đã được áp dụng!";
-        //         document.getElementById('coupon_message').classList.remove('text-danger');
-        //         document.getElementById('coupon_message').classList.add('text-success');
-        //     } catch (error) {
-        //         console.error('Lỗi:', error);
-        //         document.getElementById('coupon_message').textContent = "Có lỗi xảy ra, vui lòng thử lại.";
-        //         document.getElementById('coupon_message').classList.remove('text-success');
-        //         document.getElementById('coupon_message').classList.add('text-danger');
-        //     }
-        // });
-
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     updateTotal(); // Tính tổng ban đầu
-
-        //     document.getElementById('apply_coupon').addEventListener('click', async function() {
-        //         let couponCode = document.getElementById('coupon_code').value.trim();
-        //         let baseTotal = parseFloat(document.getElementById('base_total').value); // Tổng gốc
-
-        //         if (couponCode === '') {
-        //             document.getElementById('coupon_message').textContent =
-        //             "Vui lòng nhập mã giảm giá.";
-        //             return;
-        //         }
-
-        //         try {
-        //             let response = await fetch(`/get-coupon?code=${couponCode}`);
-        //             let data = await response.json();
-
-        //             if (!data || !data.code) {
-        //                 document.getElementById('coupon_message').textContent =
-        //                     "Mã giảm giá không hợp lệ hoặc đã hết hạn.";
-        //                 document.getElementById('coupon_message').classList.remove('text-success');
-        //                 document.getElementById('coupon_message').classList.add('text-danger');
-        //                 return;
-        //             }
-
-        //             let discount = data.discount;
-        //             let discountType = data.type;
-        //             let discountedTotal = baseTotal;
-
-        //             if (discountType === 'percentage') {
-        //                 discountedTotal -= (baseTotal * (discount / 100));
-        //             } else if (discountType === 'fixed') {
-        //                 discountedTotal -= discount;
-        //             }
-
-        //             discountedTotal = Math.max(0, discountedTotal); // Đảm bảo tổng tiền không âm
-        //             document.getElementById('total_amount').value =
-        //             discountedTotal; // Cập nhật tổng sau giảm giá
-
-        //             document.getElementById('coupon_message').textContent =
-        //                 "Mã giảm giá đã được áp dụng!";
-        //             document.getElementById('coupon_message').classList.remove('text-danger');
-        //             document.getElementById('coupon_message').classList.add('text-success');
-
-        //             updateTotal(); // Cập nhật lại hiển thị với phí ship
-
-        //         } catch (error) {
-        //             console.error('Lỗi:', error);
-        //             document.getElementById('coupon_message').textContent =
-        //                 "Có lỗi xảy ra, vui lòng thử lại.";
-        //             document.getElementById('coupon_message').classList.remove('text-success');
-        //             document.getElementById('coupon_message').classList.add('text-danger');
-        //         }
-        //     });
-        // });
-
-        // /**
-        //  * Hàm cập nhật tổng tiền và kiểm tra miễn phí vận chuyển
-        //  */
-        // function updateTotal() {
-        //     let totalAmount = parseFloat(document.getElementById('total_amount').value); // Tổng sau giảm giá
-        //     let shippingFee = calculateShippingFee(totalAmount); // Kiểm tra điều kiện free ship
-
-        //     // Cập nhật phí ship hiển thị
-        //     document.getElementById('shipping_fee_display').textContent = shippingFee === 0 ? `0₫ (Miễn phí)` :
-        //         new Intl.NumberFormat('vi-VN').format(shippingFee) + "₫";
-
-        //     // Tổng tiền cuối cùng
-        //     let finalTotal = totalAmount + shippingFee;
-        //     document.getElementById('total_amount_display').textContent = new Intl.NumberFormat('vi-VN')
-        //         .format(finalTotal) + '₫';
-        // }
-
-        // /**
-        //  * Hàm kiểm tra và tính phí vận chuyển
-        //  * Nếu tổng >= 300.000đ thì free ship
-        //  */
-        // function calculateShippingFee(totalAmount) {
-        //     let freeShippingThreshold = 300000;
-        //     let shippingFee = 20000; // Phí ship mặc định
-
-        //     return totalAmount >= freeShippingThreshold ? 0 : shippingFee;
-        // }
 
         document.addEventListener("DOMContentLoaded", function() {
-            updateTotal(); // Tính tổng ban đầu
+            updateTotal();
 
             document.getElementById('apply_coupon').addEventListener('click', async function() {
                 let couponCode = document.getElementById('coupon_code').value.trim();
-                let baseTotal = parseFloat(document.getElementById('base_total').value); // Tổng gốc
-
+                let baseTotal = parseFloat(document.getElementById('base_total').value);
                 if (couponCode === '') {
                     document.getElementById('coupon_message').textContent =
-                    "Vui lòng nhập mã giảm giá.";
+                        "Vui lòng nhập mã giảm giá.";
                     return;
                 }
 
@@ -315,16 +180,16 @@
                         discountedTotal -= discount;
                     }
 
-                    discountedTotal = Math.max(0, discountedTotal); // Đảm bảo tổng tiền không âm
+                    discountedTotal = Math.max(0, discountedTotal);
                     document.getElementById('total_amount').value =
-                    discountedTotal; // Cập nhật tổng sau giảm giá
+                        discountedTotal;
 
                     document.getElementById('coupon_message').textContent =
                         "Mã giảm giá đã được áp dụng!";
                     document.getElementById('coupon_message').classList.remove('text-danger');
                     document.getElementById('coupon_message').classList.add('text-success');
 
-                    updateTotal(); // Cập nhật lại hiển thị và total_amount với phí ship
+                    updateTotal();
 
                 } catch (error) {
                     console.error('Lỗi:', error);
@@ -340,8 +205,8 @@
          * Hàm cập nhật tổng tiền và kiểm tra miễn phí vận chuyển
          */
         function updateTotal() {
-            let totalAmount = parseFloat(document.getElementById('total_amount').value); // Tổng sau giảm giá
-            let shippingFee = calculateShippingFee(totalAmount); // Kiểm tra điều kiện free ship
+            let totalAmount = parseFloat(document.getElementById('total_amount').value);
+            let shippingFee = calculateShippingFee(totalAmount);
 
             // Cập nhật phí ship hiển thị
             document.getElementById('shipping_fee_display').textContent = shippingFee === 0 ? `0₫ (Miễn phí)` :
@@ -351,7 +216,7 @@
             let finalTotal = totalAmount + shippingFee;
             document.getElementById('total_amount_display').textContent = new Intl.NumberFormat('vi-VN')
                 .format(finalTotal) + '₫';
-            document.getElementById('total_amount').value = finalTotal; // Cập nhật total_amount với tổng cuối cùng
+            document.getElementById('total_amount').value = finalTotal;
         }
 
         /**
@@ -360,7 +225,7 @@
          */
         function calculateShippingFee(totalAmount) {
             let freeShippingThreshold = 300000;
-            let shippingFee = 20000; // Phí ship mặc định
+            let shippingFee = 20000;
 
             return totalAmount >= freeShippingThreshold ? 0 : shippingFee;
         }

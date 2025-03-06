@@ -1,8 +1,6 @@
 @extends('layouts.master')
 @section('content')
 
-    {{-- <?php unset($_SESSION['cart_message']); ?> --}}
-
     <div class="card border-success">
         <div class="card-header text-white" style="background-color: #FE5722; border-color: #FE5722">
             <h5 class="mb-0"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng</h5>
@@ -31,7 +29,6 @@
                     @php
                         $itemTotal = $cart['price'] * $cart['quantity'];
                         $totalPrice += $itemTotal;
-                        // var_dump($cart);
                     @endphp
                     <tr>
                         <th scope="row">{{ $index++ }}</th>
@@ -41,14 +38,17 @@
                         <td>{{ number_format($cart['price'], 0, ',', '.') }}đ</td>
                         <td>
                             <button class="btn btn-outline-secondary btn-decrease" data-id="{{ $cart['id'] }}"
-                                data-sku="{{ $cart['sku'] }}">-</button>
+                                data-sku="{{ $cart['sku'] }}"
+                                data-stock="{{ $cart['variant_quantity'] ?? $cart['product_quantity'] }}">-</button>
                             <input type="number"
                                 class="quantity-input form-control text-center mx-2 d-inline border-0 bg-transparent"
                                 value="{{ $cart['quantity'] }}" min="1" data-id="{{ $cart['id'] }}"
                                 data-sku="{{ $cart['sku'] }}"
+                                data-stock="{{ $cart['variant_quantity'] ?? $cart['product_quantity'] }}"
                                 style="width: 70px; text-align: center; font-size: 1rem; font-weight: 500;">
                             <button class="btn btn-outline-secondary btn-increase" data-id="{{ $cart['id'] }}"
-                                data-sku="{{ $cart['sku'] }}">+</button>
+                                data-sku="{{ $cart['sku'] }}"
+                                data-stock="{{ $cart['variant_quantity'] ?? $cart['product_quantity'] }}">+</button>
                         </td>
                         <td>{{ number_format($itemTotal, 0, ',', '.') }}đ</td>
                         <td>
@@ -80,14 +80,17 @@
         </div>
     @endif
 
+    <!-- Thêm SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".btn-decrease").forEach(button => {
                 button.addEventListener("click", async function() {
                     const input = this.nextElementSibling;
                     const id = this.getAttribute("data-id");
-                    // const sku = this.getAttribute("data-sku");
+                    const stock = parseInt(this.getAttribute("data-stock"));
                     let quantity = parseInt(input.value) - 1;
+
                     if (quantity >= 1) {
                         input.value = quantity;
                         await updateCart(id, quantity);
@@ -99,8 +102,18 @@
                 button.addEventListener("click", async function() {
                     const input = this.previousElementSibling;
                     const id = this.getAttribute("data-id");
-                    // const sku = this.getAttribute("data-sku");
+                    const stock = parseInt(this.getAttribute("data-stock"));
                     let quantity = parseInt(input.value) + 1;
+
+                    if (quantity > stock) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không đủ hàng',
+                            text: 'Số lượng trong kho không đủ để đáp ứng yêu cầu của bạn!',
+                        });
+                        return;
+                    }
+
                     input.value = quantity;
                     await updateCart(id, quantity);
                 });
@@ -109,12 +122,22 @@
             document.querySelectorAll(".quantity-input").forEach(input => {
                 input.addEventListener("change", async function() {
                     const id = this.getAttribute("data-id");
-                    // const sku = this.getAttribute("data-sku");
+                    const stock = parseInt(this.getAttribute("data-stock"));
                     let quantity = parseInt(this.value);
+
                     if (quantity < 1 || isNaN(quantity)) {
                         this.value = 1;
                         quantity = 1;
+                    } else if (quantity > stock) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không đủ hàng',
+                            text: 'Số lượng trong kho không đủ để đáp ứng yêu cầu của bạn!',
+                        });
+                        this.value = stock; // Đặt lại về số lượng tối đa trong kho
+                        quantity = stock;
                     }
+
                     await updateCart(id, quantity);
                 });
             });
@@ -129,10 +152,19 @@
                     if (data.success) {
                         window.location.reload();
                     } else {
-                        alert("Có lỗi xảy ra!");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Có lỗi xảy ra khi cập nhật giỏ hàng!',
+                        });
                     }
                 } catch (error) {
                     console.error("Lỗi:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Có lỗi xảy ra, vui lòng thử lại!',
+                    });
                 }
             }
         });

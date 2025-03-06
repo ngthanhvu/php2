@@ -92,4 +92,12 @@ class CouponController
             echo json_encode(['success' => false]);
         }
     }
+
+    public function delete($id)
+    {
+        $this->couponModel->delete($id);
+        $_SESSION['message'] = 'Coupon deleted successfully';
+        header('Location: /admin/coupons');
+        exit;
+    }
 }

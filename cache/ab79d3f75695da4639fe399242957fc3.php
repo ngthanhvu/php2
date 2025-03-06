@@ -1,7 +1,7 @@
 
 
 <?php $__env->startSection('content'); ?>
-    <div class="p-5 mb-4 rounded-3" style="background-color: #FE5722;">
+    <div class="p-5 mb-4 rounded-3" style="background-image: url('<?= $banner['banner'] ?>');">
         <div class="container-fluid py-5">
             <h1 class="display-5 fw-bold text-white">Shopp bán hàng <span class="fs-3">bán mọi thứ trên đời =))</span></h1>
             <p class="col-md-8 fs-4 text-white" id="text-container"></p>

@@ -94,8 +94,20 @@ class OrderController
 
             $shipping_address = $this->orderModel->updateOrder($order_id, $status);
 
-            $parts = explode(", ", $shipping_address);
+            if ($status === 'canceled') {
+                $orderDetails = $this->orderModel->getOrderDetailsById($order_id);
 
+                if (!empty($orderDetails)) {
+                    foreach ($orderDetails as $orderItem) {
+                        $product_id = $orderItem['id'];
+                        $quantity = $orderItem['quantity'];
+
+                        $this->productModel->increaseProductQuantity($product_id, $quantity);
+                    }
+                }
+            }
+
+            $parts = explode(", ", $shipping_address);
             $email = end($parts);
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -118,6 +130,36 @@ class OrderController
         }
     }
 
+    public function updateStatusUser()
+    {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $status = $_POST['status'];
+            $order_id = $_POST['order_id'];
+
+            $shipping_address = $this->orderModel->updateOrder($order_id, $status);
+
+            $parts = explode(", ", $shipping_address);
+            $email = end($parts);
+
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->mailModel->send(
+                    $email,
+                    "Cập nhật trạng thái đơn hàng",
+                    "mail_status",
+                    [
+                        'name' => 'Khách hàng',
+                        'order_id' => $order_id,
+                        'status' => $status
+                    ]
+                );
+            } else {
+                var_dump("Invalid email format!");
+            }
+
+            $_SESSION['message_orders'] = "Order status updated successfully!";
+            header('Location: /profile#history');
+        }
+    }
 
     public function deleteOrder($order_id)
     {

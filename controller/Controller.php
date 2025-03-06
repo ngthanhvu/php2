@@ -11,6 +11,7 @@ use App\Models\UserModel;
 use App\Models\AddressModel;
 use App\Models\RatingModel;
 use App\Models\CouponModel;
+use App\Models\SettingModel;
 use App\Core\BladeServiceProvider;
 
 class Controller
@@ -24,6 +25,7 @@ class Controller
     private $userModel;
     private $ratingModel;
     private $couponModel;
+    private $settingModel;
 
     public function __construct()
     {
@@ -36,6 +38,7 @@ class Controller
         $this->addressModel = new AddressModel();
         $this->ratingModel = new RatingModel();
         $this->couponModel = new CouponModel();
+        $this->settingModel = new SettingModel();
     }
 
     public function index()
@@ -43,7 +46,8 @@ class Controller
         $title = "Trang chủ";
         $products = $this->productModel->getAllProducts();
         $categories = $this->categoryModel->getAllCategories();
-        BladeServiceProvider::render('index', compact('products', 'categories', 'title'));
+        $banner = $this->settingModel->getSetting();
+        BladeServiceProvider::render('index', compact('products', 'categories', 'title', 'banner'));
     }
 
     public function admin()
@@ -112,6 +116,23 @@ class Controller
                 exit;
             }
         }
+    }
+
+    public function favorite($ratingId, $favorite)
+    {
+        $addRating = $this->ratingModel->addFavorite($ratingId, $favorite);
+        if ($addRating) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+    }
+
+    public function deleteRate($id, $userId, $productId)
+    {
+        $this->ratingModel->deleteRating($id, $userId);
+        header("Location: /detail/$productId");
+        exit;
     }
 
     public function success()

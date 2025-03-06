@@ -81,6 +81,7 @@
         <a href="/admin/users" id="userLink">Quản lý người dùng</a>
         <a href="/admin/orders" id="userLink">Quản lý đơn hàng</a>
         <a href="/admin/coupons" id="userLink">Quản lý mã giảm giá</a>
+        <a href="/admin/setting" id="userLink">Cài đặt trang web</a>
         <a href="/" id="statsLink"><i class="bi bi-box-arrow-in-left"></i> Trở về trang chủ</a>
     </div>
 

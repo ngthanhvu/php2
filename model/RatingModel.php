@@ -50,4 +50,22 @@ class RatingModel
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['average'] ? round($result['average'], 1) : 0;
     }
+
+    public function deleteRating($id, $userId)
+    {
+        $query = "DELETE FROM ratings WHERE id = :id AND user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function addFavorite($id, $favorite)
+    {
+        $query = "UPDATE ratings SET favorite = :favorite WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':favorite', $favorite, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

@@ -127,8 +127,18 @@
                         <p><strong>{{ $rating['username'] }}</strong> -
                             {{ $rating['rating'] }} <span class="star">★</span>
                             ({{ date('d/m/Y H:i', strtotime($rating['created_at'])) }})
+                            <i class="fa-solid fa-heart float-end" id="like"
+                                data-rating-id="{{ $rating['id'] }}"><span id="like-count"
+                                    data-rating="{{ $rating['favorite'] ?? 0 }}">{{ $rating['favorite'] ?? 0 }}</span></i>
                         </p>
                         <p>{{ $rating['comment'] ?? 'Không có bình luận' }}</p>
+                        <div class="d-flex justify-content-end">
+                            <form
+                                action="/products/deleteRate/{{ $rating['id'] }}/{{ $rating['user_id'] }}/{{ $rating['product_id'] }}"
+                                method="POST" class="float-end">
+                                <button type="submit" class="btn btn-danger btn-sm">Xoa</button>
+                            </form>
+                        </div>
                     </div>
                 @endforeach
             @endif
@@ -196,6 +206,8 @@
     </style>
 
     <script>
+        console.log(document.getElementById('like-count').getAttribute('data-rating'));
+
         document.addEventListener("DOMContentLoaded", function() {
             const sizeButtons = document.querySelectorAll(".size-btn");
             const colorButtons = document.querySelectorAll(".color-btn");
@@ -298,5 +310,37 @@
             const modalImage = document.getElementById("showImage");
             modalImage.src = imageUrl;
         });
+
+        document.addEventListener("click", function(event) {
+            const like = document.getElementById('like');
+            if (like.contains(event.target)) {
+                like.classList.toggle('text-danger');
+                const count_id = document.getElementById('like-count').getAttribute('data-rating');
+                const count = parseInt(count_id) + 1;
+                console.log(count);
+                addFavorite(count);
+            }
+        })
+        async function addFavorite(favorite) {
+            try {
+                const productId = '<?php echo $product['id']; ?>';
+                const userId = '<?php echo $_SESSION['user']['id']; ?>';
+                const rating_id = like.getAttribute('data-rating-id');
+                console.log(productId, userId, rating_id);
+
+                const response = await fetch(`/favorite/${rating_id}/${favorite}`, {
+                    method: "POST",
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.reload();
+                    document.getElementById('like').classList.toggle('text-danger');
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
+        }
     </script>
 @endsection

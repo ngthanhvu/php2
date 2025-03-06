@@ -175,6 +175,12 @@
                                                     <p><strong>Ngày cập nhật:</strong> {{ $order['updated_at'] }}</p>
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <form action="/profile/orders/{{ $order['id'] }}" method="POST">
+                                                        <input type="hidden" name="order_id"
+                                                            value="{{ $order['id'] }}">
+                                                        <input type="hidden" name="status" value="canceled">
+                                                        <button type="submit" class="btn btn-danger">Hủy bỏ</button>
+                                                    </form>
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Đóng</button>
                                                 </div>

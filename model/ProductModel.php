@@ -213,4 +213,13 @@ class ProductModel
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
+
+  public function increaseProductQuantity($product_id, $quantity)
+  {
+    $query = "UPDATE products SET quantity = quantity + :quantity WHERE id = :product_id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+    $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+    return $stmt->execute();
+  }
 }

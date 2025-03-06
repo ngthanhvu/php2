@@ -27,22 +27,42 @@ class CartsModel
         }
         $condition = !empty($user_id) ? "c.user_id = :user_id" : "c.cart_session = :cart_session";
 
+        // $query = "SELECT 
+        //         c.*, 
+        //         COALESCE(pv.image, p.image) AS product_image, 
+        //         p.name AS product_name,
+        //         COALESCE(s.name, 'Không có') AS product_size,
+        //         COALESCE(cl.name, 'Không có') AS product_color
+        //     FROM carts c
+        //     LEFT JOIN products_variants pv 
+        //         ON c.sku = pv.sku COLLATE utf8mb4_general_ci
+        //     LEFT JOIN products p 
+        //         ON (pv.product_id = p.id OR c.sku = p.sku COLLATE utf8mb4_general_ci)
+        //     LEFT JOIN size s 
+        //         ON pv.size_id = s.id
+        //     LEFT JOIN color cl 
+        //         ON pv.color_id = cl.id
+        //     WHERE $condition";
+
         $query = "SELECT 
-                c.*, 
-                COALESCE(pv.image, p.image) AS product_image, 
-                p.name AS product_name,
-                COALESCE(s.name, 'Không có') AS product_size,
-                COALESCE(cl.name, 'Không có') AS product_color
-            FROM carts c
-            LEFT JOIN products_variants pv 
-                ON c.sku = pv.sku COLLATE utf8mb4_general_ci
-            LEFT JOIN products p 
-                ON (pv.product_id = p.id OR c.sku = p.sku COLLATE utf8mb4_general_ci)
-            LEFT JOIN size s 
-                ON pv.size_id = s.id
-            LEFT JOIN color cl 
-                ON pv.color_id = cl.id
-            WHERE $condition";
+    c.*, 
+    c.quantity AS cart_quantity, -- Số lượng trong giỏ hàng từ bảng carts
+    pv.quantity AS variant_quantity, -- Số lượng tồn kho từ bảng products_variants
+    p.quantity AS product_quantity, -- Số lượng tồn kho từ bảng products
+    COALESCE(pv.image, p.image) AS product_image, 
+    p.name AS product_name,
+    COALESCE(s.name, 'Không có') AS product_size,
+    COALESCE(cl.name, 'Không có') AS product_color
+FROM carts c
+LEFT JOIN products_variants pv 
+    ON c.sku = pv.sku COLLATE utf8mb4_general_ci
+LEFT JOIN products p 
+    ON (pv.product_id = p.id OR c.sku = p.sku COLLATE utf8mb4_general_ci)
+LEFT JOIN size s 
+    ON pv.size_id = s.id
+LEFT JOIN color cl 
+    ON pv.color_id = cl.id
+WHERE $condition";
 
         $stmt = $this->conn->prepare($query);
         if (!empty($user_id)) {
@@ -90,5 +110,20 @@ class CartsModel
             $stmt->bindParam(':cart_session', $cart_session);
         }
         return $stmt->execute();
+    }
+
+    public function getCartBySku($user_id, $cart_session, $sku)
+    {
+        $query = "SELECT * FROM carts WHERE sku = ? AND (user_id = ? OR cart_session = ?) LIMIT 1";
+        $stmt = $this->conn->prepare($query); // Giả sử $this->db là kết nối database
+        $stmt->execute([$sku, $user_id, $cart_session]);
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Trả về false nếu không tìm thấy
+    }
+
+    public function updateCartQuantity($cart_id, $quantity)
+    {
+        $query = "UPDATE carts SET quantity = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute([$quantity, $cart_id]);
     }
 }
